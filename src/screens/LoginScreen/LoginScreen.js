@@ -14,9 +14,8 @@ import {
 } from 'react-native';
 import { Input, Button, Icon } from 'react-native-elements';
 import FormInput from '../FormInput';
-import {login} from './LoginActions';
-import { AsyncStorage } from '@react-native-community/async-storage';
-import deviceStorage from '../../services/deviceStorage';
+import {login} from '../../services/authService';
+
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 

@@ -4,11 +4,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
 import MainScreen from './screens/MainScreen/MainScreen';
-import FailureScreen from './screens/FailureScreen';
+import FailureScreen from './screens/FailureScreen/FailureScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen/ResetPasswordScreen';
 import { setAuthHeader } from './api/ApiClient';
 import deviceStorage from './services/deviceStorage';
 import {Button, Icon} from 'react-native-elements'
+import {revokeToken} from './services/userService'
 
 const Stack = createStackNavigator();
 
@@ -23,9 +24,13 @@ export default class App extends React.Component {
     this.newJWT = deviceStorage.newJWT.bind(this);
     this.deleteJWT = deviceStorage.deleteJWT.bind(this);
     this.loadJWT = deviceStorage.loadJWT.bind(this);
+    this.logout=this.logout.bind(this);
     this.loadJWT();
   }
-
+  logout() {
+    revokeToken();
+    this.deleteJWT();
+  }
 
   render() {
     return (
@@ -40,7 +45,7 @@ export default class App extends React.Component {
             },
             headerRight: () => (
               this.state.jwt && (<Button
-                onPress={() => this.deleteJWT()}
+                onPress={this.logout}
                 buttonStyle={{ backgroundColor: 'transparent' }}
                 underlayColor="transparent"
                 icon={

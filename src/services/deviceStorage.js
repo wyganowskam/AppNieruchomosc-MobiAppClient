@@ -9,14 +9,17 @@ const deviceStorage = {
       console.log('AsyncStorage Error: ' + error.message);
     }
   },
-  async printJWT() {
+  async getJWT() {
     try {
       const value = await AsyncStorage.getItem('id_token');
-     console.log(value);
+    return value;
     
     } catch (error) {
       console.log('AsyncStorage Error: ' + error.message);
     }
+  },
+  async saveJWT(value){
+    this.saveKey('id_token',value);
   },
 
   newJWT(jwt){

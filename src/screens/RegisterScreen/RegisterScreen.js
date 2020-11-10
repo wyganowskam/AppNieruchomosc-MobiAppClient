@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { Input, Button, Icon } from 'react-native-elements';
 import FormInput from '../FormInput';
-import {register} from './RegisterActions';
+import {register} from '../../services/authService';
 import {RegisterSuccess} from './RegisterSuccess';
 
 // Enable LayoutAnimation on Android

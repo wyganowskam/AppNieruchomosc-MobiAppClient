@@ -31,7 +31,7 @@ export default class MainScreen extends Component {
     return (
       <View
         >
-      
+          <Profile/>
           <Menu navigation={this.props.navigation}/>
         
       </View>
