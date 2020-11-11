@@ -6,6 +6,7 @@ import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
 import MainScreen from './screens/MainScreen/MainScreen';
 import FailureScreen from './screens/FailureScreen/FailureScreen';
 import FailureDetailsScreen from './screens/FailureScreen/FailureDetailsScreen';
+import FailureAddScreen from './screens/FailureScreen/FailureAddScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen/ResetPasswordScreen';
 import { setAuthHeader } from './api/ApiClient';
 import deviceStorage from './services/deviceStorage';
@@ -72,6 +73,7 @@ export default class App extends React.Component {
           <Stack.Screen  name="Main" component={MainScreen} options={{ title: 'MENU', }}  />
           <Stack.Screen name="Failure" component={FailureScreen} options={{ title: 'AWARIE' }} />
           <Stack.Screen name="FailureDetails" component={FailureDetailsScreen} options={{ title: 'AWARIA' }}  />
+          <Stack.Screen name="FailureAdd" component={FailureAddScreen} options={{ title: 'NOWA AWARIA' }}  />
           </>)}
         </Stack.Navigator>
       </NavigationContainer>

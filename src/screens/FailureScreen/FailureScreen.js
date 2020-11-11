@@ -12,6 +12,7 @@ export default class FailureScreen extends Component {
     super(props);
 
     this.renderRow=this.renderRow.bind(this);
+    this.handleAddButton=this.handleAddButton.bind(this);
     }
     renderRow = ({ item }) => {
    
@@ -19,13 +20,17 @@ export default class FailureScreen extends Component {
         <ListItem onPress={() => this.props.navigation.navigate('FailureDetails',{itemId: item.id,})}  bottomDivider>
           <ListItem.Content>
             <ListItem.Title>{item.title}</ListItem.Title>
-            <ListItem.Subtitle>{item.date}</ListItem.Subtitle>
+            <ListItem.Subtitle>{"Data zgłoszenia: " + item.date}</ListItem.Subtitle>
+            <ListItem.Subtitle>{"Status: " + item.status}</ListItem.Subtitle>
           </ListItem.Content>
           <ListItem.Chevron />
         </ListItem>
       );
     };
-  
+    handleAddButton = () => {
+      this.props.navigation.navigate('FailureAdd');
+    };
+
   
     
   
@@ -47,7 +52,7 @@ export default class FailureScreen extends Component {
             containerStyle={{ flex: -1 }}
             
             titleStyle={{fontSize:13}}
-           // onPress={this.loginHandler}
+            onPress={this.handleAddButton}
            // disabled={isLoading}
             buttonStyle={{backgroundColor:'grey'}}
             
