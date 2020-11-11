@@ -13,9 +13,10 @@ export default class FailureAddScreen extends Component {
     this.state={
         title:'',
         description:'',
-        uri:noImage.uri
+        uriList:[]
     }
    this.pickImage=this.pickImage.bind(this);
+   this.renderImage=this.renderImage.bind(this);
     }
 
     pickImage = async () => {
@@ -27,11 +28,20 @@ export default class FailureAddScreen extends Component {
       });
    
     if (!result.cancelled) {
-       this.setState({uri:result.uri});
+       this.setState({uriList:[...this.state.uriList,result]});
     }
     console.log(result);
   };
       
+  renderImage = ({ item }) => {
+   
+    return (
+      <View>
+          <Image source={{uri: item.uri}} style={{height:100, width:100, resizeMode:"cover"}}/>
+      </View>
+      
+    );
+  };
 
   
   render() {
@@ -51,7 +61,14 @@ export default class FailureAddScreen extends Component {
               value={description}
               onChangeText={(description) => this.setState({description})}
             /> 
-            <Image source={{uri: uri}} style={{height:100, width:100, resizeMode:"cover"}}/>
+            <View>
+            <FlatList horizontal={true}
+                 data={this.state.uriList}
+                 keyExtractor={(a) => a.uri}
+                renderItem={this.renderImage}
+              />
+            </View>
+           
              <Button
               title="Załaduj plik"
               titleStyle={styles.TransparentButtonText}
