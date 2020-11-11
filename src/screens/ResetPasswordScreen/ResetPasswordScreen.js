@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import { Input, Button, Icon } from 'react-native-elements';
-import FormInput from '../FormInput';
+import FormInput from '../../components/common/FormInput';
 import {forgotPassword} from '../../services/authService';
 // Enable LayoutAnimation on Android
 UIManager.setLayoutAnimationEnabledExperimental &&

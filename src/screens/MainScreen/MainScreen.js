@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
 import {
-  Alert,
-  LayoutAnimation,
-  TouchableOpacity,
   Dimensions,
-  Image,
-  UIManager,
-  KeyboardAvoidingView,
   StyleSheet,
-  ScrollView,
-  Text,
   View,
 } from 'react-native';
 

@@ -13,7 +13,7 @@ import {
   View,
 } from 'react-native';
 import { Input, Button, Icon } from 'react-native-elements';
-import FormInput from '../FormInput';
+import FormInput from '../../components/common/FormInput';
 import {register} from '../../services/authService';
 import {RegisterSuccess} from './RegisterSuccess';
 

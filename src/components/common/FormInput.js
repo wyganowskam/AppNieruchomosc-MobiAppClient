@@ -1,14 +1,5 @@
 import React, { Component } from 'react';
-import {
-  LayoutAnimation,
-  Dimensions,
-  UIManager,
-  KeyboardAvoidingView,
-  StyleSheet,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
+import { StyleSheet,} from 'react-native';
 import { Input, Button, Icon } from 'react-native-elements';
 
 export default function FormInput  ({icon, refInput, ...otherProps}) {

@@ -13,7 +13,7 @@ import {
   View,
 } from 'react-native';
 import { Input, Button, Icon } from 'react-native-elements';
-import FormInput from '../FormInput';
+import FormInput from '../../components/common/FormInput';
 import {login} from '../../services/authService';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -212,8 +212,7 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     paddingTop: 0,
     backgroundColor: 'white',
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
+   
     alignItems: 'center',
     justifyContent: 'space-around',
   },

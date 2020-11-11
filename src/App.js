@@ -5,6 +5,7 @@ import LoginScreen from './screens/LoginScreen/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
 import MainScreen from './screens/MainScreen/MainScreen';
 import FailureScreen from './screens/FailureScreen/FailureScreen';
+import FailureDetailsScreen from './screens/FailureScreen/FailureDetailsScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen/ResetPasswordScreen';
 import { setAuthHeader } from './api/ApiClient';
 import deviceStorage from './services/deviceStorage';
@@ -38,7 +39,7 @@ export default class App extends React.Component {
         <Stack.Navigator 
          
           screenOptions={{
-            headerTitleStyle: { textAlign:"center", flex:1, color:'white',fontStyle:'italic' },
+            headerTitleStyle: { textAlign:"center", flex:1, color:'white', },
             headerStyle: {
               backgroundColor: 'gray',
               borderBottomColor:'white',
@@ -62,14 +63,15 @@ export default class App extends React.Component {
         }}>
           {this.state.jwt=='' ? (
           <>
-          <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Logowanie' }} initialParams={{newJWT:this.newJWT}}/>
-          <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'Rejestracja', }}/>
-          <Stack.Screen name="Reset" component={ResetPasswordScreen} options={{ title: 'Resetowanie hasła' }} />
+          <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'LOGOWANIE' }} initialParams={{newJWT:this.newJWT}}/>
+          <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'REJESTRACJA', }}/>
+          <Stack.Screen name="Reset" component={ResetPasswordScreen} options={{ title: 'RESETOWANIE HASŁA' }} />
           </>
           ) : (
           <>
-          <Stack.Screen  name="Main" component={MainScreen} options={{ title: 'Nazwa Apki', }}  />
-          <Stack.Screen name="Failure" component={FailureScreen} options={{ title: 'Awarie' }} />
+          <Stack.Screen  name="Main" component={MainScreen} options={{ title: 'MENU', }}  />
+          <Stack.Screen name="Failure" component={FailureScreen} options={{ title: 'AWARIE' }} />
+          <Stack.Screen name="FailureDetails" component={FailureDetailsScreen} options={{ title: 'AWARIA' }}  />
           </>)}
         </Stack.Navigator>
       </NavigationContainer>

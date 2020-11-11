@@ -7,7 +7,6 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 
 
-const log = () => console.log('this is an example method');
 
 const menu = [
   {
