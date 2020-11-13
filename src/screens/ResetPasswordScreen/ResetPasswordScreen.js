@@ -136,8 +136,7 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     paddingTop: 0,
     backgroundColor: 'white',
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
+   
     alignItems: 'center',
     justifyContent: 'space-around',
   },

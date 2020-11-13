@@ -40,7 +40,7 @@ export default class App extends React.Component {
         <Stack.Navigator 
          
           screenOptions={{
-            headerTitleStyle: { textAlign:"center", flex:1, color:'white', },
+            headerTitleStyle: {color:'white', },
             headerStyle: {
               backgroundColor: 'gray',
               borderBottomColor:'white',

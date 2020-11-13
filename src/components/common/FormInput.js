@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     height: 45,
     marginVertical: 10,
     alignSelf:"center",
+    
   },
   inputStyle: {
     flex: 1,

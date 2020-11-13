@@ -3,26 +3,38 @@ import { View, StyleSheet, Dimensions,  } from 'react-native';
 import {Text} from 'react-native-elements';
 import {failureList} from './failureData';
 import colors from '../../config/colors';
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const SCREEN_HEIGHT = Dimensions.get('window').height;
+import {getAllFailures} from '../../services/failureService';
 
 
 export default class FailureDetailsScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.state={
+      failureElement:'',
+      status:'',
+    };
+   
     }
+   
+    componentDidMount() {
+      const failure=this.props.route.params.item;
+      console.log(failure);
     
+      this.setState({failureElement:failure, status:failure.status});
+    
+    }
+  
   
     render() {
-       const id=this.props.route.params.itemId;
-       const failure=failureList.find(data=>data.id==id)
+      const {failureElement,status}=this.state;
         return (
           <View >
           
-            <Text h3>{failure.title}</Text>
-            <Text>{"Data: " + failure.date}</Text>
-            <Text>{"Status: " + failure.status}</Text>
-            <Text>{"Opis: \n" + failure.description}</Text>
+            <Text h3>{failureElement.title}</Text>
+            <Text><Text style={{fontWeight: "bold"}}>{"Data: "}</Text>{ failureElement.date}</Text>
+            <Text><Text style={{fontWeight: "bold"}}>{"Adres: "} </Text> {failureElement.address}</Text>
+            <Text ><Text style={{fontWeight: "bold"}}>{"Status: "} </Text>{this.state.status.description}</Text>
+            <Text><Text style={{fontWeight: "bold"}}>{"Opis: \n" } </Text>{failureElement.description}</Text>
           </View>
         );
       }
@@ -39,8 +51,7 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     paddingTop: 0,
     backgroundColor: '#293046',
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
+   
     alignItems: 'center',
     justifyContent: 'space-around',
   },

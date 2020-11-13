@@ -1,27 +1,33 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Dimensions, FlatList, ScrollView } from 'react-native';
-import { ListItem } from 'react-native-elements';
-import {failureList} from './failureData';
+import { ListItem,Text } from 'react-native-elements';
+
 import colors from '../../config/colors';
 import { Button} from 'react-native-elements';
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const SCREEN_HEIGHT = Dimensions.get('window').height;
+import {getUserInfo} from '../../services/authService';
+import {getAllFailures} from '../../services/failureService';
 
 export default class FailureScreen extends Component {
   constructor(props) {
     super(props);
+    this.state= {
+      failureList:'',
+      message:'',
+    };
 
     this.renderRow=this.renderRow.bind(this);
     this.handleAddButton=this.handleAddButton.bind(this);
+    this.getFailuresList=this.getFailuresList.bind(this);
     }
     renderRow = ({ item }) => {
    
       return (
-        <ListItem onPress={() => this.props.navigation.navigate('FailureDetails',{itemId: item.id,})}  bottomDivider>
+        <ListItem onPress={() =>{console.log(item); this.props.navigation.navigate('FailureDetails',{item: item,})}}  bottomDivider>
+        
           <ListItem.Content>
             <ListItem.Title>{item.title}</ListItem.Title>
             <ListItem.Subtitle>{"Data zgłoszenia: " + item.date}</ListItem.Subtitle>
-            <ListItem.Subtitle>{"Status: " + item.status}</ListItem.Subtitle>
+            <ListItem.Subtitle>{"Status: " + item.status.name}</ListItem.Subtitle>
           </ListItem.Content>
           <ListItem.Chevron />
         </ListItem>
@@ -31,6 +37,29 @@ export default class FailureScreen extends Component {
       this.props.navigation.navigate('FailureAdd');
     };
 
+    getFailuresList = ()=> {
+   
+      getAllFailures().then(
+        res => {
+          this.setState({failureList:res.data});
+          
+        },
+        (error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+
+          this.setState({message:resMessage});
+        }
+      ).catch(e => { });
+    };
+
+    componentDidMount() {
+      this.getFailuresList();
+    }
   
     
   
@@ -40,23 +69,20 @@ export default class FailureScreen extends Component {
       <View style={styles.container}>   
         <ScrollView>
             <FlatList
-              data={failureList}
+              data={this.state.failureList}
               keyExtractor={(a) => a.id}
               renderItem={this.renderRow}
             />
           </ScrollView> 
           <View style={styles.bottom}>
           <Button
-            //loading={isLoading}
             title="ZGŁOŚ AWARIĘ"
             containerStyle={{ flex: -1 }}
-            
             titleStyle={{fontSize:13}}
             onPress={this.handleAddButton}
-           // disabled={isLoading}
-            buttonStyle={{backgroundColor:'grey'}}
-            
+            buttonStyle={{backgroundColor:'grey'}}      
           />
+          <Text style={{color:'red'}}>{this.state.message}</Text>
           </View>
           
       </View>

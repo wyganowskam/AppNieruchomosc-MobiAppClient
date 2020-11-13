@@ -6,7 +6,7 @@ import {
   View,
 } from 'react-native'
 import {getUserInfo} from '../../services/authService';
-import { Image } from 'react-native';
+import deviceStorage from '../../services/deviceStorage'
  //import PhotoUpload from 'react-native-photo-upload';
 const backgroundImage = { uri: "https://s8.flog.pl/media/foto/7944472_miasto-noca.jpg"};
 const avatar={uri: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"};
@@ -32,7 +32,9 @@ export default class Profile extends Component {
       (res) => {
         console.log(res);
         if(res.status === 200){
+          //udało się zdobyć informacje o użytkowniku
          this.setState({usersurname:res.data.surname, username:res.data.name});
+       
         }
       }
     );

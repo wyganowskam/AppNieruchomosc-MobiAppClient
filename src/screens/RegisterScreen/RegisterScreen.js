@@ -177,11 +177,7 @@ export default class RegisterScreen extends Component {
     } = this.state;
  
     return (
-      <ScrollView
-      keyboardShouldPersistTaps="handled"
-      contentContainerStyle={styles.container}
-   
-    >
+      <View style={styles.container} >
        
         <KeyboardAvoidingView
           behavior="padding"
@@ -300,7 +296,7 @@ export default class RegisterScreen extends Component {
         </View>
        
         
-      </ScrollView>
+      </View>
     );
   }
 }
@@ -309,11 +305,10 @@ export default class RegisterScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    paddingBottom: 20,
-    paddingTop: 20,
+    paddingBottom: 50,
+    paddingTop: 0,
     backgroundColor: 'white',
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
+   
     alignItems: 'center',
     justifyContent: 'space-around',
   },

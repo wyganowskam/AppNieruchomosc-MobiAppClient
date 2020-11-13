@@ -1,22 +1,54 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Dimensions, FlatList, ScrollView } from 'react-native';
 import { TextInput } from 'react-native-paper';
+import TextField from '@material-ui/core/TextField';
 import * as ImagePicker from 'expo-image-picker';
 import {failureList} from './failureData';
+import {getUserInfo} from '../../services/authService';
 import colors from '../../config/colors';
-import { Button, Image} from 'react-native-elements';
-const noImage={uri: "https://jenmulligandesign.com/wp-content/uploads/2017/04/gratisography-free-stock-photos.jpg"};
-
+import { Button, Image,Text} from 'react-native-elements';
+import {addFailure} from '../../services/failureService';
+import MenuItem from '@material-ui/core/MenuItem';
 export default class FailureAddScreen extends Component {
   constructor(props) {
     super(props);
     this.state={
+        isLoading:false,
         title:'',
         description:'',
+        apartmentId:'',
+        apartments:[],
+        message:'',
         uriList:[]
     }
    this.pickImage=this.pickImage.bind(this);
    this.renderImage=this.renderImage.bind(this);
+   this.validate=this.validate.bind(this);
+   this.handleAddButton=this.handleAddButton.bind(this);
+   this.getApartmentsList=this.getApartmentsList.bind(this);
+   this.onChangeApartment=this.onChangeApartment.bind(this);
+    }
+
+    validate= () => {
+      const {title,description,apartmentId}=this.state;
+      if(!title || !description || !apartmentId){
+          
+          this.setState({message:"Wszystkie pola muszą być wypełnione."});
+          return false;
+      }
+      else if(title.length < 10){
+          this.setState({message:"Tytuł musi mieć co najmniej 10 znaków"});
+          return false;
+      }
+      else if(description.length < 20){
+          this.setState({message:"Opis musi mieć co najmniej 20 znaków"});
+          return false;
+      }
+      else{
+          //poprawny formularz
+          return true;
+      }
+  
     }
 
     pickImage = async () => {
@@ -43,24 +75,90 @@ export default class FailureAddScreen extends Component {
     );
   };
 
+  handleAddButton = () => {
+  this.setState({message:""});
+    const isValid=this.validate();
+    if(isValid === true){
+      this.setState({isLoading:true});
+      addFailure({
+          title: title,
+          description: description,
+          apartmentId: apartmentId
+      }).then(
+        () => {
+
+          this.props.navigation.goBack();
+        },
+        (error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+
+          this.setState({isLoading:false,message:resMessage});
+
+        }
+      );
+    }
+  };
+
+  onChangeApartment = e => {
+    const val = e.target.value;
+    this.setState({apartmentId:val});
+  };
+
+
+  getApartmentsList = ()=> {
+   
+    getUserInfo().then(
+      (res) => {
+        console.log(res);
+        if(res.status === 200){
+          //udało się zdobyć informacje o użytkowniku
+         this.setState({apartments :res.data.apartments});
+       
+        }
+      }
+    );
+  };
+  componentDidMount() {
+    this.getApartmentsList();
+  }
+
   
   render() {
     const{uri}=this.state;
     const {title,description}=this.state;
     
     return (
-      <View>   
+      <ScrollView>   
           <TextInput
             label="Tytuł zgłoszenia"
             value={title}
            onChangeText={(title) => this.setState({ title})}/> 
+          <TextField
+              required
+              fullWidth
+              select
+              label="Mieszkanie"
+              onChange={this.onChangeApartment}
+            >
+              {this.state.apartments.map((apartment) => (
+                <MenuItem key={apartment.id} value={apartment.id}>
+                  {apartment.address}
+                </MenuItem>
+              ))}
+          </TextField>
             <TextInput
               label="Treść zgłoszenia"
               multiline
-              style={{height:400}}
+              style={{height:450}}
               value={description}
               onChangeText={(description) => this.setState({description})}
             /> 
+ 
             <View>
             <FlatList horizontal={true}
                  data={this.state.uriList}
@@ -69,7 +167,7 @@ export default class FailureAddScreen extends Component {
               />
             </View>
            
-             <Button
+             {/*<Button
               title="Załaduj plik"
               titleStyle={styles.TransparentButtonText}
               containerStyle={{ flex: -1 }}
@@ -77,19 +175,20 @@ export default class FailureAddScreen extends Component {
               underlayColor="transparent"
               onPress={this.pickImage}
              />
+             */}
+            <Text style={{color:'red'}}>{this.state.message}</Text>
             <Button
-            //loading={isLoading}
+            loading={this.state.isLoading}
             title="WYŚLIJ ZGŁOSZENIE"
             containerStyle={{ flex: -1 }}
-            
             titleStyle={{fontSize:13}}
-           // onPress={this.handleAddButton}
-           // disabled={isLoading}
+            onPress={this.handleAddButton}
+            disabled={this.state.isLoading}
             buttonStyle={{backgroundColor:'grey'}}
 
             
             />
-      </View>
+      </ScrollView>
     );
   }
 }
