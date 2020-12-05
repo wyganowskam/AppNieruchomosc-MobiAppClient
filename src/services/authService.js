@@ -3,10 +3,10 @@ import {apiClient} from "../api/ApiClient";
 
 export const getUserInfo = () => {
     return apiClient.get('users/');
-  };
+};
   
   
-  export const login =(userId,password) => {
+export const login =(userId,password) => {
     return apiClient.post('authentication/',{
         userId,
         password

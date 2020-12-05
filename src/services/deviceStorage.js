@@ -1,9 +1,25 @@
 import  AsyncStorage  from '@react-native-community/async-storage';
 import { setAuthHeader } from "../api/ApiClient";
 const deviceStorage = {
-  async saveKey(key, valueToSave) {
+  async saveItem(key, valueToSave) {
     try {
       await AsyncStorage.setItem(key, valueToSave);
+     
+    } catch (error) {
+      console.log('AsyncStorage Error: ' + error.message);
+    }
+  },
+  async getItem(key, valueToGet) {
+    try {
+      await AsyncStorage.getItem(key, valueToGet);
+     
+    } catch (error) {
+      console.log('AsyncStorage Error: ' + error.message);
+    }
+  },
+  async removeItem(key, valueToRemove) {
+    try {
+      await AsyncStorage.removeItem(key, valueToRemove);
      
     } catch (error) {
       console.log('AsyncStorage Error: ' + error.message);
@@ -19,7 +35,7 @@ const deviceStorage = {
     }
   },
   async saveJWT(value){
-    this.saveKey('id_token',value);
+    this.saveItem('id_token',value);
   },
 
   newJWT(jwt){
@@ -27,7 +43,7 @@ const deviceStorage = {
       jwt: jwt
     });
     setAuthHeader(jwt);
-    deviceStorage.saveKey('id_token',jwt);
+    deviceStorage.saveItem('id_token',jwt);
   },
 
 
