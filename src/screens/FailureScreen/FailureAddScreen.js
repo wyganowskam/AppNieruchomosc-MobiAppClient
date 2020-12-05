@@ -62,7 +62,7 @@ export default class FailureAddScreen extends Component {
     if (!result.cancelled) {
        this.setState({uriList:[...this.state.uriList,result]});
     }
-    console.log(result);
+   // console.log(result);
   };
       
   renderImage = ({ item }) => {
@@ -114,7 +114,7 @@ export default class FailureAddScreen extends Component {
    
     getUserInfo().then(
       (res) => {
-        console.log(res);
+        //console.log(res);
         if(res.status === 200){
           //udało się zdobyć informacje o użytkowniku
          this.setState({apartments :res.data.apartments});

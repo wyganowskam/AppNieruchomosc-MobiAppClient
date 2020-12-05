@@ -22,7 +22,7 @@ export default class FailureScreen extends Component {
     renderRow = ({ item }) => {
    
       return (
-        <ListItem onPress={() =>{console.log(item); this.props.navigation.navigate('FailureDetails',{item: item,})}}  bottomDivider>
+        <ListItem onPress={() =>{this.props.navigation.navigate('FailureDetails',{item: item,})}}  bottomDivider>
         
           <ListItem.Content>
             <ListItem.Title>{item.title}</ListItem.Title>

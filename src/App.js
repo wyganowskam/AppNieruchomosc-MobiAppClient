@@ -20,7 +20,11 @@ export default class App extends React.Component {
     super();
     this.state = {
       jwt: '',
-      loading: true
+      loading: true,
+      isAppAdmin: false,
+      isBuildingAdmin: false,
+      isBoard: false,
+      isResident: false,
     }
 
     this.newJWT = deviceStorage.newJWT.bind(this);
@@ -34,6 +38,7 @@ export default class App extends React.Component {
     this.deleteJWT();
   }
 
+ 
   render() {
     return (
       <NavigationContainer >

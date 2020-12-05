@@ -18,7 +18,7 @@ export default class FailureDetailsScreen extends React.Component {
    
     componentDidMount() {
       const failure=this.props.route.params.item;
-      console.log(failure);
+      //console.log(failure);
     
       this.setState({failureElement:failure, status:failure.status});
     

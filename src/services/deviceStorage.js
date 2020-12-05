@@ -1,25 +1,27 @@
 import  AsyncStorage  from '@react-native-community/async-storage';
 import { setAuthHeader } from "../api/ApiClient";
 const deviceStorage = {
-  async saveItem(key, valueToSave) {
+  async setItem(key, valueToSave) {
     try {
       await AsyncStorage.setItem(key, valueToSave);
+           
+    } catch (error) {
+      console.log('AsyncStorage Error: ' + error.message);
+    }
+  },
+  async getItem(key) {
+    try {
+      const val= await AsyncStorage.getItem(key);
+      
+      return val;
      
     } catch (error) {
       console.log('AsyncStorage Error: ' + error.message);
     }
   },
-  async getItem(key, valueToGet) {
+  async removeItem(key) {
     try {
-      await AsyncStorage.getItem(key, valueToGet);
-     
-    } catch (error) {
-      console.log('AsyncStorage Error: ' + error.message);
-    }
-  },
-  async removeItem(key, valueToRemove) {
-    try {
-      await AsyncStorage.removeItem(key, valueToRemove);
+      await AsyncStorage.removeItem(key);
      
     } catch (error) {
       console.log('AsyncStorage Error: ' + error.message);
@@ -35,7 +37,7 @@ const deviceStorage = {
     }
   },
   async saveJWT(value){
-    this.saveItem('id_token',value);
+    this.setItem('id_token',value);
   },
 
   newJWT(jwt){
@@ -43,7 +45,7 @@ const deviceStorage = {
       jwt: jwt
     });
     setAuthHeader(jwt);
-    deviceStorage.saveItem('id_token',jwt);
+    deviceStorage.setItem('id_token',jwt);
   },
 
 
@@ -52,11 +54,13 @@ const deviceStorage = {
       const value = await AsyncStorage.getItem('id_token');
       if (value !== null) {
         this.setState({
+          //użytkownik zalogowany
           jwt: value,
           loading: false
         });
       } else {
         this.setState({
+          //użytkownik wylogowany
           loading: false
         });
       }
