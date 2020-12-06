@@ -9,6 +9,9 @@ export const getAllFailures = () => {
       return apiClient.get("malfunctions/findMalfunctionByOwnersGuid/");
     };
     
+export const getAllStatuses = () => {
+      return apiClient.get("malfunctions/statuses");
+    };
   
   export const addFailure = (data) => {
       return apiClient.post("malfunctions/add/", data);

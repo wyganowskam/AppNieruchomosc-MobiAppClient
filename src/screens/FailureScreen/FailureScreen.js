@@ -5,7 +5,7 @@ import { ListItem,Text } from 'react-native-elements';
 import colors from '../../config/colors';
 import { Button} from 'react-native-elements';
 import {getUserInfo} from '../../services/authService';
-import {getAllFailures} from '../../services/failureService';
+import {getAllFailuresByUserId} from '../../services/failureService';
 
 export default class FailureScreen extends Component {
   constructor(props) {
@@ -39,7 +39,7 @@ export default class FailureScreen extends Component {
 
     getFailuresList = ()=> {
    
-      getAllFailures().then(
+      getAllFailuresByUserId().then(
         res => {
           this.setState({failureList:res.data});
           

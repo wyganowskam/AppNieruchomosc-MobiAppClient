@@ -78,6 +78,7 @@ export default class FailureAddScreen extends Component {
   handleAddButton = () => {
   this.setState({message:""});
     const isValid=this.validate();
+    const {title,description,apartmentId}=this.state;
     if(isValid === true){
       this.setState({isLoading:true});
       addFailure({

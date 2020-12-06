@@ -1,109 +1,70 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Dimensions, FlatList } from 'react-native';
-import {  ListItem,  Icon } from 'react-native-elements';
-import colors from '../../config/colors';
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 
-
-
-const menu = [
+export const menu = [
   {
     title: 'WIADOMOŚCI',
     icon: 'mail',
     page: 'Main',
+    forAppAdmin: true,
+    forBuildingAdmin: true,
+    forBoard: true,
+    forResident: true,
   },
   {
     title: 'TABLICA OGŁOSZEŃ',
     icon: 'pushpino',
     page: 'Main',
+    forAppAdmin: true,
+    forBuildingAdmin: true,
+    forBoard: true,
+    forResident: true,
   },
   {
     title: 'GŁOSOWANIA',
     icon: 'carryout',
     page: 'Main',
+    forAppAdmin: true,
+    forBuildingAdmin: true,
+    forBoard: true,
+    forResident: true,
+    
   },
   {
     title: 'ANKIETY',
     icon: 'linechart',
     page: 'Main',
+    forAppAdmin: true,
+    forBuildingAdmin: true,
+    forBoard: true,
+    forResident: true,
   },
   {
     title: 'DOKUMENTY',
     icon: 'folderopen',
     page: 'Main',
+    forAppAdmin: true,
+    forBuildingAdmin: true,
+    forBoard: true,
+    forResident: true,
   },
   {
     title: 'AWARIE',
     icon: 'bells',
     page: 'Failure',
+    forAppAdmin: false,
+    forBuildingAdmin: false,
+    forBoard: false,
+    forResident: true,
   },
   {
     title: 'USTAWIENIA',
     icon: 'setting',
     page: 'Main',
+    forAppAdmin: true,
+    forBuildingAdmin: true,
+    forBoard: true,
+    forResident: true,
   },
 ];
 
 
-function Menu ({navigation}) {
-  
-  const renderRow = ({ item }) => {
-   
-    return (
-      <ListItem  onPress={() => 
-        navigation.navigate(item.page)} bottomDivider>
-        <Icon name={item.icon } type='antdesign'/>
-        <ListItem.Content>
-          <ListItem.Title>{item.title}</ListItem.Title>
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem>
-    );
-  };
-
-
-  return (
-    <View>    
-      <FlatList
-        data={menu}
-        keyExtractor={(a) => a.title}
-        renderItem={renderRow}
-      />
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    paddingBottom: 50,
-    paddingTop: 0,
-    backgroundColor: '#293046',
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  list: {
-    marginTop: 20,
-    borderTopWidth: 1,
-    borderColor: colors.greyOutline,
-  },
-  subtitleView: {
-    flexDirection: 'row',
-    paddingLeft: 10,
-    paddingTop: 5,
-  },
-  ratingImage: {
-    height: 19.21,
-    width: 100,
-  },
-  ratingText: {
-    paddingLeft: 10,
-    color: 'grey',
-  },
-});
-
-export default Menu;
