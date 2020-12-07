@@ -4,7 +4,7 @@ export const menu = [
   {
     title: 'WIADOMOŚCI',
     icon: 'mail',
-    page: 'Main',
+    page: 'Messages',
     forAppAdmin: true,
     forBuildingAdmin: true,
     forBoard: true,
