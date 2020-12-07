@@ -57,6 +57,15 @@ export const menu = [
     forResident: true,
   },
   {
+    title: 'ZAPROSZENIA',
+    icon: 'mail',
+    page: 'MyInvitations',
+    forAppAdmin: true,
+    forBuildingAdmin: true,
+    forBoard: true,
+    forResident: true,
+  },
+  {
     title: 'USTAWIENIA',
     icon: 'setting',
     page: 'Main',

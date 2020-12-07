@@ -1,4 +1,4 @@
-import {apiClient} from "../apiClient/apiClientClient";
+import {apiClient} from "../api/ApiClient";
 
 const path = 'invitation/';
 

@@ -27,7 +27,7 @@ export const getHoasRoles = () => {
   });
 };
 
-export const refreshRoles = () => {
+export const refreshRoles = async () => {
         deviceStorage.getItem("hoaId")
           .then((resHoaId) => {
             var hoaId = resHoaId;

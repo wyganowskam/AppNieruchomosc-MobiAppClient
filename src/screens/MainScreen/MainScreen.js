@@ -19,7 +19,7 @@ import {refreshRoles } from "../../services/hoaService";
 import {menu} from "./Menu";
  //import PhotoUpload from 'react-native-photo-upload';
  import {getHoasRoles} from '../../services/hoaService';
-const backgroundImage = { uri: "https://s8.flog.pl/media/foto/7944472_miasto-noca.jpg"};
+
 const avatar={uri: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"};
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -46,8 +46,9 @@ export default class Profile extends Component {
     this.loadHoa=this.loadHoa.bind(this);
     this.renderRow=this.renderRow.bind(this);
     this.onChangeHoa=this.onChangeHoa.bind(this);
-    this.loadHoa();
+    
     this.getInfo();
+    this.loadHoa();
   }
 
   getInfo() {
@@ -69,8 +70,8 @@ export default class Profile extends Component {
   loadHoa(){
     deviceStorage.getItem("hoaId")
     .then((res1)=>{
-
-    deviceStorage.getItem("hoas")
+    
+    if (res1!=undefined) {deviceStorage.getItem("hoas")
     .then((res2)=> {
 
     getHoasRoles().then(
@@ -96,30 +97,35 @@ export default class Profile extends Component {
                 hoas:JSON.parse(res2),
                 currentHoaId:res1,
               });
-              console.log("loaded");
-              
+         
+             
             });
             });
             });
             });
           });
-  });
+  });}
   });
     
   }
 
  onChangeHoa = e => {
     const hoa = e.target.value;
-    this.setState({currentHoaId:hoa});
-    deviceStorage.setItem("hoaId", hoa);
-    refreshRoles();
-    this.loadHoa();
+   
+    deviceStorage.setItem("hoaId", hoa)
+    .then(()=>{
+      refreshRoles().then(()=>{ this.loadHoa();});
+      
+     
+    });
+  
+    
   };
 
   renderRow = ({ item }) => {
  
     const {isAppAdmin,isBuildingAdmin,isResident,isBoard}=this.state;
-    console.log("renderROW");
+   
     return (
       ( (isAppAdmin && item.forAppAdmin)
         || (isBuildingAdmin && item.forBuildingAdmin)
@@ -143,33 +149,21 @@ export default class Profile extends Component {
       username,
       usersurname,
     } = this.state;
-    console.log("render");
+  
     return (
       <View>
       <View style={styles.headerContainer}>
         <Avatar size='xlarge' rounded  imageProps={{resizeMode:'cover'}} source={avatar}  activeOpacity={0.7}/>
         <Text style={styles.userNameText}>{username + ' ' + usersurname}</Text>
         <TextField
-            
-            id="hoa"
-            name="hoa"
           select
-          SelectProps={{
-            MenuProps: {
-              anchorOrigin: {
-                vertical: "bottom",
-                horizontal: "left"
-              },
-              getContentAnchorEl: null
-            }
-          }}
           value = {this.state.currentHoaId}
           label="Aktualna Wspólnota"
-          style={{marginLeft:20, width:400, alignSelf:"center"}}
+          style={{marginLeft:20, width:350, alignSelf:"center"}}
           onChange={this.onChangeHoa}
         >
-          {this.state.hoas.map((hoa) => (
-            <MenuItem key={hoa.hoaId} value={hoa.hoaId}>
+         {this.state.hoas.map((hoa) => (
+            <MenuItem key={ hoa.hoaName} value={hoa.hoaId}>
               {hoa.hoaName}
             </MenuItem>
           ))}

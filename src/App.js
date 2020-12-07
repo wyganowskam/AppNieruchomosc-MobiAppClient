@@ -7,9 +7,11 @@ import MainScreen from './screens/MainScreen/MainScreen';
 import FailureScreen from './screens/FailureScreen/FailureScreen';
 import FailureDetailsScreen from './screens/FailureScreen/FailureDetailsScreen';
 import FailureAddScreen from './screens/FailureScreen/FailureAddScreen';
+import InvitationScreen from "./screens/InvitationScreen/InvitationScreen"
 import ResetPasswordScreen from './screens/ResetPasswordScreen/ResetPasswordScreen';
 import { setAuthHeader } from './api/ApiClient';
 import deviceStorage from './services/deviceStorage';
+import {logout} from './services/authService';
 import {Button, Icon} from 'react-native-elements'
 import {revokeToken} from './services/userService'
 
@@ -36,6 +38,7 @@ export default class App extends React.Component {
   logout() {
     revokeToken();
     this.deleteJWT();
+    
   }
 
  
@@ -76,6 +79,7 @@ export default class App extends React.Component {
           ) : (
           <>
           <Stack.Screen  name="Main" component={MainScreen} options={{ title: 'MENU', }}  />
+          <Stack.Screen  name="MyInvitations" component={InvitationScreen} options={{ title: 'ZAPROSZENIA', }}  />
           <Stack.Screen name="Failure" component={FailureScreen} options={{ title: 'AWARIE' }} />
           <Stack.Screen name="FailureDetails" component={FailureDetailsScreen} options={{ title: 'AWARIA' }}  />
           <Stack.Screen name="FailureAdd" component={FailureAddScreen} options={{ title: 'NOWA AWARIA' }}  />
