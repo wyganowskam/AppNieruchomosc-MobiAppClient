@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 
 export default class GroupItem extends Component {
     onPress = () => {
-        alert('Pressed');
+       // alert('Pressed');
     };
     render() {
         const { item } = this.props;

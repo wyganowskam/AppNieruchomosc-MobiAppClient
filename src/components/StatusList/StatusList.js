@@ -20,7 +20,7 @@ export default class StatusList extends Component {
     };
 
     render() {
-        let recent = users.results.slice(1, 25);
+        let recent = users;
         return (
             <View>
                 <FlatList
