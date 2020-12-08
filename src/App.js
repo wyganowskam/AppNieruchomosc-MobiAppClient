@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
 import MainScreen from './screens/MainScreen/MainScreen';
-import MessageScreen from './screens/MessageScreen/MessageScreen';
+import MainMessenger from './screens/MainMessenger/MainMessenger';
 import FailureScreen from './screens/FailureScreen/FailureScreen';
 import FailureDetailsScreen from './screens/FailureScreen/FailureDetailsScreen';
 import FailureAddScreen from './screens/FailureScreen/FailureAddScreen';
@@ -80,7 +80,7 @@ export default class App extends React.Component {
           ) : (
           <>
           <Stack.Screen  name="Main" component={MainScreen} options={{ title: 'MENU', }}  />
-          <Stack.Screen  name="Messages" component={MessageScreen} options={{ title: 'WIADOMOŚCI', }}  />
+          <Stack.Screen  name="Messages" component={MainMessenger} options={{ title: 'KOMUNIKATOR', }}  />
           <Stack.Screen  name="MyInvitations" component={InvitationScreen} options={{ title: 'ZAPROSZENIA', }}  />
           <Stack.Screen name="Failure" component={FailureScreen} options={{ title: 'AWARIE' }} />
           <Stack.Screen name="FailureDetails" component={FailureDetailsScreen} options={{ title: 'AWARIA' }}  />

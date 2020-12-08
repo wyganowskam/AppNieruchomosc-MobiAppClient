@@ -8,4 +8,9 @@ export default {
     orange: "#E4BFB1",
     black: "#000",
     white :'#FFF',
+    grey: 'grey',
+    accentColor: '#0084ff',
+    onlineGreen: '#2ecc71',
+    lightWhite: '#f9f9f9',
+    separator: '#bdc3c7',
 }
