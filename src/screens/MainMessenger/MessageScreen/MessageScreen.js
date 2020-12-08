@@ -28,7 +28,7 @@ export default class MessagesScreen extends Component {
             <ListItem.Content>
               <ListItem.Title>{item.username}</ListItem.Title>
               <ListItem.Subtitle>{"Data: " + item.date}</ListItem.Subtitle>
-              <ListItem.Subtitle>{"Wiadomość: " + item.lastMessage.substring(1,50) + '...'}</ListItem.Subtitle>
+              <ListItem.Subtitle>{"Wiadomość: " + item.lastMessage.substring(1,30) + '...'}</ListItem.Subtitle>
             </ListItem.Content>
             <ListItem.Chevron />
           </ListItem>

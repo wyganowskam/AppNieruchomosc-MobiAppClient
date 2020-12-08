@@ -15,7 +15,7 @@ export default class StatusItem extends Component {
             <View style={styles.itemView}>
                 <Avatar uri={picture.thumbnail} />
                 <View style={styles.nameView}>
-                    <View style={styles.onlineDot} />
+                   { /*<View style={styles.onlineDot} />*/}
                     <Text style={styles.nameText}>{formattedName}</Text>
                 </View>
             </View>
