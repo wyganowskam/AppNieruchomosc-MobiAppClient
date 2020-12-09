@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -53,6 +54,7 @@ export default class App extends React.Component {
             headerStyle: {
               backgroundColor: 'gray',
               borderBottomColor:'white',
+            
             },
             headerRight: () => (
               this.state.jwt && (<Button

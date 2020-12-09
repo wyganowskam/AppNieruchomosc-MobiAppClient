@@ -7,18 +7,26 @@ import StatusList from '../../../components/StatusList/StatusList';
 import {ChatsList} from "../fake_data";
 import StatusItem from "../../../components/StatusList/StatusItem";
 import styles from './styles';
-
+import { FAB } from 'react-native-paper';
+import { Searchbar } from 'react-native-paper';
 
 export default class MessagesScreen extends Component {
     constructor(props) {
         super(props);
         this.state= {
-         
+          
           message:'',
+          searchQuery:'',
         };
         this.renderRow=this.renderRow.bind(this);
+        this.onChangeSearch=this.onChangeSearch.bind(this);
+        this.onPressSearch=this.onPressSearch.bind(this);
        
     };
+
+    onChangeSearch = query => this.setState({searchQuery:query});
+    onPressSearch = query => {console.log(this.state.searchQuery);};
+
     renderRow = ({ item }) => {
    
         return (
@@ -41,6 +49,15 @@ export default class MessagesScreen extends Component {
             <View style={styles.container}>
                 <StatusList //lista użytkowników
                 /> 
+                <View>
+                  <Searchbar
+                    placeholder="Wyszukaj"
+                    onChangeText={this.onChangeSearch}
+                    value={this.state.searchQuery}
+                    onIconPress={this.onPressSearch}
+                  />
+                </View>
+                
                  <ScrollView>
                     <FlatList
                     data={ChatsList}
@@ -48,6 +65,13 @@ export default class MessagesScreen extends Component {
                     renderItem={this.renderRow}
                     />
                 </ScrollView> 
+                
+                <FAB
+                style={styles.fab}
+                small
+                icon="plus"
+                onPress={() => console.log('Pressed')}
+                />
             </View>
         );
     };

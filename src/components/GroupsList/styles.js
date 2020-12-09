@@ -47,8 +47,8 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     list: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
+        flexDirection: 'col',
+       // flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center'
     }

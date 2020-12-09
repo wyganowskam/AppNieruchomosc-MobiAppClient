@@ -4,8 +4,15 @@ import colors from "../../../config/colors";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.lightWhite
-    }
+        backgroundColor: colors.lightWhite,
+    },
+    fab: {
+        position: 'absolute',
+        margin: 15,
+        right: 0,
+        top: 0,
+        backgroundColor: colors.grey
+      },
 });
 
 export default styles;
