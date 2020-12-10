@@ -54,36 +54,36 @@ export default class MessagesScreen extends Component {
       );
     };
 
-    // renderRow = ({ item }) => {
-   
-    //     return (
-    //       <ListItem //onPress={() =>{this.props.navigation.navigate('ChatScreen',{item: item,})}}  
-    //       bottomDivider>
-    //         <StatusItem item={item} />
-    //         <ListItem.Content>
-    //           <ListItem.Title>{item.chatName}</ListItem.Title>
-    //           <ListItem.Subtitle>{"Data: " + item.modfifiedOn}</ListItem.Subtitle>
-    //           <ListItem.Subtitle>{"Wiadomość: " + item.lastMessage.substring(1,30) + '...'}</ListItem.Subtitle>
-    //         </ListItem.Content>
-    //         <ListItem.Chevron />
-    //       </ListItem>
-    //     );
-    //   };
     renderRow = ({ item }) => {
    
-      return (
-        <ListItem onPress={() =>{this.props.navigation.navigate('Chat',{item: item,})}}  
-        bottomDivider>
-          <StatusItem item={item} />
-          <ListItem.Content>
-            <ListItem.Title>{item.username}</ListItem.Title>
-            <ListItem.Subtitle>{"Data: " + item.date}</ListItem.Subtitle>
-            <ListItem.Subtitle>{"Wiadomość: " + item.lastMessage.substring(1,30) + '...'}</ListItem.Subtitle>
-          </ListItem.Content>
-          <ListItem.Chevron />
-        </ListItem>
-      );
-    };
+        return (
+          <ListItem //onPress={() =>{this.props.navigation.navigate('ChatScreen',{item: item,})}}  
+          bottomDivider>
+            <StatusItem item={item} />
+            <ListItem.Content>
+              <ListItem.Title>{item.chatName}</ListItem.Title>
+              <ListItem.Subtitle>{"Data: " + item.modfifiedOn}</ListItem.Subtitle>
+              <ListItem.Subtitle>{"Wiadomość: " + item.lastMessage.substring(1,30) + '...'}</ListItem.Subtitle>
+            </ListItem.Content>
+            <ListItem.Chevron />
+          </ListItem>
+        );
+      };
+    // renderRow = ({ item }) => {
+   
+    //   return (
+    //     <ListItem onPress={() =>{this.props.navigation.navigate('Chat',{item: item,})}}  
+    //     bottomDivider>
+    //       <StatusItem item={item} />
+    //       <ListItem.Content>
+    //         <ListItem.Title>{item.username}</ListItem.Title>
+    //         <ListItem.Subtitle>{"Data: " + item.date}</ListItem.Subtitle>
+    //         <ListItem.Subtitle>{"Wiadomość: " + item.lastMessage.substring(1,30) + '...'}</ListItem.Subtitle>
+    //       </ListItem.Content>
+    //       <ListItem.Chevron />
+    //     </ListItem>
+    //   );
+    // };
 
 
 
@@ -102,21 +102,21 @@ export default class MessagesScreen extends Component {
                   <Text style={{color:'red',alignSelf:"center"}}>{this.state.errorMessage}</Text>
                 </View>
                 
-                 {/* <ScrollView>
+                 <ScrollView>
                     <FlatList
                     data={this.state.chatsList}
                     keyExtractor={(a) => a.chatId}
                     renderItem={this.renderRow}
                     />
-                </ScrollView>  */}
+                </ScrollView> 
 
-                <ScrollView>
+                {/* <ScrollView>
                     <FlatList
                     data={ChatsList}
                     keyExtractor={(a) => a.Id}
                     renderItem={this.renderRow}
                     />
-                </ScrollView> 
+                </ScrollView>  */}
                 
                 <FAB
                 style={styles.fab}

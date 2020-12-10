@@ -49,6 +49,7 @@ export default class Profile extends Component {
     
     
     this.loadHoa();
+    
   }
 
   getInfo() {
@@ -98,7 +99,7 @@ export default class Profile extends Component {
                 currentHoaId:res1,
               });
               this.getInfo();
-              console.log(res1);
+              
             });
             });
             });

@@ -37,56 +37,34 @@ export default class App extends React.Component {
     this.deleteJWT = deviceStorage.deleteJWT.bind(this);
     this.loadJWT = deviceStorage.loadJWT.bind(this);
     this.logout=this.logout.bind(this);
-    this.loadHoa=this.loadHoa.bind(this);
-    this.loadJWT().then(()=>{
-      if(this.state.jwt!='') this.loadHoa(); 
-    });
+   
+    this.loadJWT();
+    console.log(this.state.jwt);
   }
   logout() {
-    revokeToken();
-    this.deleteJWT();
+    console.log("wylogowanie");
+    revokeToken().catch(() => {
+        deviceStorage.removeItem("id_token");
+        deviceStorage.removeItem("hoaId");
+        deviceStorage.removeItem("hoas");
+        deviceStorage.removeItem("isAppAdmin");
+        deviceStorage.removeItem("isBuildingAdmin");
+        deviceStorage.removeItem("isBoard");
+        deviceStorage.removeItem("isResident");
     
+       
+      });
+      deviceStorage.removeItem("id_token");
+      deviceStorage.removeItem("hoaId");
+      deviceStorage.removeItem("hoas");
+      deviceStorage.removeItem("isAppAdmin");
+      deviceStorage.removeItem("isBuildingAdmin");
+      deviceStorage.removeItem("isBoard");
+      deviceStorage.removeItem("isResident");
+      this.deleteJWT();
   }
 
-  loadHoa(){
-    deviceStorage.getItem("hoaId")
-    .then((res1)=>{
-    
-    if (res1!=undefined) {deviceStorage.getItem("hoas")
-    .then((res2)=> {
-
-    getHoasRoles().then(
-      () => {
-        
-          deviceStorage.getItem("isAppAdmin")
-            .then((val1)=>{ 
-              
-          deviceStorage.getItem("isBuildingAdmin")
-            .then((val2)=>{ 
-              
-          deviceStorage.getItem("isBoard")
-            .then((val3)=>{ 
-              
-          deviceStorage.getItem("isResident")
-            .then((val4)=>{
-            
-              this.setState({
-                isAppAdmin:val1==='true',
-                isBuildingAdmin:val2==='true',
-                isBoard:val3==='true',
-                isResident:val4==='true',
-                
-              });
-            });
-            });
-            });
-            });
-          });
-  });}
-  });
-    
-  }
-
+  
  
   render() {
     return (

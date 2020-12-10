@@ -1,11 +1,13 @@
 import deviceStorage from "./deviceStorage";
 
 export default function authHeader() {
-    deviceStorage.getItem('userToken')
+    deviceStorage.getItem('id_token')
         .then((userTokenVal)=>{
     deviceStorage.getItem('hoaId')
         .then((hoaIdVal)=>{
-            const userToken = JSON.parse(userTokenVal);
+            // console.log("usertokenval:");
+            // console.log(userTokenVal);
+            const userToken = userTokenVal;
             const currentHoa = hoaIdVal;
             if (userToken) {
                 return { Authorization: 'Bearer ' + userToken, hoaId: currentHoa};

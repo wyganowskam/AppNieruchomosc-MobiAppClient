@@ -16,26 +16,6 @@ export const login =(userId,password) => {
     
 };
 
-export const logout =() => {
-    revokeToken().catch(() => {
-        deviceStorage.removeItem("userToken");
-        deviceStorage.removeItem("hoaId");
-        deviceStorage.removeItem("hoas");
-        deviceStorage.removeItem("isAppAdmin");
-        deviceStorage.removeItem("isBuildingAdmin");
-        deviceStorage.removeItem("isBoard");
-        deviceStorage.removeItem("isResident");
-    
-       
-      });
-      deviceStorage.removeItem("userToken");
-      deviceStorage.removeItem("hoaId");
-      deviceStorage.removeItem("hoas");
-      deviceStorage.removeItem("isAppAdmin");
-      deviceStorage.removeItem("isBuildingAdmin");
-      deviceStorage.removeItem("isBoard");
-      deviceStorage.removeItem("isResident");
-};
 
 export const register = registerRequest => {
     return apiClient.post('authentication/register/',registerRequest)

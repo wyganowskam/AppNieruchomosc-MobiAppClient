@@ -1,12 +1,16 @@
 import axios from 'axios';
-import deviceStorage from "../services/deviceStorage"
-
+import deviceStorage from "../services/deviceStorage";
+import authHeader from "../services/authHeader";
 const baseURL='https://localhost:5001/api/';
 
 const apiClient = axios.create({
     baseURL: baseURL
 });
 
+apiClient.interceptors.request.use((config) => {
+  config.headers = authHeader();
+  return config;
+  });
 apiClient.defaults.withCredentials = true;
 
     apiClient.interceptors.response.use( (response) => {
@@ -37,11 +41,11 @@ apiClient.defaults.withCredentials = true;
         return apiClient.post("authentication/refreshtoken/")
           .then((res) => {
             if (res.data.token) {
-                deviceStorage.saveJWT( JSON.stringify(res.data.token));
+                deviceStorage.saveJWT( res.data.token);
               }
             // New request with new token
             const config = error.config;
-            config.headers   = {Authorization: 'Bearer ' + res.data.token };
+            config.headers   = authHeader();
     
             return new Promise((resolve, reject) => {
               axios.request(config).then(response => {

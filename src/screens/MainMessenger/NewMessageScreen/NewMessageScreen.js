@@ -28,36 +28,37 @@ export default class NewMessageScreen extends Component {
     onPressSearch = () => {
         
         //console.log(this.state.searchQuery);
-        // getUserByEmail(this.state.searchQuery).then(
-        //     res => {
-        //       if(res.status === 200){
-        //         //użytkownik jest w bazie, czyli można wysłać zaproszenie
-        //         console.log(res.data);
-        //         const newUser= {
-        //             name:this.state.searchQuery,
-        //             userId:res.data,
-        //         }
-        //         const oldList=this.state.usersList;
-        //         this.setState({usersList:[...oldList,newUser]});
-        //       }
-        //       else{
+        getUserByEmail(this.state.searchQuery).then(
+            res => {
+            if(res!=undefined){
+              if(res.status === 200){
+                //użytkownik jest w bazie, czyli można wysłać zaproszenie
+                console.log("dane użytkownika:"+res.data);
+                const newUser= {
+                    name:this.state.searchQuery,
+                    userId:res.data,
+                }
+                const oldList=this.state.usersList;
+                this.setState({usersList:[...oldList,newUser],searchQuery:''});
+              }
+              else{
                 
-        //         setMessage("Błąd serwera.");
-        //       }
-        //     },
-        //     (error) => {
+                setMessage("Błąd serwera.");
+              }}
+            },
+            (error) => {
              
-        //     }
-        //   );
-          const newUser= {
-            name:this.state.searchQuery,
-            userId:this.state.usersList.length+1,
-        }
-          const oldList=this.state.usersList;
-          this.setState({usersList:[...oldList,newUser]});
+            }
+          );
+        //   const newUser= {
+        //     name:this.state.searchQuery,
+        //     userId:this.state.usersList.length+1,
+        // }
+        //   const oldList=this.state.usersList;
+        //   this.setState({usersList:[...oldList,newUser]});
     
           //wyczyszczenie zapytania
-          this.setState({searchQuery:''})
+         
     };
 
 
@@ -114,30 +115,30 @@ export default class NewMessageScreen extends Component {
          
           if(isValid === true){
             //tworze nowy czat
-            const recivers= this.state.usersList.map(x=>x.name);
+            const recivers= this.state.usersList.map(x=>x.userId);
           
-            // sendMessage({
-            //     chatName: "Chat test",
-            //     receiverIds: recivers,
-            // }).then(
-            //     (res)=>{
-            //         if(res.status === 200){
-            //             //udało się zdobyć informacje o użytkowniku
-            //           console.log("tak!");
+            sendMessage({
+                chatName: "Chat test",
+                receiverIds: recivers,
+            }).then(
+                (res)=>{
+                    if(res.status === 200){
+                      
+                      console.log("tak!");
                      
-            //           }
-            //     },
-            // (error) => {
+                      }
+                },
+            (error) => {
              
-            //   const resMessage =
-            //   (error.response &&
-            //     error.response.data &&
-            //     error.response.data.message) ||
-            //   error.message ||
-            //   error.toString();
-            //   console.log(resMessage);
+              const resMessage =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
+              console.log(resMessage);
             
-            // });
+            });
 
 
 
