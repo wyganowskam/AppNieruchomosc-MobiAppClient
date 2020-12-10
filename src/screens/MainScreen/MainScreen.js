@@ -68,14 +68,8 @@ export default class Profile extends Component {
   }
 
   loadHoa(){
-    deviceStorage.getItem("hoaId")
-    .then((res1)=>{
-    
-    if (res1!=undefined) {deviceStorage.getItem("hoas")
-    .then((res2)=> {
-
     getHoasRoles().then(
-      () => {
+      (res2) => {
         
           deviceStorage.getItem("isAppAdmin")
             .then((val1)=>{ 
@@ -94,19 +88,15 @@ export default class Profile extends Component {
                 isBuildingAdmin:val2==='true',
                 isBoard:val3==='true',
                 isResident:val4==='true',
-                hoas:JSON.parse(res2),
-                currentHoaId:res1,
+                hoas:res2,
+                currentHoaId:deviceStorage.getItem("hoaId"),
               });
               this.getInfo();
-              console.log(res1);
-            });
             });
             });
             });
           });
-  });}
-  });
-    
+});
   }
 
  onChangeHoa = e => {

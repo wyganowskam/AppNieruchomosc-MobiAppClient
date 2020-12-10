@@ -7,6 +7,14 @@ const apiClient = axios.create({
     baseURL: baseURL
 });
 
+deviceStorage.getJWT().then((jwt) => {
+  apiClient.defaults.headers.common.Authorization=`Bearer ${jwt.slice(1, -1)}`;
+  deviceStorage.getItem('hoaId').then((hoaId) => {
+    
+    apiClient.defaults.headers.common.hoaId=hoaId; 
+  });
+});
+
 apiClient.defaults.withCredentials = true;
 
     apiClient.interceptors.response.use( (response) => {

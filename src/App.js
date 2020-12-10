@@ -49,11 +49,6 @@ export default class App extends React.Component {
   }
 
   loadHoa(){
-    deviceStorage.getItem("hoaId")
-    .then((res1)=>{
-    
-    if (res1!=undefined) {deviceStorage.getItem("hoas")
-    .then((res2)=> {
 
     getHoasRoles().then(
       () => {
@@ -82,8 +77,7 @@ export default class App extends React.Component {
             });
             });
           });
-  });}
-  });
+
     
   }
 
