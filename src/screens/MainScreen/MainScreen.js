@@ -31,6 +31,7 @@ export default class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      noHoaUser:false,
       username:'',
       usersurname:'',
       currentHoaId:'',
@@ -46,9 +47,7 @@ export default class Profile extends Component {
     this.loadHoa=this.loadHoa.bind(this);
     this.renderRow=this.renderRow.bind(this);
     this.onChangeHoa=this.onChangeHoa.bind(this);
-    
-    
-    this.loadHoa();
+    console.log(this.state);
     
   }
 
@@ -61,54 +60,63 @@ export default class Profile extends Component {
         if(res.status === 200){
         //udało się zdobyć informacje o użytkowniku
          this.setState({usersurname:res.data.surname, username:res.data.name});
-         
+       
           
         }
       }
     );
   }
+  
+  componentDidMount() {
+    this.loadHoa();
+  }
 
   loadHoa(){
-    deviceStorage.getItem("hoaId")
-    .then((res1)=>{
-    
-    if (res1!=undefined) {deviceStorage.getItem("hoas")
-    .then((res2)=> {
-
+   
     getHoasRoles().then(
       () => {
         
-          deviceStorage.getItem("isAppAdmin")
-            .then((val1)=>{ 
-              
-          deviceStorage.getItem("isBuildingAdmin")
-            .then((val2)=>{ 
-              
-          deviceStorage.getItem("isBoard")
-            .then((val3)=>{ 
-              
-          deviceStorage.getItem("isResident")
-            .then((val4)=>{
-             
-              this.setState({
-                isAppAdmin:val1==='true',
-                isBuildingAdmin:val2==='true',
-                isBoard:val3==='true',
-                isResident:val4==='true',
-                hoas:JSON.parse(res2),
-                currentHoaId:res1,
-              });
-              this.getInfo();
-              
-            });
-            });
-            });
-            });
+      deviceStorage.getItem("hoaId")
+      .then((res1)=>{
+      
+      if (res1!=undefined) {deviceStorage.getItem("hoas")
+      .then((res2)=> {
+  
+        deviceStorage.getItem("isAppAdmin")
+        .then((val1)=>{ 
+          
+      deviceStorage.getItem("isBuildingAdmin")
+        .then((val2)=>{ 
+          
+      deviceStorage.getItem("isBoard")
+        .then((val3)=>{ 
+          
+      deviceStorage.getItem("isResident")
+        .then((val4)=>{
+         
+          this.getInfo();
+          this.setState({
+            isAppAdmin:val1==='true',
+            isBuildingAdmin:val2==='true',
+            isBoard:val3==='true',
+            isResident:val4==='true',
+            hoas:JSON.parse(res2),
+            currentHoaId:res1,
           });
-  });}
+         
+        });
+        });
+        });
+        });
+  
+    });}
+    });
+  
   });
     
   }
+
+  
 
  onChangeHoa = e => {
     const hoa = e.target.value;
@@ -126,12 +134,13 @@ export default class Profile extends Component {
   renderRow = ({ item }) => {
  
     const {isAppAdmin,isBuildingAdmin,isResident,isBoard}=this.state;
-   
+    
     return (
       ( (isAppAdmin && item.forAppAdmin)
         || (isBuildingAdmin && item.forBuildingAdmin)
         || (isBoard && item.forBoard)
         || (isResident && item.forResident)
+        || item.forAll
         ) && <> 
       <ListItem  onPress={() => 
         this.props.navigation.navigate(item.page)} bottomDivider>
@@ -150,7 +159,10 @@ export default class Profile extends Component {
       username,
       usersurname,
     } = this.state;
-  
+   
+   if(this.state.currentHoaId===''&& this.state.noHoaUser===false) {this.loadHoa();
+    this.setState({noHoaUser:true})
+   }
     return (
       <View>
       <View style={styles.headerContainer}>

@@ -9,6 +9,7 @@ export const menu = [
     forBuildingAdmin: true,
     forBoard: true,
     forResident: true,
+    forAll:true,
   },
   {
     title: 'TABLICA OGŁOSZEŃ',
@@ -18,6 +19,7 @@ export const menu = [
     forBuildingAdmin: true,
     forBoard: true,
     forResident: true,
+    forAll:false,
   },
   {
     title: 'GŁOSOWANIA',
@@ -27,7 +29,7 @@ export const menu = [
     forBuildingAdmin: true,
     forBoard: true,
     forResident: true,
-    
+    forAll:false,
   },
   {
     title: 'ANKIETY',
@@ -37,6 +39,7 @@ export const menu = [
     forBuildingAdmin: true,
     forBoard: true,
     forResident: true,
+    forAll:false,
   },
   {
     title: 'DOKUMENTY',
@@ -46,6 +49,7 @@ export const menu = [
     forBuildingAdmin: true,
     forBoard: true,
     forResident: true,
+    forAll:false,
   },
   {
     title: 'AWARIE',
@@ -55,6 +59,7 @@ export const menu = [
     forBuildingAdmin: false,
     forBoard: false,
     forResident: true,
+    forAll:false,
   },
   {
     title: 'ZAPROSZENIA',
@@ -64,6 +69,7 @@ export const menu = [
     forBuildingAdmin: true,
     forBoard: true,
     forResident: true,
+    forAll:true,
   },
   {
     title: 'USTAWIENIA',
@@ -73,6 +79,7 @@ export const menu = [
     forBuildingAdmin: true,
     forBoard: true,
     forResident: true,
+    forAll:true,
   },
 ];
 

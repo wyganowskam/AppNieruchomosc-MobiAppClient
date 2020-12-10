@@ -57,7 +57,7 @@ export default class MessagesScreen extends Component {
     renderRow = ({ item }) => {
    
         return (
-          <ListItem //onPress={() =>{this.props.navigation.navigate('ChatScreen',{item: item,})}}  
+          <ListItem onPress={() =>{this.props.navigation.navigate('Chat',{item: item,})}}  
           bottomDivider>
             {/* <StatusItem item={item} /> */}
             <ListItem.Content>

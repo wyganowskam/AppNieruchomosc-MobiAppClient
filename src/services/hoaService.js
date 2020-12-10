@@ -16,7 +16,7 @@ export const getHoasRoles = () => {
               deviceStorage.setItem("hoaId", response.data[0].hoaId);
                     }
             refreshRoles();
-
+           
 
           });
         
@@ -42,7 +42,7 @@ export const refreshRoles = async () => {
                    deviceStorage.setItem("isBoard" , roles.includes("BoardMember"));
                    deviceStorage.setItem("isResident", roles.includes("HomeOwner"));
                 }
-        
+               
                 };
               });
           });
