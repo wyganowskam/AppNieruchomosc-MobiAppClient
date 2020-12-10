@@ -5,7 +5,7 @@ import { TextInput,IconButton } from 'react-native-paper';
 import { Searchbar } from 'react-native-paper';
 import { Chip } from 'react-native-paper';
 import {getAllUsers,getUserByEmail} from "../../../services/userService";
-import {sendMessage} from "../../../services/messengerService"
+import {sendMessage,createNewChat} from "../../../services/messengerService"
 export default class NewMessageScreen extends Component {
     constructor(props) {
         super(props);
@@ -117,7 +117,7 @@ export default class NewMessageScreen extends Component {
             //tworze nowy czat
             const recivers= this.state.usersList.map(x=>x.userId);
           
-            sendMessage({
+            createNewChat({
                 chatName: "Chat test",
                 receiverIds: recivers,
             }).then(

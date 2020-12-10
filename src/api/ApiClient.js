@@ -10,7 +10,6 @@ const apiClient = axios.create({
 deviceStorage.getJWT().then((jwt) => {
   apiClient.defaults.headers.common.Authorization=`Bearer ${jwt}`;
   deviceStorage.getItem('hoaId').then((hoaId) => {
-    
     apiClient.defaults.headers.common.hoaId=hoaId; 
   });
 });
@@ -48,7 +47,7 @@ apiClient.defaults.withCredentials = true;
               }
             // New request with new token
             const config = error.config;
-            config.headers   = authHeader();
+            config.headers = {Authorization: 'Bearer ' + res.data.token };
     
             return new Promise((resolve, reject) => {
               axios.request(config).then(response => {

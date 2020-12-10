@@ -59,11 +59,11 @@ export default class MessagesScreen extends Component {
         return (
           <ListItem //onPress={() =>{this.props.navigation.navigate('ChatScreen',{item: item,})}}  
           bottomDivider>
-            <StatusItem item={item} />
+            {/* <StatusItem item={item} /> */}
             <ListItem.Content>
               <ListItem.Title>{item.chatName}</ListItem.Title>
               <ListItem.Subtitle>{"Data: " + item.modfifiedOn}</ListItem.Subtitle>
-              <ListItem.Subtitle>{"Wiadomość: " + item.lastMessage.substring(1,30) + '...'}</ListItem.Subtitle>
+              {item.lastMessage && <ListItem.Subtitle>{"Wiadomość: " + item.lastMessage.substring(1,30) + '...'}</ListItem.Subtitle>}
             </ListItem.Content>
             <ListItem.Chevron />
           </ListItem>
