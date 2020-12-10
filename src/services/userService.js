@@ -8,3 +8,10 @@ export const getUserInfo = () => {
     return apiClient.get('users/');
   };
   
+  export const getAllUsers = () => {
+    return apiClient.get('users/all');
+  };
+
+  export const getUserByEmail = (email) => {
+    return apiClient.get("users/"+ email );
+  };

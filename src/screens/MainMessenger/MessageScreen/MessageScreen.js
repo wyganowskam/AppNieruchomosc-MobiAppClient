@@ -9,39 +9,82 @@ import StatusItem from "../../../components/StatusList/StatusItem";
 import styles from './styles';
 import { FAB } from 'react-native-paper';
 import { Searchbar } from 'react-native-paper';
+import {getAllChats} from "../../../services/messengerService"
+import {getAllUsers,getUserByEmail} from "../../../services/userService"
 
 export default class MessagesScreen extends Component {
     constructor(props) {
         super(props);
         this.state= {
-          
+          chatsList:[],
           message:'',
+          errorMessage:'',
           searchQuery:'',
         };
         this.renderRow=this.renderRow.bind(this);
         this.onChangeSearch=this.onChangeSearch.bind(this);
         this.onPressSearch=this.onPressSearch.bind(this);
+        this.getChatsList=this.getChatsList.bind(this);
+        
        
     };
 
     onChangeSearch = query => this.setState({searchQuery:query});
-    onPressSearch = query => {console.log(this.state.searchQuery);};
+    onPressSearch= ()=> {
+      console.log(this.state.searchQuery);
 
+      
+    };
+
+    componentDidMount() {
+      this.getChatsList();
+    }
+
+    getChatsList = ()=> {
+   
+      getAllChats().then(
+        (res) => {
+          console.log(res);
+          if(res.status === 200){
+            //udało się zdobyć informacje
+           this.setState({chatsList :res.data});
+         
+          }
+        }
+      );
+    };
+
+    // renderRow = ({ item }) => {
+   
+    //     return (
+    //       <ListItem //onPress={() =>{this.props.navigation.navigate('ChatScreen',{item: item,})}}  
+    //       bottomDivider>
+    //         <StatusItem item={item} />
+    //         <ListItem.Content>
+    //           <ListItem.Title>{item.chatName}</ListItem.Title>
+    //           <ListItem.Subtitle>{"Data: " + item.modfifiedOn}</ListItem.Subtitle>
+    //           <ListItem.Subtitle>{"Wiadomość: " + item.lastMessage.substring(1,30) + '...'}</ListItem.Subtitle>
+    //         </ListItem.Content>
+    //         <ListItem.Chevron />
+    //       </ListItem>
+    //     );
+    //   };
     renderRow = ({ item }) => {
    
-        return (
-          <ListItem //onPress={() =>{this.props.navigation.navigate('ChatScreen',{item: item,})}}  
-          bottomDivider>
-            <StatusItem item={item} />
-            <ListItem.Content>
-              <ListItem.Title>{item.username}</ListItem.Title>
-              <ListItem.Subtitle>{"Data: " + item.date}</ListItem.Subtitle>
-              <ListItem.Subtitle>{"Wiadomość: " + item.lastMessage.substring(1,30) + '...'}</ListItem.Subtitle>
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </ListItem>
-        );
-      };
+      return (
+        <ListItem onPress={() =>{this.props.navigation.navigate('Chat',{item: item,})}}  
+        bottomDivider>
+          <StatusItem item={item} />
+          <ListItem.Content>
+            <ListItem.Title>{item.username}</ListItem.Title>
+            <ListItem.Subtitle>{"Data: " + item.date}</ListItem.Subtitle>
+            <ListItem.Subtitle>{"Wiadomość: " + item.lastMessage.substring(1,30) + '...'}</ListItem.Subtitle>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+      );
+    };
+
 
 
     render() {
@@ -56,12 +99,21 @@ export default class MessagesScreen extends Component {
                     value={this.state.searchQuery}
                     onIconPress={this.onPressSearch}
                   />
+                  <Text style={{color:'red',alignSelf:"center"}}>{this.state.errorMessage}</Text>
                 </View>
                 
-                 <ScrollView>
+                 {/* <ScrollView>
+                    <FlatList
+                    data={this.state.chatsList}
+                    keyExtractor={(a) => a.chatId}
+                    renderItem={this.renderRow}
+                    />
+                </ScrollView>  */}
+
+                <ScrollView>
                     <FlatList
                     data={ChatsList}
-                    keyExtractor={(a) => a.id}
+                    keyExtractor={(a) => a.Id}
                     renderItem={this.renderRow}
                     />
                 </ScrollView> 
@@ -70,7 +122,7 @@ export default class MessagesScreen extends Component {
                 style={styles.fab}
                 small
                 icon="plus"
-                onPress={() => console.log('Pressed')}
+                onPress={() =>{this.props.navigation.navigate('NewMessage')}}  
                 />
             </View>
         );

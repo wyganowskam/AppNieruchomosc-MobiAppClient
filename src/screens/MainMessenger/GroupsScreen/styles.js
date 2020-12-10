@@ -6,7 +6,14 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         backgroundColor: colors.lightWhite
-    }
+    },
+    fab: {
+        position: 'absolute',
+        margin: 15,
+        right: 0,
+        top: 0,
+        backgroundColor: colors.grey
+      },
 });
 
 export default styles;

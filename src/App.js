@@ -5,8 +5,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
 import MainScreen from './screens/MainScreen/MainScreen';
+import ChatScreen from "./screens/MainMessenger/ChatScreen/ChatScreen";
 import MainMessenger from './screens/MainMessenger/MainMessenger';
 import FailureScreen from './screens/FailureScreen/FailureScreen';
+import NewMessageScreen from "./screens/MainMessenger/NewMessageScreen/NewMessageScreen"
 import FailureDetailsScreen from './screens/FailureScreen/FailureDetailsScreen';
 import FailureAddScreen from './screens/FailureScreen/FailureAddScreen';
 import InvitationScreen from "./screens/InvitationScreen/InvitationScreen"
@@ -16,7 +18,7 @@ import deviceStorage from './services/deviceStorage';
 import {logout} from './services/authService';
 import {Button, Icon} from 'react-native-elements'
 import {revokeToken} from './services/userService'
-
+import {getHoasRoles} from './services/hoaService';
 const Stack = createStackNavigator();
 
 export default class App extends React.Component {
@@ -35,11 +37,53 @@ export default class App extends React.Component {
     this.deleteJWT = deviceStorage.deleteJWT.bind(this);
     this.loadJWT = deviceStorage.loadJWT.bind(this);
     this.logout=this.logout.bind(this);
-    this.loadJWT();
+    this.loadHoa=this.loadHoa.bind(this);
+    this.loadJWT().then(()=>{
+      if(this.state.jwt!='') this.loadHoa(); 
+    });
   }
   logout() {
     revokeToken();
     this.deleteJWT();
+    
+  }
+
+  loadHoa(){
+    deviceStorage.getItem("hoaId")
+    .then((res1)=>{
+    
+    if (res1!=undefined) {deviceStorage.getItem("hoas")
+    .then((res2)=> {
+
+    getHoasRoles().then(
+      () => {
+        
+          deviceStorage.getItem("isAppAdmin")
+            .then((val1)=>{ 
+              
+          deviceStorage.getItem("isBuildingAdmin")
+            .then((val2)=>{ 
+              
+          deviceStorage.getItem("isBoard")
+            .then((val3)=>{ 
+              
+          deviceStorage.getItem("isResident")
+            .then((val4)=>{
+            
+              this.setState({
+                isAppAdmin:val1==='true',
+                isBuildingAdmin:val2==='true',
+                isBoard:val3==='true',
+                isResident:val4==='true',
+                
+              });
+            });
+            });
+            });
+            });
+          });
+  });}
+  });
     
   }
 
@@ -87,6 +131,8 @@ export default class App extends React.Component {
           <Stack.Screen name="Failure" component={FailureScreen} options={{ title: 'AWARIE' }} />
           <Stack.Screen name="FailureDetails" component={FailureDetailsScreen} options={{ title: 'AWARIA' }}  />
           <Stack.Screen name="FailureAdd" component={FailureAddScreen} options={{ title: 'NOWA AWARIA' }}  />
+          <Stack.Screen  name="Chat" component={ChatScreen} options={{ title: 'Czat', }}  />
+          <Stack.Screen  name="NewMessage" component={NewMessageScreen} options={{ title: 'NOWA WIADOMOŚĆ', }}  />
           </>)}
         </Stack.Navigator>
       </NavigationContainer>

@@ -47,7 +47,7 @@ export default class Profile extends Component {
     this.renderRow=this.renderRow.bind(this);
     this.onChangeHoa=this.onChangeHoa.bind(this);
     
-    this.getInfo();
+    
     this.loadHoa();
   }
 
@@ -97,8 +97,8 @@ export default class Profile extends Component {
                 hoas:JSON.parse(res2),
                 currentHoaId:res1,
               });
-         
-             
+              this.getInfo();
+              console.log(res1);
             });
             });
             });
