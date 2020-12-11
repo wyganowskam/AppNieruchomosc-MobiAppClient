@@ -5,7 +5,7 @@ import { TextInput,IconButton } from 'react-native-paper';
 import { Searchbar } from 'react-native-paper';
 import { Chip } from 'react-native-paper';
 import {getAllUsers,getUserByEmail} from "../../../services/userService";
-import {sendMessage,createNewChat} from "../../../services/messengerService"
+import {sendMessage,createNewChat,getAllChats} from "../../../services/messengerService"
 export default class NewMessageScreen extends Component {
     constructor(props) {
         super(props);
@@ -14,7 +14,7 @@ export default class NewMessageScreen extends Component {
             searchQuery:'',
             errorMessage:'',
             groupName:'',
-            usersList: []
+            usersList: [], 
         };
         this.onChangeSearch=this.onChangeSearch.bind(this);
         this.onPressSearch=this.onPressSearch.bind(this);
@@ -33,7 +33,7 @@ export default class NewMessageScreen extends Component {
             if(res!=undefined){
               if(res.status === 200){
                 //użytkownik jest w bazie, czyli można wysłać zaproszenie
-                console.log("dane użytkownika:"+res.data);
+               // console.log("dane użytkownika:"+res.data);
                 const newUser= {
                     name:this.state.searchQuery,
                     userId:res.data,
@@ -73,8 +73,8 @@ export default class NewMessageScreen extends Component {
             this.setState({errorMessage:"Nie można wysłać pustej wiadomości"});
             return false;
         }
-        else if (this.state.usersList.length>1 && this.state.groupName==''){
-            this.setState({errorMessage:"Grupa musi mieć nazwę"});
+        else if (this.state.groupName==''){
+            this.setState({errorMessage:"Wątek musi mieć nazwę"});
             return false;
         }
         else return true;
@@ -101,8 +101,6 @@ export default class NewMessageScreen extends Component {
                  const oldList=this.state.usersList;
                  const newList=oldList.filter(el=>el.name!=item.name);
                  this.setState({usersList:newList});
-            
-            
             }}
              onPress={() => {console.log('Pressed')}}>
                  {item.name}</Chip>
@@ -118,13 +116,43 @@ export default class NewMessageScreen extends Component {
             const recivers= this.state.usersList.map(x=>x.userId);
           
             createNewChat({
-                chatName: "Chat test",
+                chatName: this.state.groupName,
                 receiverIds: recivers,
             }).then(
                 (res)=>{
                     if(res.status === 200){
-                      
-                      console.log("tak!");
+                      //udało się utworzyć konwersację
+                     
+                      getAllChats().then(
+                        (res) => {
+                          
+                          if(res.status === 200){
+                            //udało się zdobyć informacje
+                            const thisChat=res.data.find(e=>e.chatName===this.state.groupName)
+                           if (thisChat.length>1) thisChat=thisChat[0];
+                           //wysyłamy wiadomość
+                           sendMessage({
+                               chatId: thisChat.chatId,
+                               message:this.state.text
+                           }).then((res2)=>{
+                                if (res2.status===200){
+                                    console.log("papa");
+                                    this.props.navigation.reset({
+                                        index: 1,
+                                        routes: [{ name: 'Main' }, {name:'Messages'}],
+                                      });
+                                  
+
+                                }
+                                else {
+                                    this.setState({errorMessage: res.message})
+                                }
+                           })
+                         
+                          }
+                        }
+                      );
+
                      
                       }
                 },
@@ -152,10 +180,11 @@ export default class NewMessageScreen extends Component {
             <View style={{ flex: 1 }}
             >
                  
-                { this.state.usersList.length>1 && <TextInput
-                    label="Nazwa grupy"
+               <TextInput
+                    label="Nazwa wątku"
                     value={this.state.groupName}
-                    onChangeText={(name) => this.setState({ groupName:name})}/> }
+                    style={styles.group}
+                    onChangeText={(name) => this.setState({ groupName:name})}/> 
                  <Searchbar
                     placeholder="Wyślij do:"
                     onChangeText={this.onChangeSearch}

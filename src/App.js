@@ -7,6 +7,7 @@ import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
 import MainScreen from './screens/MainScreen/MainScreen';
 import ChatScreen from "./screens/MainMessenger/ChatScreen/ChatScreen";
 import MainMessenger from './screens/MainMessenger/MainMessenger';
+import MessageScreen from "./screens/MainMessenger/MessageScreen/MessageScreen"
 import FailureScreen from './screens/FailureScreen/FailureScreen';
 import NewMessageScreen from "./screens/MainMessenger/NewMessageScreen/NewMessageScreen"
 import FailureDetailsScreen from './screens/FailureScreen/FailureDetailsScreen';
@@ -103,9 +104,9 @@ export default class App extends React.Component {
           </>
           ) : (
           <>
-          <Stack.Screen  name="Main" component={MainScreen} options={{ title: 'MENU', }}  />
-          <Stack.Screen  name="Messages" component={MainMessenger} options={{ title: 'KOMUNIKATOR', }}  />
-          <Stack.Screen  name="MyInvitations" component={InvitationScreen} options={{ title: 'ZAPROSZENIA', }}  />
+          <Stack.Screen name="Main" component={MainScreen} options={{ title: 'MENU', }}  />
+          <Stack.Screen name="Messages" component={MessageScreen} options={{ title: 'KOMUNIKATOR', }}  />
+          <Stack.Screen name="MyInvitations" component={InvitationScreen} options={{ title: 'ZAPROSZENIA', }}  />
           <Stack.Screen name="Failure" component={FailureScreen} options={{ title: 'AWARIE' }} />
           <Stack.Screen name="FailureDetails" component={FailureDetailsScreen} options={{ title: 'AWARIA' }}  />
           <Stack.Screen name="FailureAdd" component={FailureAddScreen} options={{ title: 'NOWA AWARIA' }}  />

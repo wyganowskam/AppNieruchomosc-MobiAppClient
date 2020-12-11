@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, FlatList, ScrollView  } from 'react-native';
 import { Button } from 'react-native-paper';
 import PropTypes from 'prop-types';
-import { ListItem,Text } from 'react-native-elements';
+import { ListItem,Text,Icon } from 'react-native-elements';
 import StatusList from '../../../components/StatusList/StatusList';
 import {ChatsList} from "../fake_data";
 import StatusItem from "../../../components/StatusList/StatusItem";
@@ -35,13 +35,14 @@ export default class MessagesScreen extends Component {
 
       
     };
-
     componentDidMount() {
       this.getChatsList();
+    
     }
-
-    getChatsList = ()=> {
+    
    
+    getChatsList = ()=> {
+     
       getAllChats().then(
         (res) => {
           console.log(res);
@@ -57,9 +58,11 @@ export default class MessagesScreen extends Component {
     renderRow = ({ item }) => {
    
         return (
-          <ListItem onPress={() =>{this.props.navigation.navigate('Chat',{item: item,})}}  
-          bottomDivider>
+          <ListItem  onPress={() =>{this.props.navigation.navigate('Chat',{item: item,})}}  
+          bottomDivider
+          style={{margin:4}}>
             {/* <StatusItem item={item} /> */}
+            <Icon name='wechat' type='antdesign' color='lightblue'/>
             <ListItem.Content>
               <ListItem.Title>{item.chatName}</ListItem.Title>
               <ListItem.Subtitle>{"Data: " + item.modfifiedOn}</ListItem.Subtitle>
@@ -84,20 +87,23 @@ export default class MessagesScreen extends Component {
     //     </ListItem>
     //   );
     // };
+    
 
 
 
     render() {
+     
         return (
             <View style={styles.container}>
-                <StatusList //lista użytkowników
-                /> 
+                {/* <StatusList //lista użytkowników
+                />  */}
                 <View>
                   <Searchbar
                     placeholder="Wyszukaj"
                     onChangeText={this.onChangeSearch}
                     value={this.state.searchQuery}
                     onIconPress={this.onPressSearch}
+                    style={styles.search}
                   />
                   <Text style={{color:'red',alignSelf:"center"}}>{this.state.errorMessage}</Text>
                 </View>

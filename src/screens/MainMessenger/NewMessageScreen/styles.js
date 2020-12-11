@@ -50,6 +50,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: colors.white,
         margin: 8
+    },
+    group:{
+        width:SCREEN_WIDTH-50,
+        margin:5,
     }
 });
 export default styles;
