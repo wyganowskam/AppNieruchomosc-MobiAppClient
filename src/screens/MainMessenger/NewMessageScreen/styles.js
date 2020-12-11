@@ -52,8 +52,8 @@ const styles = StyleSheet.create({
         margin: 8
     },
     group:{
-        width:SCREEN_WIDTH-50,
-        margin:5,
+        
+        margin:15,
     }
 });
 export default styles;

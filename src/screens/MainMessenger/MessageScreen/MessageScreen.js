@@ -17,6 +17,7 @@ export default class MessagesScreen extends Component {
         super(props);
         this.state= {
           chatsList:[],
+          allChatsList:[],
           message:'',
           errorMessage:'',
           searchQuery:'',
@@ -25,6 +26,7 @@ export default class MessagesScreen extends Component {
         this.onChangeSearch=this.onChangeSearch.bind(this);
         this.onPressSearch=this.onPressSearch.bind(this);
         this.getChatsList=this.getChatsList.bind(this);
+        this.searchFilterFunction=this.searchFilterFunction.bind(this);
         
        
     };
@@ -32,25 +34,38 @@ export default class MessagesScreen extends Component {
     onChangeSearch = query => this.setState({searchQuery:query});
     onPressSearch= ()=> {
       console.log(this.state.searchQuery);
-
-      
+      this.searchFilterFunction(this.state.searchQuery);
     };
     componentDidMount() {
       this.getChatsList();
     
     }
-    
+    searchFilterFunction = text => {    
+      const newData = this.state.allChatsList.filter(item => {      
+        const itemData = `${item.chatName.toUpperCase()}   
+        ${item.modfifiedOn.toUpperCase()}`;
+        
+         const textData = text.toUpperCase();
+          
+         return itemData.indexOf(textData) > -1;    
+      });
+      
+      this.setState({ chatsList: newData });  
+    };
    
+
     getChatsList = ()=> {
      
       getAllChats().then(
         (res) => {
-          console.log(res);
-          if(res.status === 200){
-            //udało się zdobyć informacje
-           this.setState({chatsList :res.data});
-         
+          if(res!=undefined){
+            if(res.status === 200){
+              //udało się zdobyć informacje
+             this.setState({allChatsList:res.data,chatsList :res.data});
+              
+            }
           }
+          
         }
       );
     };
@@ -72,25 +87,7 @@ export default class MessagesScreen extends Component {
           </ListItem>
         );
       };
-    // renderRow = ({ item }) => {
    
-    //   return (
-    //     <ListItem onPress={() =>{this.props.navigation.navigate('Chat',{item: item,})}}  
-    //     bottomDivider>
-    //       <StatusItem item={item} />
-    //       <ListItem.Content>
-    //         <ListItem.Title>{item.username}</ListItem.Title>
-    //         <ListItem.Subtitle>{"Data: " + item.date}</ListItem.Subtitle>
-    //         <ListItem.Subtitle>{"Wiadomość: " + item.lastMessage.substring(1,30) + '...'}</ListItem.Subtitle>
-    //       </ListItem.Content>
-    //       <ListItem.Chevron />
-    //     </ListItem>
-    //   );
-    // };
-    
-
-
-
     render() {
      
         return (
@@ -104,6 +101,7 @@ export default class MessagesScreen extends Component {
                     value={this.state.searchQuery}
                     onIconPress={this.onPressSearch}
                     style={styles.search}
+                    
                   />
                   <Text style={{color:'red',alignSelf:"center"}}>{this.state.errorMessage}</Text>
                 </View>
@@ -116,14 +114,6 @@ export default class MessagesScreen extends Component {
                     />
                 </ScrollView> 
 
-                {/* <ScrollView>
-                    <FlatList
-                    data={ChatsList}
-                    keyExtractor={(a) => a.Id}
-                    renderItem={this.renderRow}
-                    />
-                </ScrollView>  */}
-                
                 <FAB
                 style={styles.fab}
                 small

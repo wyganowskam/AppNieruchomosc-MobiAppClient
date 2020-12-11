@@ -59,13 +59,15 @@ export default class ChatScreen extends Component {
     getOthersInfo(){
         getAllUsers().then(
             (res) => {
-            
-              if(res.status === 200){
-              //udało się zdobyć informacje o użytkownikach
-              this.setState({otherUsers:res.data});
-             
-                
-              }
+            if (res!=undefined){
+                if(res.status === 200){
+                    //udało się zdobyć informacje o użytkownikach
+                    this.setState({otherUsers:res.data});
+                   
+                      
+                    }
+            }
+          
             }
           );
     }

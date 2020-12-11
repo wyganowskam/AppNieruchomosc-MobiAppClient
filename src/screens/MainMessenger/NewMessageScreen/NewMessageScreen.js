@@ -5,7 +5,11 @@ import { TextInput,IconButton } from 'react-native-paper';
 import { Searchbar } from 'react-native-paper';
 import { Chip } from 'react-native-paper';
 import {getAllUsers,getUserByEmail} from "../../../services/userService";
-import {sendMessage,createNewChat,getAllChats} from "../../../services/messengerService"
+import {getUserInfo} from '../../../services/authService';
+import {sendMessage,createNewChat,getAllChats} from "../../../services/messengerService";
+import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
+//import {getAllUsers} from "../../../services/userService";
 export default class NewMessageScreen extends Component {
     constructor(props) {
         super(props);
@@ -15,15 +19,53 @@ export default class NewMessageScreen extends Component {
             errorMessage:'',
             groupName:'',
             usersList: [], 
+            allUsersList:[],
+            myUserId:'',
         };
         this.onChangeSearch=this.onChangeSearch.bind(this);
+        this.onChangeUser=this.onChangeUser.bind(this);
         this.onPressSearch=this.onPressSearch.bind(this);
         this.validate=this.validate.bind(this);
+        this.getMyInfo = this.getMyInfo.bind(this);
         this.handleSendButton=this.handleSendButton.bind(this);
+        this.getOthersInfo = this.getOthersInfo.bind(this);
+        this.getMyInfo();
+        this.getOthersInfo();
+        
     }
     onChangeSearch = query =>{
        
         this.setState({searchQuery:query,errorMessage:""});
+    }
+
+    getMyInfo(){
+        getUserInfo().then(
+            (res) => {
+            
+              if(res.status === 200){
+              //udało się zdobyć informacje o użytkowniku
+               this.setState({myUserId:res.data.guid});
+             
+                
+              }
+            }
+          );
+    }
+
+    getOthersInfo(){
+        getAllUsers().then(
+            (res) => {
+            if (res!=undefined){
+                if(res.status === 200){
+                    //udało się zdobyć informacje o użytkownikach
+                    this.setState({allUsersList:res.data.filter(el=>el.guid!=this.state.myUserId)});
+                   
+                      
+                    }
+            }
+          
+            }
+          );
     }
     onPressSearch = () => {
         
@@ -172,6 +214,19 @@ export default class NewMessageScreen extends Component {
 
           }
     };
+    onChangeUser = e => {
+        const val = e.target.value;
+      //  this.setState({apartmentId:val});
+      const newUser= {
+        name:val.name+" "+val.surname,
+        userId:val.guid,
+    }
+    
+    const oldList=this.state.usersList;
+    const isInTheList=oldList.find(el=>el.userId===val.guid);
+    if (isInTheList===undefined)this.setState({usersList:[...oldList,newUser],searchQuery:''});
+   
+      };
       
 
     render() {
@@ -185,12 +240,26 @@ export default class NewMessageScreen extends Component {
                     value={this.state.groupName}
                     style={styles.group}
                     onChangeText={(name) => this.setState({ groupName:name})}/> 
-                 <Searchbar
+                 {/* <Searchbar
                     placeholder="Wyślij do:"
                     onChangeText={this.onChangeSearch}
                     value={this.state.searchQuery}
                     onIconPress={this.onPressSearch}
-                  />  
+                  />   */}
+                    <TextField
+                         select
+                        value=""
+                        label="Wyślij do:"
+                        onChange={this.onChangeUser}
+                        style={{margin:20}}
+                        >
+                        {this.state.allUsersList.map((user) => (
+                            <MenuItem key={user.guid} value={user}>
+                            {user.name + " " + user.surname}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+
                  <Text style={{color:'red',alignSelf:"center"}}>{this.state.errorMessage}</Text>
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'}}>
                 <FlatList
