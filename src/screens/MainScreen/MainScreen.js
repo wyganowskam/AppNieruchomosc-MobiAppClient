@@ -58,7 +58,7 @@ export default class Profile extends Component {
         if(res.status === 200){
         //udało się zdobyć informacje o użytkowniku
          this.setState({usersurname:res.data.surname, username:res.data.name});
-         this.loadHoa();
+        
           
         }
       }
@@ -66,7 +66,8 @@ export default class Profile extends Component {
   }
   
   componentDidMount() {
-    this.getInfo();
+    this.loadHoa();
+   
   }
 
   loadHoa(){
@@ -94,23 +95,18 @@ export default class Profile extends Component {
          
          
           this.setState({
-            isAppAdmin:val1==='true',
-            isBuildingAdmin:val2==='true',
-            isBoard:val3==='true',
-            isResident:val4==='true',
+            isAppAdmin:val1===true,
+            isBuildingAdmin:val2===true,
+            isBoard:val3===true,
+            isResident:val4===true,
             hoas:JSON.parse(res2),
             currentHoaId:res1,
             currentHoaName:JSON.parse(res2).find(item=>item.hoaId===res1).hoaName
           });
-          console.log({
-            isAppAdmin:val1==='true',
-            isBuildingAdmin:val2==='true',
-            isBoard:val3==='true',
-            isResident:val4==='true',
-            hoas:JSON.parse(res2),
-            currentHoaId:res1,
-            currentHoaName:JSON.parse(res2).find(item=>item.hoaId===res1).hoaName
-          });
+          this.getInfo();
+          // console.log("koniec");
+          // console.log(val1);
+          // console.log(this.state.username);
       
         });
         });
