@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import {
-  Alert,
   LayoutAnimation,
-  TouchableOpacity,
   Dimensions,
   Image,
-  UIManager,
+  ImageBackground,
   KeyboardAvoidingView,
   StyleSheet,
   ScrollView,
@@ -109,7 +107,12 @@ export default class LoginScreen extends Component {
     } = this.state;
 
     return (
-      <View
+      <ImageBackground
+    //source={require('../../assets/background_dot.png')}
+    resizeMode="repeat"
+    style={styles.background}
+  >
+  <View
         style={styles.container}       
       >
         <KeyboardAvoidingView
@@ -118,10 +121,14 @@ export default class LoginScreen extends Component {
         >
         
           <View style={{ width: SCREEN_WIDTH*0.8, alignItems: 'center' }}>
+          <Image
+            style={styles.logo}
+            source={require('../../assets/cover.png')}
+          />
             
             <FormInput
               refInput={(input) => (this.emailInput = input)}
-              icon="mail"
+            
               value={email}
               onChangeText={(email) => this.setState({ email })}
               placeholder="Email"
@@ -137,7 +144,7 @@ export default class LoginScreen extends Component {
             />
             <FormInput
               refInput={(input) => (this.passwordInput = input)}
-              icon="lock"
+              
               value={password}
               onChangeText={(password) => this.setState({ password })}
               placeholder="Hasło"
@@ -154,9 +161,9 @@ export default class LoginScreen extends Component {
             <Text style={{color:'red'}}>{this.state.message}</Text>
             <Button
             loading={isLoading}
-            title="Zaloguj się"
+            title="ZALOGUJ SIĘ"
             containerStyle={{ flex: -1 }}
-            
+            raised
             titleStyle={styles.LoginButtonText}
             onPress={this.loginHandler}
             disabled={isLoading}
@@ -198,6 +205,8 @@ export default class LoginScreen extends Component {
 
         </View>
       </View>
+  </ImageBackground>
+      
     );
   }
 }
@@ -211,11 +220,13 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingBottom: 50,
     paddingTop: 0,
-    backgroundColor: 'white',
-   
     alignItems: 'center',
     justifyContent: 'space-around',
   },
+  logo: {
+    width: 200,
+    height:200
+    },
   formContainer: {
     flex: 1,
     justifyContent: 'space-around',
@@ -226,12 +237,16 @@ const styles = StyleSheet.create({
     fontSize: 28,
     
   },
+  background: {
+    flex: 1,
+    width: '100%',
+  },
   LoginButton: {
     width: 250,
-    borderRadius: Math.round(45 / 2),
+    borderRadius: 0,
     height: 45,
     alignSelf:'center',
-    backgroundColor:'gray'
+    backgroundColor:'#725174'
   },
   userTypesContainer: {
     flexDirection: 'row',

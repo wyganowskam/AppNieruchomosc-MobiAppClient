@@ -9,13 +9,9 @@ export default function FormInput  ({icon, refInput, ...otherProps}) {
       {...otherProps}
       ref={refInput}
       inputContainerStyle={styles.inputContainer}
-      leftIcon={
-        <Icon name={icon} type='antdesign' color="gray" size={18} />
-      }
       inputStyle={styles.inputStyle}
       autoFocus={false}
       autoCapitalize="none"
-      keyboardAppearance="dark"
       errorStyle={styles.errorInputStyle}
       autoCorrect={false}
       blurOnSubmit={false}
@@ -28,10 +24,8 @@ const styles = StyleSheet.create({
 
   inputContainer: {
     width:250,
-    paddingLeft: 8,
-    borderRadius: 40,
-    borderWidth: 1,
-    borderColor: 'gray',
+ 
+  
     height: 45,
     marginVertical: 10,
     alignSelf:"center",
@@ -47,7 +41,7 @@ const styles = StyleSheet.create({
   errorInputStyle: {
     marginTop: 0,
     textAlign: 'center',
-    color: '#F44336',
+    color: '#D87B7B',
   },
   
 });

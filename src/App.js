@@ -74,16 +74,16 @@ export default class App extends React.Component {
         <Stack.Navigator 
          
           screenOptions={{
-            headerTitleStyle: {color:'white', },
+            headerTitleStyle: {color:'black', },
             headerStyle: {
-              backgroundColor: 'gray',
-              borderBottomColor:'white',
+              backgroundColor: 'white',
+              borderBottomColor:'transparent',
             
             },
             headerRight: () => (
               this.state.jwt && (<Button
                 onPress={this.logout}
-                buttonStyle={{ backgroundColor: 'transparent' }}
+                buttonStyle={{ backgroundColor: 'white' }}
                 underlayColor="transparent"
                 icon={
                   <Icon
