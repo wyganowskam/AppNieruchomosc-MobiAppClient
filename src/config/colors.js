@@ -13,4 +13,5 @@ export default {
     onlineGreen: '#2ecc71',
     lightWhite: '#f9f9f9',
     separator: '#bdc3c7',
+    error:'#D87B7B',
 }

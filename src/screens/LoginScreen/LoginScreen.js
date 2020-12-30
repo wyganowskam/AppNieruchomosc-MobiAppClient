@@ -13,6 +13,7 @@ import {
 import { Input, Button, Icon } from 'react-native-elements';
 import FormInput from '../../components/common/FormInput';
 import {login} from '../../services/authService';
+import colors from "../../config/colors"
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -45,7 +46,7 @@ export default class LoginScreen extends Component {
       emailValid &&
       passwordValid
     ) {
-     this.setState({ isLoading: true });
+     this.setState({ isLoading: true, message:'' });
      login(email,password).then(result =>{
        this.props.route.params.newJWT(result.data.token);
      },
@@ -158,7 +159,7 @@ export default class LoginScreen extends Component {
                 this.loginHandler();
               }}
             />
-            <Text style={{color:'red'}}>{this.state.message}</Text>
+            <Text style={{color:colors.error, margin:5}}>{this.state.message}</Text>
             <Button
             loading={isLoading}
             title="ZALOGUJ SIĘ"

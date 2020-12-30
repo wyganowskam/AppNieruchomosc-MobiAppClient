@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet,} from 'react-native';
 import { Input, Button, Icon } from 'react-native-elements';
-
+import colors from "../../config/colors"
 export default function FormInput  ({icon, refInput, ...otherProps}) {
  
   return (
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   errorInputStyle: {
     marginTop: 0,
     textAlign: 'center',
-    color: '#D87B7B',
+    color: colors.error,
   },
   
 });
