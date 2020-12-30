@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Avatar, Card, Icon } from 'react-native-elements';
+import { Avatar, Card, Icon, Button } from 'react-native-elements';
 import {
   StyleSheet,
   Text,
@@ -8,22 +8,18 @@ import {
   FlatList
 } from 'react-native';
 import colors from '../../config/colors';
+import { Dialog, Portal } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
-import {  ListItem} from 'react-native-elements';
-import Menu from './Menu';
+import { ListItem} from 'react-native-elements';
 import {getUserInfo} from '../../services/authService';
 import deviceStorage from '../../services/deviceStorage';
 import {refreshRoles } from "../../services/hoaService";
 import {menu} from "./Menu";
- //import PhotoUpload from 'react-native-photo-upload';
  import {getHoasRoles} from '../../services/hoaService';
 
 const avatar={uri: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"};
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
-
 
 
 export default class Profile extends Component {
@@ -35,11 +31,13 @@ export default class Profile extends Component {
       username:'',
       usersurname:'',
       currentHoaId:'',
+      currentHoaName:'',
       isAppAdmin: false,
       isBuildingAdmin: false,
       isBoard: false,
       isResident: false,
-      hoas:[]
+      hoas:[],
+      hoaDialogVisible:false,
     };
 
     this.getInfo = this.getInfo.bind(this);
@@ -47,7 +45,7 @@ export default class Profile extends Component {
     this.loadHoa=this.loadHoa.bind(this);
     this.renderRow=this.renderRow.bind(this);
     this.onChangeHoa=this.onChangeHoa.bind(this);
-    console.log(this.state);
+    
     
   }
 
@@ -60,7 +58,7 @@ export default class Profile extends Component {
         if(res.status === 200){
         //udało się zdobyć informacje o użytkowniku
          this.setState({usersurname:res.data.surname, username:res.data.name});
-       
+         this.loadHoa();
           
         }
       }
@@ -68,7 +66,7 @@ export default class Profile extends Component {
   }
   
   componentDidMount() {
-    this.loadHoa();
+    this.getInfo();
   }
 
   loadHoa(){
@@ -94,7 +92,7 @@ export default class Profile extends Component {
       deviceStorage.getItem("isResident")
         .then((val4)=>{
          
-          this.getInfo();
+         
           this.setState({
             isAppAdmin:val1==='true',
             isBuildingAdmin:val2==='true',
@@ -102,8 +100,18 @@ export default class Profile extends Component {
             isResident:val4==='true',
             hoas:JSON.parse(res2),
             currentHoaId:res1,
+            currentHoaName:JSON.parse(res2).find(item=>item.hoaId===res1).hoaName
           });
-         
+          console.log({
+            isAppAdmin:val1==='true',
+            isBuildingAdmin:val2==='true',
+            isBoard:val3==='true',
+            isResident:val4==='true',
+            hoas:JSON.parse(res2),
+            currentHoaId:res1,
+            currentHoaName:JSON.parse(res2).find(item=>item.hoaId===res1).hoaName
+          });
+      
         });
         });
         });
@@ -118,18 +126,25 @@ export default class Profile extends Component {
 
   
 
- onChangeHoa = e => {
-    const hoa = e.target.value;
-   
-    deviceStorage.setItem("hoaId", hoa)
+ onChangeHoa(value) {
+
+    deviceStorage.setItem("hoaId",value.hoaId)
     .then(()=>{
-      refreshRoles().then(()=>{ this.loadHoa();});
+      refreshRoles().then(()=>{this.loadHoa();  this.setState({hoaDialogVisible:false});});
       
      
     });
   
     
   };
+
+  openDialog=()=> {
+    this.setState({hoaDialogVisible:true});
+  }
+
+  hideDialog=()=> {
+    this.setState({hoaDialogVisible:false});
+  }
 
   renderRow = ({ item }) => {
  
@@ -153,6 +168,21 @@ export default class Profile extends Component {
       </>
     );
   };
+
+  renderHoas = ({ item }) => {
+ 
+    
+    return (
+     
+      <ListItem  onPress={()=>this.onChangeHoa(item)} 
+       bottomDivider>
+        <ListItem.Content>
+          <ListItem.Title>{item.hoaName}</ListItem.Title>
+        </ListItem.Content>
+      </ListItem>
+     
+    );
+  };
   
   render() {
     const {
@@ -166,34 +196,40 @@ export default class Profile extends Component {
     return (
       <View>
       <View style={styles.headerContainer}>
-        <Avatar size='xlarge' rounded  imageProps={{resizeMode:'cover'}} source={avatar}  activeOpacity={0.7}/>
-        <Text style={styles.userNameText}>{username + ' ' + usersurname}</Text>
-        <TextField
-          select
-          value = {this.state.currentHoaId}
-          label="Aktualna Wspólnota"
-          style={{marginLeft:20, width:350, alignSelf:"center"}}
-          onChange={this.onChangeHoa}
-        >
-         {this.state.hoas.map((hoa) => (
-            <MenuItem key={ hoa.hoaName} value={hoa.hoaId}>
-              {hoa.hoaName}
-            </MenuItem>
-          ))}
-        </TextField>
+     
+      <Button
+            title={this.state.currentHoaName}
+            titleStyle={styles.TransparentButtonText}
+            containerStyle={{ flex:-1 }}
+            buttonStyle={{ backgroundColor: 'transparent' }}
+            underlayColor="transparent"
+            onPress={this.openDialog}
+          />
+      <Text style={styles.userNameText}>{username + ' ' + usersurname}</Text>
+      <Portal>
+      <Dialog visible={this.state.hoaDialogVisible} onDismiss={this.hideDialog}>
+        <Dialog.Title>Wybierz wspólnotę</Dialog.Title>
+       <Dialog.Content>
+     
+         <FlatList
+            data={this.state.hoas}
+            keyExtractor={(a) => a.hoaId}
+            renderItem={this.renderHoas}
+          />
+       </Dialog.Content>
+      </Dialog>
+    </Portal>  
 
 
         </View>
-        <ScrollView>
-      
+        
           <FlatList
             key={this.state.hoas}
             data={menu}
             keyExtractor={(a) => a.title}
             renderItem={this.renderRow}
           />
-        </ScrollView>
-   
+       
     </View>
 
     )
@@ -220,9 +256,7 @@ const styles = StyleSheet.create({
   },
   userNameText: {
     color: 'black',
-    fontSize: 22,
-    fontWeight: 'bold',
-    paddingBottom: 8,
+    fontSize: 15,
     textAlign: 'center',
   },
   container: {
@@ -252,6 +286,11 @@ const styles = StyleSheet.create({
   ratingText: {
     paddingLeft: 10,
     color: 'grey',
+  },
+  TransparentButtonText: {
+    color: 'black',
+   
+    fontSize: 18,
   },
 })
 

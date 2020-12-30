@@ -4,7 +4,7 @@ import authHeader from "./authHeader";
 const deviceStorage = {
   async setItem(key, valueToSave) {
     try {
-      await AsyncStorage.setItem(key, valueToSave);
+      await AsyncStorage.setItem(key, JSON.stringify(valueToSave));
            
     } catch (error) {
       console.log('AsyncStorage Error: ' + error.message);
@@ -14,7 +14,7 @@ const deviceStorage = {
     try {
       const val= await AsyncStorage.getItem(key);
       
-      return val;
+      return JSON.parse(val);
      
     } catch (error) {
       console.log('AsyncStorage Error: ' + error.message);

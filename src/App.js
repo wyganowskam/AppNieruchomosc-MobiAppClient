@@ -6,7 +6,6 @@ import LoginScreen from './screens/LoginScreen/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
 import MainScreen from './screens/MainScreen/MainScreen';
 import ChatScreen from "./screens/MainMessenger/ChatScreen/ChatScreen";
-import MainMessenger from './screens/MainMessenger/MainMessenger';
 import MessageScreen from "./screens/MainMessenger/MessageScreen/MessageScreen"
 import FailureScreen from './screens/FailureScreen/FailureScreen';
 import NewMessageScreen from "./screens/MainMessenger/NewMessageScreen/NewMessageScreen"
@@ -20,6 +19,7 @@ import {logout} from './services/authService';
 import {Button, Icon} from 'react-native-elements'
 import {revokeToken} from './services/userService'
 import {getHoasRoles} from './services/hoaService';
+import { Provider as PaperProvider } from 'react-native-paper';
 const Stack = createStackNavigator();
 
 export default class App extends React.Component {
@@ -69,6 +69,7 @@ export default class App extends React.Component {
  
   render() {
     return (
+      <PaperProvider>
       <NavigationContainer >
         <Stack.Navigator 
          
@@ -115,6 +116,7 @@ export default class App extends React.Component {
           </>)}
         </Stack.Navigator>
       </NavigationContainer>
+      </PaperProvider>
     );
   }
 }
