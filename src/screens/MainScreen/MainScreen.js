@@ -9,12 +9,12 @@ import {
 } from 'react-native';
 import colors from '../../config/colors';
 import { Dialog, Portal } from 'react-native-paper';
+import { ScrollView } from 'react-native-gesture-handler';
 import { ListItem} from 'react-native-elements';
 import {getUserInfo} from '../../services/authService';
 import deviceStorage from '../../services/deviceStorage';
 import {refreshRoles } from "../../services/hoaService";
 import {menu} from "./Menu";
- //import PhotoUpload from 'react-native-photo-upload';
  import {getHoasRoles} from '../../services/hoaService';
 
 const avatar={uri: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"};
@@ -22,32 +22,31 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 
-
 export default class Profile extends Component {
  
   constructor(props) {
     super(props);
     this.state = {
+      noHoaUser:false,
       username:'',
       usersurname:'',
       currentHoaId:'',
+      currentHoaName:'',
       isAppAdmin: false,
       isBuildingAdmin: false,
       isBoard: false,
       isResident: false,
-      hoas:[]
+      hoas:[],
+      hoaDialogVisible:false,
     };
 
     this.getInfo = this.getInfo.bind(this);
     this.getHoasRoles=getHoasRoles.bind(this);
     this.loadHoa=this.loadHoa.bind(this);
     this.renderRow=this.renderRow.bind(this);
-    this.renderHoas=this.renderHoas.bind(this);
     this.onChangeHoa=this.onChangeHoa.bind(this);
-    this.openDialog=this.openDialog.bind(this);
-    this.hideDialog=this.hideDialog.bind(this);
     
-    this.loadHoa();
+    
   }
 
   getInfo() {
@@ -59,61 +58,79 @@ export default class Profile extends Component {
         if(res.status === 200){
         //udało się zdobyć informacje o użytkowniku
          this.setState({usersurname:res.data.surname, username:res.data.name});
-         
+         this.loadHoa();
           
         }
       }
     );
   }
+  
+  componentDidMount() {
+    this.getInfo();
+  }
 
   loadHoa(){
-    deviceStorage.getItem("hoaId")
-    .then((res1)=>{
-    
-    if (res1!=undefined) {deviceStorage.getItem("hoas")
-    .then((res2)=> {
-
+   
     getHoasRoles().then(
       () => {
         
-          deviceStorage.getItem("isAppAdmin")
-            .then((val1)=>{ 
-              
-          deviceStorage.getItem("isBuildingAdmin")
-            .then((val2)=>{ 
-              
-          deviceStorage.getItem("isBoard")
-            .then((val3)=>{ 
-              
-          deviceStorage.getItem("isResident")
-            .then((val4)=>{
-             
-              this.setState({
-                isAppAdmin:val1==='true',
-                isBuildingAdmin:val2==='true',
-                isBoard:val3==='true',
-                isResident:val4==='true',
-                hoas:JSON.parse(res2),
-                currentHoaId:res1,
-              });
-              this.getInfo();
-              console.log(res1);
-            });
-            });
-            });
-            });
+      deviceStorage.getItem("hoaId")
+      .then((res1)=>{
+      
+      if (res1!=undefined) {deviceStorage.getItem("hoas")
+      .then((res2)=> {
+  
+        deviceStorage.getItem("isAppAdmin")
+        .then((val1)=>{ 
+          
+      deviceStorage.getItem("isBuildingAdmin")
+        .then((val2)=>{ 
+          
+      deviceStorage.getItem("isBoard")
+        .then((val3)=>{ 
+          
+      deviceStorage.getItem("isResident")
+        .then((val4)=>{
+         
+         
+          this.setState({
+            isAppAdmin:val1==='true',
+            isBuildingAdmin:val2==='true',
+            isBoard:val3==='true',
+            isResident:val4==='true',
+            hoas:JSON.parse(res2),
+            currentHoaId:res1,
+            currentHoaName:JSON.parse(res2).find(item=>item.hoaId===res1).hoaName
           });
-  });}
+          console.log({
+            isAppAdmin:val1==='true',
+            isBuildingAdmin:val2==='true',
+            isBoard:val3==='true',
+            isResident:val4==='true',
+            hoas:JSON.parse(res2),
+            currentHoaId:res1,
+            currentHoaName:JSON.parse(res2).find(item=>item.hoaId===res1).hoaName
+          });
+      
+        });
+        });
+        });
+        });
+  
+    });}
+    });
+  
   });
     
   }
 
- onChangeHoa = e => {
-    const hoa = e.target.value;
-   
-    deviceStorage.setItem("hoaId", hoa)
+  
+
+ onChangeHoa(value) {
+
+    deviceStorage.setItem("hoaId",value.hoaId)
     .then(()=>{
-      refreshRoles().then(()=>{ this.loadHoa();});
+      refreshRoles().then(()=>{this.loadHoa();  this.setState({hoaDialogVisible:false});});
       
      
     });
@@ -129,6 +146,29 @@ export default class Profile extends Component {
     this.setState({hoaDialogVisible:false});
   }
 
+  renderRow = ({ item }) => {
+ 
+    const {isAppAdmin,isBuildingAdmin,isResident,isBoard}=this.state;
+    
+    return (
+      ( (isAppAdmin && item.forAppAdmin)
+        || (isBuildingAdmin && item.forBuildingAdmin)
+        || (isBoard && item.forBoard)
+        || (isResident && item.forResident)
+        || item.forAll
+        ) && <> 
+      <ListItem  onPress={() => 
+        this.props.navigation.navigate(item.page)} bottomDivider>
+        <Icon name={item.icon } type='antdesign'/>
+        <ListItem.Content>
+          <ListItem.Title>{item.title}</ListItem.Title>
+        </ListItem.Content>
+        <ListItem.Chevron />
+      </ListItem>
+      </>
+    );
+  };
+
   renderHoas = ({ item }) => {
  
     
@@ -143,28 +183,6 @@ export default class Profile extends Component {
      
     );
   };
-
-  renderRow = ({ item }) => {
- 
-    const {isAppAdmin,isBuildingAdmin,isResident,isBoard}=this.state;
-   
-    return (
-      ( (isAppAdmin && item.forAppAdmin)
-        || (isBuildingAdmin && item.forBuildingAdmin)
-        || (isBoard && item.forBoard)
-        || (isResident && item.forResident)
-        ) && <> 
-      <ListItem  onPress={() => 
-        this.props.navigation.navigate(item.page)} bottomDivider>
-        <Icon name={item.icon } type='antdesign'/>
-        <ListItem.Content>
-          <ListItem.Title>{item.title}</ListItem.Title>
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem>
-      </>
-    );
-  };
   
   render() {
     const {
@@ -175,7 +193,6 @@ export default class Profile extends Component {
    if(this.state.currentHoaId===''&& this.state.noHoaUser===false) {this.loadHoa();
     this.setState({noHoaUser:true})
    }
-   console.log("render");
     return (
       <View>
       <View style={styles.headerContainer}>
