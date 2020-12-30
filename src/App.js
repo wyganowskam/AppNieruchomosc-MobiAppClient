@@ -6,7 +6,7 @@ import LoginScreen from './screens/LoginScreen/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
 import MainScreen from './screens/MainScreen/MainScreen';
 import ChatScreen from "./screens/MainMessenger/ChatScreen/ChatScreen";
-import MainMessenger from './screens/MainMessenger/MainMessenger';
+import MessageScreen from "./screens/MainMessenger/MessageScreen/MessageScreen"
 import FailureScreen from './screens/FailureScreen/FailureScreen';
 import NewMessageScreen from "./screens/MainMessenger/NewMessageScreen/NewMessageScreen"
 import FailureDetailsScreen from './screens/FailureScreen/FailureDetailsScreen';
@@ -19,6 +19,7 @@ import {logout} from './services/authService';
 import {Button, Icon} from 'react-native-elements'
 import {revokeToken} from './services/userService'
 import {getHoasRoles} from './services/hoaService';
+import { Provider as PaperProvider } from 'react-native-paper';
 const Stack = createStackNavigator();
 
 export default class App extends React.Component {
@@ -37,59 +38,38 @@ export default class App extends React.Component {
     this.deleteJWT = deviceStorage.deleteJWT.bind(this);
     this.loadJWT = deviceStorage.loadJWT.bind(this);
     this.logout=this.logout.bind(this);
-    this.loadHoa=this.loadHoa.bind(this);
-    this.loadJWT().then(()=>{
-      if(this.state.jwt!='') this.loadHoa(); 
-    });
+   
+    this.loadJWT();
+    console.log(this.state.jwt);
   }
   logout() {
-    revokeToken();
-    this.deleteJWT();
+    console.log("wylogowanie");
+    revokeToken().catch(() => {
+        deviceStorage.removeItem("id_token");
+        deviceStorage.removeItem("hoaId");
+        deviceStorage.removeItem("hoas");
+        deviceStorage.removeItem("isAppAdmin");
+        deviceStorage.removeItem("isBuildingAdmin");
+        deviceStorage.removeItem("isBoard");
+        deviceStorage.removeItem("isResident");
     
+       
+      });
+      deviceStorage.removeItem("id_token");
+      deviceStorage.removeItem("hoaId");
+      deviceStorage.removeItem("hoas");
+      deviceStorage.removeItem("isAppAdmin");
+      deviceStorage.removeItem("isBuildingAdmin");
+      deviceStorage.removeItem("isBoard");
+      deviceStorage.removeItem("isResident");
+      this.deleteJWT();
   }
 
-  loadHoa(){
-    deviceStorage.getItem("hoaId")
-    .then((res1)=>{
-    
-    if (res1!=undefined) {deviceStorage.getItem("hoas")
-    .then((res2)=> {
-
-    getHoasRoles().then(
-      () => {
-        
-          deviceStorage.getItem("isAppAdmin")
-            .then((val1)=>{ 
-              
-          deviceStorage.getItem("isBuildingAdmin")
-            .then((val2)=>{ 
-              
-          deviceStorage.getItem("isBoard")
-            .then((val3)=>{ 
-              
-          deviceStorage.getItem("isResident")
-            .then((val4)=>{
-            
-              this.setState({
-                isAppAdmin:val1==='true',
-                isBuildingAdmin:val2==='true',
-                isBoard:val3==='true',
-                isResident:val4==='true',
-                
-              });
-            });
-            });
-            });
-            });
-          });
-  });}
-  });
-    
-  }
-
+  
  
   render() {
     return (
+      <PaperProvider>
       <NavigationContainer >
         <Stack.Navigator 
          
@@ -125,17 +105,18 @@ export default class App extends React.Component {
           </>
           ) : (
           <>
-          <Stack.Screen  name="Main" component={MainScreen} options={{ title: 'MENU', }}  />
-          <Stack.Screen  name="Messages" component={MainMessenger} options={{ title: 'KOMUNIKATOR', }}  />
-          <Stack.Screen  name="MyInvitations" component={InvitationScreen} options={{ title: 'ZAPROSZENIA', }}  />
+          <Stack.Screen name="Main" component={MainScreen} options={{ title: 'MENU', }}  />
+          <Stack.Screen name="Messages" component={MessageScreen} options={{ title: 'KOMUNIKATOR', }}  />
+          <Stack.Screen name="MyInvitations" component={InvitationScreen} options={{ title: 'ZAPROSZENIA', }}  />
           <Stack.Screen name="Failure" component={FailureScreen} options={{ title: 'AWARIE' }} />
           <Stack.Screen name="FailureDetails" component={FailureDetailsScreen} options={{ title: 'AWARIA' }}  />
           <Stack.Screen name="FailureAdd" component={FailureAddScreen} options={{ title: 'NOWA AWARIA' }}  />
-          <Stack.Screen  name="Chat" component={ChatScreen} options={{ title: 'Czat', }}  />
-          <Stack.Screen  name="NewMessage" component={NewMessageScreen} options={{ title: 'NOWA WIADOMOŚĆ', }}  />
+          <Stack.Screen  name="Chat" component={ChatScreen} options={{ title: '', }}  />
+          <Stack.Screen  name="NewMessage" component={NewMessageScreen} options={{ title: 'NOWY WĄTEK', }}  />
           </>)}
         </Stack.Navigator>
       </NavigationContainer>
+      </PaperProvider>
     );
   }
 }

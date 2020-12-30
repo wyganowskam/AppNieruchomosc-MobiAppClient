@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Avatar, Card, Icon } from 'react-native-elements';
+import { Avatar, Card, Icon, Button } from 'react-native-elements';
 import {
   StyleSheet,
   Text,
@@ -8,11 +8,8 @@ import {
   FlatList
 } from 'react-native';
 import colors from '../../config/colors';
-import { ScrollView } from 'react-native-gesture-handler';
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
-import {  ListItem} from 'react-native-elements';
-import Menu from './Menu';
+import { Dialog, Portal } from 'react-native-paper';
+import { ListItem} from 'react-native-elements';
 import {getUserInfo} from '../../services/authService';
 import deviceStorage from '../../services/deviceStorage';
 import {refreshRoles } from "../../services/hoaService";
@@ -45,8 +42,10 @@ export default class Profile extends Component {
     this.getHoasRoles=getHoasRoles.bind(this);
     this.loadHoa=this.loadHoa.bind(this);
     this.renderRow=this.renderRow.bind(this);
+    this.renderHoas=this.renderHoas.bind(this);
     this.onChangeHoa=this.onChangeHoa.bind(this);
-    
+    this.openDialog=this.openDialog.bind(this);
+    this.hideDialog=this.hideDialog.bind(this);
     
     this.loadHoa();
   }
@@ -122,6 +121,29 @@ export default class Profile extends Component {
     
   };
 
+  openDialog=()=> {
+    this.setState({hoaDialogVisible:true});
+  }
+
+  hideDialog=()=> {
+    this.setState({hoaDialogVisible:false});
+  }
+
+  renderHoas = ({ item }) => {
+ 
+    
+    return (
+     
+      <ListItem  onPress={()=>this.onChangeHoa(item)} 
+       bottomDivider>
+        <ListItem.Content>
+          <ListItem.Title>{item.hoaName}</ListItem.Title>
+        </ListItem.Content>
+      </ListItem>
+     
+    );
+  };
+
   renderRow = ({ item }) => {
  
     const {isAppAdmin,isBuildingAdmin,isResident,isBoard}=this.state;
@@ -149,38 +171,48 @@ export default class Profile extends Component {
       username,
       usersurname,
     } = this.state;
-  
+   
+   if(this.state.currentHoaId===''&& this.state.noHoaUser===false) {this.loadHoa();
+    this.setState({noHoaUser:true})
+   }
+   console.log("render");
     return (
       <View>
       <View style={styles.headerContainer}>
-        <Avatar size='xlarge' rounded  imageProps={{resizeMode:'cover'}} source={avatar}  activeOpacity={0.7}/>
-        <Text style={styles.userNameText}>{username + ' ' + usersurname}</Text>
-        <TextField
-          select
-          value = {this.state.currentHoaId}
-          label="Aktualna Wspólnota"
-          style={{marginLeft:20, width:350, alignSelf:"center"}}
-          onChange={this.onChangeHoa}
-        >
-         {this.state.hoas.map((hoa) => (
-            <MenuItem key={ hoa.hoaName} value={hoa.hoaId}>
-              {hoa.hoaName}
-            </MenuItem>
-          ))}
-        </TextField>
+     
+      <Button
+            title={this.state.currentHoaName}
+            titleStyle={styles.TransparentButtonText}
+            containerStyle={{ flex:-1 }}
+            buttonStyle={{ backgroundColor: 'transparent' }}
+            underlayColor="transparent"
+            onPress={this.openDialog}
+          />
+      <Text style={styles.userNameText}>{username + ' ' + usersurname}</Text>
+      <Portal>
+      <Dialog visible={this.state.hoaDialogVisible} onDismiss={this.hideDialog}>
+        <Dialog.Title>Wybierz wspólnotę</Dialog.Title>
+       <Dialog.Content>
+     
+         <FlatList
+            data={this.state.hoas}
+            keyExtractor={(a) => a.hoaId}
+            renderItem={this.renderHoas}
+          />
+       </Dialog.Content>
+      </Dialog>
+    </Portal>  
 
 
         </View>
-        <ScrollView>
-      
+        
           <FlatList
             key={this.state.hoas}
             data={menu}
             keyExtractor={(a) => a.title}
             renderItem={this.renderRow}
           />
-        </ScrollView>
-   
+       
     </View>
 
     )
@@ -207,9 +239,7 @@ const styles = StyleSheet.create({
   },
   userNameText: {
     color: 'black',
-    fontSize: 22,
-    fontWeight: 'bold',
-    paddingBottom: 8,
+    fontSize: 15,
     textAlign: 'center',
   },
   container: {
@@ -239,6 +269,11 @@ const styles = StyleSheet.create({
   ratingText: {
     paddingLeft: 10,
     color: 'grey',
+  },
+  TransparentButtonText: {
+    color: 'black',
+   
+    fontSize: 18,
   },
 })
 
