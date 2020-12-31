@@ -16,6 +16,7 @@ import { Input, Button, Icon } from 'react-native-elements';
 import FormInput from '../../components/common/FormInput';
 import {register} from '../../services/authService';
 import {RegisterSuccess} from './RegisterSuccess';
+import colors from "../../config/colors"
 
 // Enable LayoutAnimation on Android
 UIManager.setLayoutAnimationEnabledExperimental &&
@@ -185,9 +186,13 @@ export default class RegisterScreen extends Component {
         >
         
           <View style={{ width: SCREEN_WIDTH*0.8, alignItems: 'center' }}>
+
+          <Image
+            style={styles.logo}
+            source={require('../../assets/cover.png')}
+          />
             <FormInput
               refInput={(input) => (this.usernameInput = input)}
-              icon="user"
               value={username}
               onChangeText={(username) => this.setState({ username })}
               placeholder="Imię"
@@ -202,7 +207,6 @@ export default class RegisterScreen extends Component {
             />
               <FormInput
               refInput={(input) => (this.usersurnameInput = input)}
-              icon="user"
               value={usersurname}
               onChangeText={(usersurname) => this.setState({ usersurname })}
               placeholder="Nazwisko"
@@ -217,7 +221,6 @@ export default class RegisterScreen extends Component {
             />
             <FormInput
               refInput={(input) => (this.emailInput = input)}
-              icon="mail"
               value={email}
               onChangeText={(email) => this.setState({ email })}
               placeholder="Email"
@@ -234,7 +237,6 @@ export default class RegisterScreen extends Component {
              
             <FormInput
               refInput={(input) => (this.passwordInput = input)}
-              icon="lock"
               value={password}
               onChangeText={(password) => this.setState({ password })}
               placeholder="Hasło"
@@ -250,7 +252,6 @@ export default class RegisterScreen extends Component {
             />
             <FormInput
               refInput={(input) => (this.confirmationPasswordInput = input)}
-              icon="lock"
               value={confirmationPassword}
               onChangeText={(confirmationPassword) =>
                 this.setState({ confirmationPassword })
@@ -269,7 +270,7 @@ export default class RegisterScreen extends Component {
               }}
             />
 
-            <Text style={{color:'red'}}>{this.state.message}</Text>
+            <Text style={{color:colors.error}}>{this.state.message}</Text>
             <Button
               loading={isLoading}
               title="ZAREJESTRUJ SIĘ"
@@ -307,20 +308,22 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingBottom: 50,
     paddingTop: 0,
-    backgroundColor: 'white',
-   
     alignItems: 'center',
     justifyContent: 'space-around',
+    backgroundColor:colors.light
   },
+  logo: {
+    width: 200,
+    height:200
+    },
   formContainer: {
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
   },
   signUpText: {
-    color: 'white',
+    color: colors.black,
     fontSize: 28,
-    
   },
  
   signUpButtonText: {
@@ -329,10 +332,10 @@ const styles = StyleSheet.create({
   },
   signUpButton: {
     width: 250,
-    borderRadius: Math.round(45 / 2),
+    borderRadius: 0,
     height: 45,
     alignSelf:'center',
-    backgroundColor:'gray'
+    backgroundColor:colors.button
   },
   loginHereContainer: {
     flexDirection: 'row',
@@ -341,10 +344,10 @@ const styles = StyleSheet.create({
   alreadyAccountText: {
     
     fontSize: 12,
-    color: 'gray',
+    color: colors.grey,
   },
   loginHereText: {
-    color: 'black',
+    color: colors.black,
    
     fontSize: 12,
   },

@@ -8,20 +8,19 @@ import {
   ScrollView,
   Text,
   View,
+  Image
 } from 'react-native';
 import { Input, Button, Icon } from 'react-native-elements';
 import FormInput from '../../components/common/FormInput';
+import colors from "../../config/colors"
 import {forgotPassword} from '../../services/authService';
-// Enable LayoutAnimation on Android
-UIManager.setLayoutAnimationEnabledExperimental &&
-  UIManager.setLayoutAnimationEnabledExperimental(true);
 
 
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-export default class LoginScreen extends Component {
+export default class ResetPasswordScreen extends Component {
   constructor(props) {
     super(props);
 
@@ -94,10 +93,12 @@ export default class LoginScreen extends Component {
         >
         
           <View style={{ width: SCREEN_WIDTH*0.8, alignItems: 'center' }}>
-         
+          <Image
+            style={styles.logo}
+            source={require('../../assets/cover.png')}
+          />
             <FormInput
               refInput={(input) => (this.emailInput = input)}
-              icon="mail"
               value={email}
               onChangeText={(email) => this.setState({ email })}
               placeholder="Email"
@@ -111,16 +112,16 @@ export default class LoginScreen extends Component {
                 this.reset();
               }}
             />
-            <Text style={{color:'red'}}>{this.state.message}</Text>
+            <Text style={{color:colors.error}}>{this.state.message}</Text>
             <Button
               loading={isLoading}
-              title="Zresetuj hasło"
+              title="ZRESETUJ HASŁO"
               containerStyle={{ flex: -1 }}
               
-              titleStyle={styles.LoginButtonText}
+              titleStyle={styles.ResetButtonText}
               onPress={this.reset}
               disabled={isLoading}
-              buttonStyle={styles.LoginButton}            
+              buttonStyle={styles.ResetButton}            
             />    
           </View>
          
@@ -135,74 +136,28 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingBottom: 50,
     paddingTop: 0,
-    backgroundColor: 'white',
-   
     alignItems: 'center',
     justifyContent: 'space-around',
+    backgroundColor:colors.light
   },
+  logo: {
+    width: 200,
+    height:200
+    },
   formContainer: {
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
   },
-  LoginText: {
-    color: 'white',
-    fontSize: 28,
-    
-  },
-  whoAreYouText: {
-    color: '#7384B4',
-    
-    fontSize: 14,
-  },
-  userTypesContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: SCREEN_WIDTH,
-    alignItems: 'center',
-  },
-  userTypeItemContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    opacity: 0.5,
-  },
-  userTypeItemContainerSelected: {
-    opacity: 1,
-  },
-  userTypeMugshot: {
-    margin: 4,
-    height: 70,
-    width: 70,
-  },
-  userTypeMugshotSelected: {
-    height: 100,
-    width: 100,
-  },
-  
- 
-  LoginButtonText: {
+  ResetButtonText: {
     
     fontSize: 13,
   },
-  LoginButton: {
+  ResetButton: {
     width: 250,
-    borderRadius: Math.round(45 / 2),
+    borderRadius: 0,
     height: 45,
     alignSelf:'center',
-    backgroundColor:'gray'
-  },
-  loginHereContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  alreadyAccountText: {
-    
-    fontSize: 12,
-    color: 'white',
-  },
-  loginHereText: {
-    color: '#FF9800',
-   
-    fontSize: 12,
+    backgroundColor:colors.button
   },
 });

@@ -241,17 +241,8 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingTop: 20,
   },
- 
-  userImage: {
-    borderColor: '#FFF',
-    borderRadius: 85,
-    borderWidth: 3,
-    height: 170,
-    marginBottom: 15,
-    width: 170,
-  },
   userNameText: {
-    color: 'black',
+    color: colors.black,
     fontSize: 15,
     textAlign: 'center',
   },
@@ -259,7 +250,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingBottom: 50,
     paddingTop: 0,
-    backgroundColor: '#293046',
+    backgroundColor: colors.light,
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT,
     alignItems: 'center',
@@ -275,17 +266,8 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingTop: 5,
   },
-  ratingImage: {
-    height: 19.21,
-    width: 100,
-  },
-  ratingText: {
-    paddingLeft: 10,
-    color: 'grey',
-  },
   TransparentButtonText: {
-    color: 'black',
-   
+    color: colors.black,
     fontSize: 18,
   },
 })
