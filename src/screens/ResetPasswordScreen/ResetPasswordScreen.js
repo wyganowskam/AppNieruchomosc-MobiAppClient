@@ -2,15 +2,12 @@ import React, { Component } from 'react';
 import {
   LayoutAnimation,
   Dimensions,
-  UIManager,
   KeyboardAvoidingView,
   StyleSheet,
-  ScrollView,
-  Text,
   View,
   Image
 } from 'react-native';
-import { Input, Button, Icon } from 'react-native-elements';
+import {  Text, Button } from 'react-native-paper';
 import FormInput from '../../components/common/FormInput';
 import colors from "../../config/colors"
 import {forgotPassword} from '../../services/authService';
@@ -116,13 +113,14 @@ export default class ResetPasswordScreen extends Component {
             <Button
               loading={isLoading}
               title="ZRESETUJ HASŁO"
-              containerStyle={{ flex: -1 }}
-              
-              titleStyle={styles.ResetButtonText}
+              labelStyle={styles.ResetButtonText}
               onPress={this.reset}
+              mode="contained"
               disabled={isLoading}
-              buttonStyle={styles.ResetButton}            
-            />    
+              style={styles.ResetButton}            
+            >
+              ZRESETUJ HASŁO
+              </Button> 
           </View>
          
         </KeyboardAvoidingView>
@@ -157,6 +155,8 @@ const styles = StyleSheet.create({
     width: 250,
     borderRadius: 0,
     height: 45,
+    flex:1,
+    alignContent:"center",
     alignSelf:'center',
     backgroundColor:colors.button
   },

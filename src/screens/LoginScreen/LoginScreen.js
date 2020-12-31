@@ -6,11 +6,9 @@ import {
   ImageBackground,
   KeyboardAvoidingView,
   StyleSheet,
-  ScrollView,
-  Text,
   View,
 } from 'react-native';
-import { Input, Button, Icon } from 'react-native-elements';
+import {  Text, Button } from 'react-native-paper';
 import FormInput from '../../components/common/FormInput';
 import {login} from '../../services/authService';
 import colors from "../../config/colors"
@@ -162,15 +160,15 @@ export default class LoginScreen extends Component {
             <Text style={{color:colors.error, margin:5}}>{this.state.message}</Text>
             <Button
             loading={isLoading}
-            title="ZALOGUJ SIĘ"
-            containerStyle={{ flex: -1 }}
-            raised
-            titleStyle={styles.LoginButtonText}
+            mode="contained"
+            labelStyle={styles.LoginButtonText}
             onPress={this.loginHandler}
             disabled={isLoading}
-            buttonStyle={styles.LoginButton}
+            style={styles.LoginButton}
             
-          />
+          >
+            ZALOGUJ SIĘ
+          </Button>
           
           </View>
          
@@ -181,13 +179,15 @@ export default class LoginScreen extends Component {
             Nie masz konta? 
           </Text>
           <Button
-            title="Zarejestruj się"
-            titleStyle={styles.TransparentButtonText}
-            containerStyle={{ flex: -1 }}
-            buttonStyle={{ backgroundColor: 'transparent' }}
-            underlayColor="transparent"
+            mode="text"
+            labelStyle={styles.TransparentButtonText}
+            compact={true}
+            uppercase={false}
+            style={{color:"pink"}}
             onPress={this.handleRegisterButton}
-          />
+          >
+              Zarejestruj się
+          </Button>
           
         </View>
         <View style={styles.loginHereContainer}>
@@ -195,13 +195,14 @@ export default class LoginScreen extends Component {
             Nie pamiętasz hasła? 
           </Text>
           <Button
-            title="Zresetuj hasło"
-            titleStyle={styles.TransparentButtonText}
-            containerStyle={{ flex: -1 }}
-            buttonStyle={{ backgroundColor: 'transparent' }}
-            underlayColor="transparent"
+           mode="text"
+           labelStyle={styles.TransparentButtonText}
+           compact={true}
+           uppercase={false}
             onPress={this.handleResetButton}
-          />
+          >
+            Zresetuj hasło
+          </Button>
         </View>
 
         </View>
@@ -247,6 +248,8 @@ const styles = StyleSheet.create({
     width: 250,
     borderRadius: 0,
     height: 45,
+    flex:1,
+    alignContent:"center",
     alignSelf:'center',
     backgroundColor:colors.button
   },
@@ -289,13 +292,9 @@ const styles = StyleSheet.create({
     
     fontSize: 16,
   },
-  errorInputStyle: {
-    marginTop: 0,
-    textAlign: 'center',
-    color: '#F44336',
-  },
   LoginButtonText: {
-    
+    alignSelf:"center",
+    color:colors.white,
     fontSize: 13,
   },
 

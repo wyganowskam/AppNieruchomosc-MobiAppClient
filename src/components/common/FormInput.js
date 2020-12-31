@@ -8,11 +8,26 @@ export default function FormInput  ({icon, refInput, ...otherProps}) {
     <Input
       {...otherProps}
       ref={refInput}
-      inputContainerStyle={styles.inputContainer}
-      inputStyle={styles.inputStyle}
+      inputContainerStyle={{
+        width:250,
+        height: 45,
+        marginVertical: 10,
+        alignSelf:"center",
+        
+      }}
+      inputStyle={{
+        flex: 1,
+        marginLeft: 10,
+        color: colors.black,
+        fontSize: 16,
+      }}
       autoFocus={false}
       autoCapitalize="none"
-      errorStyle={styles.errorInputStyle}
+      errorStyle={{
+        marginTop: 0,
+        textAlign: 'center',
+        color: colors.error,
+      }}
       autoCorrect={false}
       blurOnSubmit={false}
       placeholderTextColor={colors.grey}
@@ -20,26 +35,4 @@ export default function FormInput  ({icon, refInput, ...otherProps}) {
   );
 };
 
-const styles = StyleSheet.create({
 
-  inputContainer: {
-    width:250,
-    height: 45,
-    marginVertical: 10,
-    alignSelf:"center",
-    
-  },
-  inputStyle: {
-    flex: 1,
-    marginLeft: 10,
-    color: colors.black,
-    
-    fontSize: 16,
-  },
-  errorInputStyle: {
-    marginTop: 0,
-    textAlign: 'center',
-    color: colors.error,
-  },
-  
-});

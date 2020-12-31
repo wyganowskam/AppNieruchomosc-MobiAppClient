@@ -8,11 +8,9 @@ import {
   UIManager,
   KeyboardAvoidingView,
   StyleSheet,
-  ScrollView,
-  Text,
   View,
 } from 'react-native';
-import { Input, Button, Icon } from 'react-native-elements';
+import {  Text, Button } from 'react-native-paper';
 import FormInput from '../../components/common/FormInput';
 import {register} from '../../services/authService';
 import {RegisterSuccess} from './RegisterSuccess';
@@ -273,12 +271,13 @@ export default class RegisterScreen extends Component {
             <Text style={{color:colors.error}}>{this.state.message}</Text>
             <Button
               loading={isLoading}
-              title="ZAREJESTRUJ SIĘ"
-              containerStyle={{ flex: -1 }}
-              buttonStyle={styles.signUpButton}
-              titleStyle={styles.signUpButtonText}
+              mode="contained"
+              style={styles.signUpButton}
+              labelStyle={styles.signUpButtonText}
               onPress={this.signup}
-              disabled={isLoading} />
+              disabled={isLoading}>
+                  ZAREJESTRUJ SIĘ
+              </Button>
           </View>
          
         </KeyboardAvoidingView>
@@ -287,13 +286,14 @@ export default class RegisterScreen extends Component {
             Masz już konto? 
           </Text>
           <Button
-            title="Zaloguj się tutaj"
-            titleStyle={styles.loginHereText}
-            containerStyle={{ flex: -1 }}
-            buttonStyle={{ backgroundColor: 'transparent' }}
-            underlayColor="transparent"
+             mode="text"
+             labelStyle={styles.TransparentButtonText}
+             compact={true}
+             uppercase={false}
             onPress={() => {this.props.navigation.navigate('Login');}}
-          />
+          >
+              Zaloguj się tutaj
+          </Button>
         </View>
        
         
@@ -334,6 +334,8 @@ const styles = StyleSheet.create({
     width: 250,
     borderRadius: 0,
     height: 45,
+    flex:1,
+    alignContent:"center",
     alignSelf:'center',
     backgroundColor:colors.button
   },
@@ -346,8 +348,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.grey,
   },
-  loginHereText: {
-    color: colors.black,
+  TransparentButtonText: {
+    color: 'black',
    
     fontSize: 12,
   },
