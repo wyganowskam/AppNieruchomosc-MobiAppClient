@@ -81,7 +81,8 @@ export default class App extends React.Component {
             
             },
             headerRight: () => (
-              this.state.jwt && (<Button
+              this.state.jwt && 
+              (<Button
                 onPress={this.logout}
                 buttonStyle={{ backgroundColor: 'white' }}
                 underlayColor="transparent"

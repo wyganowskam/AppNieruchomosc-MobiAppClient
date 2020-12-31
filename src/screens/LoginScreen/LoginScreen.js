@@ -223,6 +223,7 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     alignItems: 'center',
     justifyContent: 'space-around',
+    backgroundColor:colors.light
   },
   logo: {
     width: 200,
@@ -234,7 +235,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   LoginText: {
-    color: 'black',
+    color: colors.black,
     fontSize: 28,
     
   },
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     height: 45,
     alignSelf:'center',
-    backgroundColor:'#725174'
+    backgroundColor:colors.button
   },
   userTypesContainer: {
     flexDirection: 'row',
@@ -277,14 +278,14 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     borderRadius: 40,
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: colors.grey,
     height: 45,
     marginVertical: 10,
   },
   inputStyle: {
     flex: 1,
     marginLeft: 10,
-    color: 'white',
+    color: colors.white,
     
     fontSize: 16,
   },

@@ -15,7 +15,7 @@ export default function FormInput  ({icon, refInput, ...otherProps}) {
       errorStyle={styles.errorInputStyle}
       autoCorrect={false}
       blurOnSubmit={false}
-      placeholderTextColor="gray"
+      placeholderTextColor={colors.grey}
     />
   );
 };
@@ -24,8 +24,6 @@ const styles = StyleSheet.create({
 
   inputContainer: {
     width:250,
- 
-  
     height: 45,
     marginVertical: 10,
     alignSelf:"center",
@@ -34,7 +32,7 @@ const styles = StyleSheet.create({
   inputStyle: {
     flex: 1,
     marginLeft: 10,
-    color: 'black',
+    color: colors.black,
     
     fontSize: 16,
   },
