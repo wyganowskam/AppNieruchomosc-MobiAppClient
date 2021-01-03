@@ -13,7 +13,7 @@ export const menu = [
   {
     title: 'TABLICA OGŁOSZEŃ',
     icon: 'pushpino',
-    page: 'Main',
+    page: 'Announcements',
     forAppAdmin: true,
     forBuildingAdmin: true,
     forBoard: true,
@@ -32,7 +32,7 @@ export const menu = [
   {
     title: 'ANKIETY',
     icon: 'linechart',
-    page: 'Main',
+    page: 'Surveys',
     forAppAdmin: true,
     forBuildingAdmin: true,
     forBoard: true,
