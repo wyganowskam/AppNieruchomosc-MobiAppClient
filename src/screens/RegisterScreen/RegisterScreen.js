@@ -305,17 +305,17 @@ const styles = StyleSheet.create({
   },
  
   signUpButtonText: {
-    
-    fontSize: 13,
+    alignSelf:"center",
+    color:colors.white,
+    fontSize: 16,
   },
   signUpButton: {
     width: 250,
     borderRadius: 0,
-    height: 45,
+   
     flex:1,
-    alignContent:"center",
-    alignSelf:'center',
-    backgroundColor:colors.button
+   
+    backgroundColor:colors.button,
   },
   loginHereContainer: {
     flexDirection: 'row',

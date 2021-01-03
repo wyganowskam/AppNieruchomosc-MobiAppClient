@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Avatar, Card, Icon, Button } from 'react-native-elements';
+import { //Icon, 
+  Button } from 'react-native-paper';
 import {
   StyleSheet,
   Text,
@@ -8,8 +9,7 @@ import {
   FlatList
 } from 'react-native';
 import colors from '../../config/colors';
-import { Dialog, Portal } from 'react-native-paper';
-import { ListItem} from 'react-native-elements';
+import { Dialog, Portal,List } from 'react-native-paper';
 import {getUserInfo} from '../../services/authService';
 import deviceStorage from '../../services/deviceStorage';
 import {refreshRoles } from "../../services/hoaService";
@@ -103,9 +103,7 @@ export default class Profile extends Component {
             currentHoaName:JSON.parse(res2).find(item=>item.hoaId===res1).hoaName
           });
           this.getInfo();
-          // console.log("koniec");
-          // console.log(val1);
-          // console.log(this.state.username);
+         
       
         });
         });
@@ -152,14 +150,9 @@ export default class Profile extends Component {
         || (isResident && item.forResident)
         || item.forAll
         ) && <> 
-      <ListItem  onPress={() => 
-        this.props.navigation.navigate(item.page)} bottomDivider>
-        <Icon name={item.icon } type='antdesign'/>
-        <ListItem.Content>
-          <ListItem.Title>{item.title}</ListItem.Title>
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem>
+      <List.Item  //onPress={() => this.props.navigation.navigate(item.page)} 
+      title={item.title}
+     />
       </>
     );
   };
@@ -169,13 +162,10 @@ export default class Profile extends Component {
     
     return (
      
-      <ListItem  onPress={()=>this.onChangeHoa(item)} 
-       bottomDivider>
-        <ListItem.Content>
-          <ListItem.Title>{item.hoaName}</ListItem.Title>
-        </ListItem.Content>
-      </ListItem>
-     
+      <List.Item  onPress={()=>this.onChangeHoa(item)} 
+       bottomDivider
+       title={item.hoaName}/>
+      
     );
   };
   
@@ -193,14 +183,17 @@ export default class Profile extends Component {
       <View style={styles.headerContainer}>
      
       <Button
-            title={this.state.currentHoaName}
-            titleStyle={styles.TransparentButtonText}
-            containerStyle={{ flex:-1 }}
-            buttonStyle={{ backgroundColor: 'transparent' }}
-            underlayColor="transparent"
+           mode="text"
+           labelStyle={styles.TransparentButtonText}
+           compact={true}
+           uppercase={false}
             onPress={this.openDialog}
-          />
-      <Text style={styles.userNameText}>{username + ' ' + usersurname}</Text>
+            
+          ><Text numberOfLines={2}>
+              {this.state.currentHoaName}
+          </Text>
+          </Button>
+      <Text  style={styles.userNameText}>{username + ' ' + usersurname}</Text>
       <Portal>
       <Dialog visible={this.state.hoaDialogVisible} onDismiss={this.hideDialog}>
         <Dialog.Title>Wybierz wspólnotę</Dialog.Title>
@@ -267,6 +260,7 @@ const styles = StyleSheet.create({
   },
   TransparentButtonText: {
     color: colors.black,
+    
     fontSize: 18,
   },
 })

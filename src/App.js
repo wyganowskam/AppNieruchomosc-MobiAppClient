@@ -4,7 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
-// import MainScreen from './screens/MainScreen/MainScreen';
+import MainScreen from './screens/MainScreen/MainScreen';
+import { IconButton} from 'react-native-paper';
 // import ChatScreen from "./screens/MainMessenger/ChatScreen/ChatScreen";
 // import MessageScreen from "./screens/MainMessenger/MessageScreen/MessageScreen"
 // import FailureScreen from './screens/FailureScreen/FailureScreen';
@@ -90,28 +91,21 @@ export default class App extends React.Component {
             
             },
             headerRight: () => (
-              this.state.jwt && 
-              (<Button
+              //this.state.jwt && 
+              (<IconButton
                 onPress={this.logout}
                 buttonStyle={{ backgroundColor: 'white' }}
                 underlayColor="transparent"
-                icon={
-                  <Icon
-                    name='logout'
-                    type='antdesign'
-                    
-                    color="black"
-                  />
-                }
+                icon="logout"
               />)
             ), 
 
         }}>
 
-          <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'LOGOWANIE' }} initialParams={{newJWT:this.newJWT}}/>
+          {/* <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'LOGOWANIE' }} initialParams={{newJWT:this.newJWT}}/>
           <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'REJESTRACJA', }}/>
-          <Stack.Screen name="Reset" component={ResetPasswordScreen} options={{ title: 'RESETOWANIE HASŁA' }} />
-          {/* {this.state.jwt=='' ? (
+          <Stack.Screen name="Reset" component={ResetPasswordScreen} options={{ title: 'RESETOWANIE HASŁA' }} /> */}
+          {this.state.jwt=='' ? (
 
           <>
           <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'LOGOWANIE' }} initialParams={{newJWT:this.newJWT}}/>
@@ -122,14 +116,14 @@ export default class App extends React.Component {
           <>
          
           <Stack.Screen name="Main" component={MainScreen} options={{ title: 'MENU', }}  />
-          <Stack.Screen name="Messages" component={MessageScreen} options={{ title: 'KOMUNIKATOR', }}  />
+          {/* <Stack.Screen name="Messages" component={MessageScreen} options={{ title: 'KOMUNIKATOR', }}  />
           <Stack.Screen name="MyInvitations" component={InvitationScreen} options={{ title: 'ZAPROSZENIA', }}  />
           <Stack.Screen name="Failure" component={FailureScreen} options={{ title: 'AWARIE' }} />
           <Stack.Screen name="FailureDetails" component={FailureDetailsScreen} options={{ title: 'AWARIA' }}  />
           <Stack.Screen name="FailureAdd" component={FailureAddScreen} options={{ title: 'NOWA AWARIA' }}  />
           <Stack.Screen  name="Chat" component={ChatScreen} options={{ title: '', }}  />
-          <Stack.Screen  name="NewMessage" component={NewMessageScreen} options={{ title: 'NOWY WĄTEK', }}  />
-          </>)} */}
+          <Stack.Screen  name="NewMessage" component={NewMessageScreen} options={{ title: 'NOWY WĄTEK', }}  /> */}
+          </>)}
         </Stack.Navigator>
       </NavigationContainer>
       </PaperProvider>

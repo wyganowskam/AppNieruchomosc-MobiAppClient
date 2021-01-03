@@ -77,7 +77,7 @@ export default class LoginScreen extends Component {
     LayoutAnimation.easeInEaseOut();
     this.setState({ emailValid });
   
-    return emailValid;
+    return true;
   }
 
   validatePassword() {

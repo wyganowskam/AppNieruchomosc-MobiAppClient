@@ -6,7 +6,7 @@ import {
   StyleSheet,
   View,
   Image,
-  
+  ScrollView
 } from 'react-native';
 import {  Text, Button,TextInput } from 'react-native-paper';
 import colors from "../../config/colors"
@@ -107,10 +107,13 @@ export default class ResetPasswordScreen extends Component {
              
             />
             <Text style={{color:colors.error}}>{this.state.message}</Text>
-            <View style={styles.buttonContainer}>
+           
+          </View>
+         
+        </KeyboardAvoidingView>
+        <View style={styles.buttonContainer}>
             <Button
               loading={isLoading}
-              title="ZRESETUJ HASŁO"
               labelStyle={styles.ResetButtonText}
               onPress={this.reset}
               mode="contained"
@@ -120,9 +123,6 @@ export default class ResetPasswordScreen extends Component {
               ZRESETUJ HASŁO
               </Button> 
               </View>
-          </View>
-         
-        </KeyboardAvoidingView>
       </View>
       </ScrollView>
     );
@@ -172,8 +172,9 @@ const styles = StyleSheet.create({
       marginBottom:25
     },
   ResetButtonText: {
-    
-    fontSize: 13,
+    alignSelf:"center",
+    color:colors.white,
+    fontSize: 16,
   },
   ResetButton: {
     width: 250,
