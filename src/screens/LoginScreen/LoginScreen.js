@@ -7,9 +7,9 @@ import {
   KeyboardAvoidingView,
   StyleSheet,
   View,
+  ScrollView
 } from 'react-native';
-import {  Text, Button } from 'react-native-paper';
-import FormInput from '../../components/common/FormInput';
+import {  Text, Button,TextInput,Portal } from 'react-native-paper';
 import {login} from '../../services/authService';
 import colors from "../../config/colors"
 
@@ -60,6 +60,10 @@ export default class LoginScreen extends Component {
       //this.clearForm();
        });
     }
+    else{
+      if (!emailValid) this.setState({message:"Nieprawidłowy adres email"});
+      else this.setState({message:"Nieprawidłowe hasło"});
+    }
   }
 
   clearForm(){
@@ -72,7 +76,7 @@ export default class LoginScreen extends Component {
     const emailValid = re.test(email);
     LayoutAnimation.easeInEaseOut();
     this.setState({ emailValid });
-    emailValid || this.emailInput.shake();
+  
     return emailValid;
   }
 
@@ -81,7 +85,7 @@ export default class LoginScreen extends Component {
     const passwordValid = password.length >= 8;
     LayoutAnimation.easeInEaseOut();
     this.setState({ passwordValid });
-    passwordValid || this.passwordInput.shake();
+  
     return passwordValid;
   }
 
@@ -106,12 +110,10 @@ export default class LoginScreen extends Component {
     } = this.state;
 
     return (
-      <ImageBackground
-    //source={require('../../assets/background_dot.png')}
-    resizeMode="repeat"
-    style={styles.background}
-  >
-  <View
+   <ScrollView style={{flex:1}} contentContainerStyle={{flexGrow:1}}>
+
+  
+      <View
         style={styles.container}       
       >
         <KeyboardAvoidingView
@@ -124,41 +126,35 @@ export default class LoginScreen extends Component {
             style={styles.logo}
             source={require('../../assets/cover.png')}
           />
-            
-            <FormInput
-              refInput={(input) => (this.emailInput = input)}
-            
-              value={email}
-              onChangeText={(email) => this.setState({ email })}
-              placeholder="Email"
-              keyboardType="email-address"
-              returnKeyType="next"
-              errorMessage={
-                emailValid ? null : 'Nieprawidłowy adres email'
-              }
-              onSubmitEditing={() => {
-                this.validateEmail();
-                this.passwordInput.focus();
-              }}
-            />
-            <FormInput
-              refInput={(input) => (this.passwordInput = input)}
+         
+            <TextInput
               
+              value={email}
+              onChangeText={(email) =>{ this.setState({ email });  if(this.state.message!=='') this.setState({message:''})}}
+              placeholder="Email"
+              editable={true}
+              style={styles.inputStyle}
+
+            />
+          
+            
+            <TextInput
               value={password}
-              onChangeText={(password) => this.setState({ password })}
+              onChangeText={(password) => {this.setState({ password }); if(this.state.message!=='') this.setState({message:''})}}
               placeholder="Hasło"
               secureTextEntry
-              returnKeyType="next"
-              errorMessage={
-                passwordValid ? null : 'Nieprawidłowe hasło'
-              }
-              onSubmitEditing={() => {
-                this.validatePassword();
-                this.loginHandler();
-              }}
+              editable={true}
+              style={styles.inputStyle}
+
             />
             <Text style={{color:colors.error, margin:5}}>{this.state.message}</Text>
-            <Button
+           
+          </View>
+         
+        </KeyboardAvoidingView>
+        <View style={{alignItems:"center"}}>
+        <View style={styles.buttonContainer}>
+        <Button
             loading={isLoading}
             mode="contained"
             labelStyle={styles.LoginButtonText}
@@ -166,15 +162,15 @@ export default class LoginScreen extends Component {
             disabled={isLoading}
             style={styles.LoginButton}
             
+            
           >
             ZALOGUJ SIĘ
           </Button>
-          
           </View>
-         
-        </KeyboardAvoidingView>
-        <View style={{alignItems:"center"}}>
-        <View style={styles.loginHereContainer}>
+
+          
+        
+          <View style={styles.loginHereContainer}>
           <Text style={styles.questionText}>
             Nie masz konta? 
           </Text>
@@ -207,8 +203,8 @@ export default class LoginScreen extends Component {
 
         </View>
       </View>
-  </ImageBackground>
-      
+      </ScrollView>
+     
     );
   }
 }
@@ -237,7 +233,7 @@ const styles = StyleSheet.create({
   },
   LoginText: {
     color: colors.black,
-    fontSize: 28,
+    fontSize: 3,
     
   },
   background: {
@@ -247,11 +243,10 @@ const styles = StyleSheet.create({
   LoginButton: {
     width: 250,
     borderRadius: 0,
-    height: 45,
+   
     flex:1,
-    alignContent:"center",
-    alignSelf:'center',
-    backgroundColor:colors.button
+   
+    backgroundColor:colors.button,
   },
   userTypesContainer: {
     flexDirection: 'row',
@@ -285,22 +280,30 @@ const styles = StyleSheet.create({
     height: 45,
     marginVertical: 10,
   },
-  inputStyle: {
-    flex: 1,
-    marginLeft: 10,
-    color: colors.white,
+  inputStyle: {height:50,
+     width:250,
+     alignSelf:"center",
+     margin:5,
+     backgroundColor:"transparent",
+     fontSize:16
     
-    fontSize: 16,
-  },
+    },
+
   LoginButtonText: {
     alignSelf:"center",
     color:colors.white,
-    fontSize: 13,
+    fontSize: 16,
   },
 
   loginHereContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width:250,
+    marginBottom:25
   },
   questionText: {
     

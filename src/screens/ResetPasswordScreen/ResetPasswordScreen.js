@@ -5,10 +5,10 @@ import {
   KeyboardAvoidingView,
   StyleSheet,
   View,
-  Image
+  Image,
+  
 } from 'react-native';
-import {  Text, Button } from 'react-native-paper';
-import FormInput from '../../components/common/FormInput';
+import {  Text, Button,TextInput } from 'react-native-paper';
 import colors from "../../config/colors"
 import {forgotPassword} from '../../services/authService';
 
@@ -53,6 +53,9 @@ export default class ResetPasswordScreen extends Component {
         }
       );
     }
+    else {
+      this.setState({message:"Niepoprawny email", isLoading:false});
+    }
   }
 
   validateEmail() {
@@ -61,7 +64,6 @@ export default class ResetPasswordScreen extends Component {
     const emailValid = re.test(email);
     LayoutAnimation.easeInEaseOut();
     this.setState({ emailValid });
-    emailValid || this.emailInput.shake();
     return emailValid;
   }
 
@@ -81,6 +83,7 @@ export default class ResetPasswordScreen extends Component {
     } = this.state;
 
     return (
+      <ScrollView style={{flex:1}} contentContainerStyle={{flexGrow:1}}>
       <View
         style={styles.container}       
       >
@@ -94,22 +97,17 @@ export default class ResetPasswordScreen extends Component {
             style={styles.logo}
             source={require('../../assets/cover.png')}
           />
-            <FormInput
-              refInput={(input) => (this.emailInput = input)}
+            <TextInput
+            
               value={email}
-              onChangeText={(email) => this.setState({ email })}
+              onChangeText={(email) => {this.setState({ email }); if(this.state.message!=='') this.setState({message:''})}}
               placeholder="Email"
-              keyboardType="email-address"
-              returnKeyType="next"
-              errorMessage={
-                emailValid ? null : 'Nieprawidłowy adres email'
-              }
-              onSubmitEditing={() => {
-                this.validateEmail();
-                this.reset();
-              }}
+              editable={true}
+              style={styles.inputStyle}
+             
             />
             <Text style={{color:colors.error}}>{this.state.message}</Text>
+            <View style={styles.buttonContainer}>
             <Button
               loading={isLoading}
               title="ZRESETUJ HASŁO"
@@ -121,10 +119,12 @@ export default class ResetPasswordScreen extends Component {
             >
               ZRESETUJ HASŁO
               </Button> 
+              </View>
           </View>
          
         </KeyboardAvoidingView>
       </View>
+      </ScrollView>
     );
   }
 }
@@ -147,6 +147,30 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
   },
+   
+  inputContainer: {
+    paddingLeft: 8,
+    borderRadius: 40,
+    borderWidth: 1,
+    borderColor: colors.grey,
+    height: 45,
+    marginVertical: 10,
+  },
+  inputStyle: {
+    height:50,
+     width:250,
+     alignSelf:"center",
+     margin:5,
+     backgroundColor:"transparent",
+     fontSize:16
+    
+    },
+    buttonContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      width:250,
+      marginBottom:25
+    },
   ResetButtonText: {
     
     fontSize: 13,
@@ -154,10 +178,9 @@ const styles = StyleSheet.create({
   ResetButton: {
     width: 250,
     borderRadius: 0,
-    height: 45,
+   
     flex:1,
-    alignContent:"center",
-    alignSelf:'center',
-    backgroundColor:colors.button
+   
+    backgroundColor:colors.button,
   },
 });

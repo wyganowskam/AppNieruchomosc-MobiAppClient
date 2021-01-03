@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import colors from '../../config/colors';
 import { Dialog, Portal } from 'react-native-paper';
-import { ScrollView } from 'react-native-gesture-handler';
 import { ListItem} from 'react-native-elements';
 import {getUserInfo} from '../../services/authService';
 import deviceStorage from '../../services/deviceStorage';

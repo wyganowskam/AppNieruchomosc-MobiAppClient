@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import {
   Alert,
   LayoutAnimation,
-  TouchableOpacity,
+  ScrollView,
   Dimensions,
   Image,
   UIManager,
   KeyboardAvoidingView,
   StyleSheet,
   View,
+  
 } from 'react-native';
-import {  Text, Button } from 'react-native-paper';
-import FormInput from '../../components/common/FormInput';
+import {  Text, Button ,TextInput} from 'react-native-paper';
 import {register} from '../../services/authService';
-import {RegisterSuccess} from './RegisterSuccess';
+//import {RegisterSuccess} from './RegisterSuccess';
 import colors from "../../config/colors"
 
 // Enable LayoutAnimation on Android
@@ -105,6 +105,14 @@ export default class RegisterScreen extends Component {
       }
     );
     }
+    else {
+      if(!emailValid) this.setState({message:"Nieprawidłowy adres email"});
+      else if(!passwordValid) this.setState({message:"Nieprawidłowe hasło. Hasło musi mieć przynajmniej 8 znaków."});
+      else if(!confirmationPasswordValid) this.setState({message:"Hasła różnią się od siebie."});
+      else if(!usernameValid) this.setState({message:"Imię nie może być puste."});
+      else this.setState({message:"Nazwisko nie może być puste."});
+      
+    }
   }
 
   validateUsername() {
@@ -112,7 +120,6 @@ export default class RegisterScreen extends Component {
     const usernameValid = username.length > 0;
     LayoutAnimation.easeInEaseOut();
     this.setState({ usernameValid });
-    usernameValid || this.usernameInput.shake();
     return usernameValid;
   }
 
@@ -121,7 +128,6 @@ export default class RegisterScreen extends Component {
     const usersurnameValid = usersurname.length > 0;
     LayoutAnimation.easeInEaseOut();
     this.setState({ usersurnameValid });
-    usersurnameValid || this.usersurnameInput.shake();
     return usersurnameValid;
   }
 
@@ -131,7 +137,6 @@ export default class RegisterScreen extends Component {
     const emailValid = re.test(email);
     LayoutAnimation.easeInEaseOut();
     this.setState({ emailValid });
-    emailValid || this.emailInput.shake();
     return emailValid;
   }
 
@@ -141,7 +146,6 @@ export default class RegisterScreen extends Component {
     const passwordValid = password.length >= 8;
     LayoutAnimation.easeInEaseOut();
     this.setState({ passwordValid });
-    passwordValid || this.passwordInput.shake();
     return passwordValid;
   }
 
@@ -150,7 +154,6 @@ export default class RegisterScreen extends Component {
     const confirmationPasswordValid = password === confirmationPassword;
     LayoutAnimation.easeInEaseOut();
     this.setState({ confirmationPasswordValid });
-    confirmationPasswordValid || this.confirmationPasswordInput.shake();
     return confirmationPasswordValid;
   }
 
@@ -176,6 +179,7 @@ export default class RegisterScreen extends Component {
     } = this.state;
  
     return (
+      <ScrollView style={{flex:1}} contentContainerStyle={{flexGrow:1}}>
       <View style={styles.container} >
        
         <KeyboardAvoidingView
@@ -189,86 +193,55 @@ export default class RegisterScreen extends Component {
             style={styles.logo}
             source={require('../../assets/cover.png')}
           />
-            <FormInput
-              refInput={(input) => (this.usernameInput = input)}
+            <TextInput
+          
               value={username}
-              onChangeText={(username) => this.setState({ username })}
+              onChangeText={(username) =>{ this.setState({ username });if(this.state.message!=='') this.setState({message:''})}}
               placeholder="Imię"
-              returnKeyType="next"
-              errorMessage={
-                usernameValid ? null : "Imię nie może być puste"
-              }
-              onSubmitEditing={() => {
-                this.validateUsername();
-                this.usersurnameInput.focus();
-              }}
+              editable={true}
+              style={styles.inputStyle}
+            
             />
-              <FormInput
-              refInput={(input) => (this.usersurnameInput = input)}
+              <TextInput
               value={usersurname}
-              onChangeText={(usersurname) => this.setState({ usersurname })}
+              onChangeText={(usersurname) =>{ this.setState({ usersurname });if(this.state.message!=='') this.setState({message:''})}}
               placeholder="Nazwisko"
-              returnKeyType="next"
-              errorMessage={
-                usersurnameValid ? null : "Nazwisko nie może być puste"
-              }
-              onSubmitEditing={() => {
-                this.validateUsersurname();
-                this.emailInput.focus();
-              }}
+              editable={true}
+              style={styles.inputStyle}
             />
-            <FormInput
-              refInput={(input) => (this.emailInput = input)}
+           <TextInput
               value={email}
-              onChangeText={(email) => this.setState({ email })}
+              onChangeText={(email) => {this.setState({ email });if(this.state.message!=='') this.setState({message:''})}}
               placeholder="Email"
-              keyboardType="email-address"
-              returnKeyType="next"
-              errorMessage={
-                emailValid ? null : 'Nieprawidłowy adres email'
-              }
-              onSubmitEditing={() => {
-                this.validateEmail();
-                this.passwordInput.focus();
-              }}
+              editable={true}
+              style={styles.inputStyle}
             />
              
-            <FormInput
-              refInput={(input) => (this.passwordInput = input)}
+             <TextInput
               value={password}
-              onChangeText={(password) => this.setState({ password })}
+              onChangeText={(password) => {this.setState({ password });;if(this.state.message!=='') this.setState({message:''})}}
               placeholder="Hasło"
               secureTextEntry
-              returnKeyType="next"
-              errorMessage={
-                passwordValid ? null : 'Hasło musi mieć przynajmniej 8 znaków'
-              }
-              onSubmitEditing={() => {
-                this.validatePassword();
-                this.confirmationPasswordInput.focus();
-              }}
+              editable={true}
+              style={styles.inputStyle}
             />
-            <FormInput
-              refInput={(input) => (this.confirmationPasswordInput = input)}
+           <TextInput
               value={confirmationPassword}
               onChangeText={(confirmationPassword) =>
-                this.setState({ confirmationPassword })
+                {this.setState({ confirmationPassword });if(this.state.message!=='') this.setState({message:''})}
               }
               placeholder="Powtórz hasło"
               secureTextEntry
-              errorMessage={
-                confirmationPasswordValid
-                  ? null
-                  : 'Hasła różnią się od siebie'
-              }
-              returnKeyType="go"
-              onSubmitEditing={() => {
-                this.validateConfirmationPassword();
-                this.signup();
-              }}
+              editable={true}
+              style={styles.inputStyle}
             />
 
             <Text style={{color:colors.error}}>{this.state.message}</Text>
+            
+          </View>
+         
+        </KeyboardAvoidingView>
+        <View style={styles.buttonContainer}>
             <Button
               loading={isLoading}
               mode="contained"
@@ -278,9 +251,7 @@ export default class RegisterScreen extends Component {
               disabled={isLoading}>
                   ZAREJESTRUJ SIĘ
               </Button>
-          </View>
-         
-        </KeyboardAvoidingView>
+              </View>
         <View style={styles.loginHereContainer}>
           <Text style={styles.alreadyAccountText}>
             Masz już konto? 
@@ -298,6 +269,7 @@ export default class RegisterScreen extends Component {
        
         
       </View>
+      </ScrollView>
     );
   }
 }
@@ -324,6 +296,12 @@ const styles = StyleSheet.create({
   signUpText: {
     color: colors.black,
     fontSize: 28,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width:250,
+    marginBottom:25
   },
  
   signUpButtonText: {
@@ -353,4 +331,13 @@ const styles = StyleSheet.create({
    
     fontSize: 12,
   },
+  inputStyle: {
+    height:50,
+     width:250,
+     alignSelf:"center",
+     margin:5,
+     backgroundColor:"transparent",
+     fontSize:16
+    
+    },
 });

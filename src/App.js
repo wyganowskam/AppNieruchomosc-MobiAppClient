@@ -1,26 +1,35 @@
-import 'react-native-gesture-handler';
+
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
-import MainScreen from './screens/MainScreen/MainScreen';
-import ChatScreen from "./screens/MainMessenger/ChatScreen/ChatScreen";
-import MessageScreen from "./screens/MainMessenger/MessageScreen/MessageScreen"
-import FailureScreen from './screens/FailureScreen/FailureScreen';
-import NewMessageScreen from "./screens/MainMessenger/NewMessageScreen/NewMessageScreen"
-import FailureDetailsScreen from './screens/FailureScreen/FailureDetailsScreen';
-import FailureAddScreen from './screens/FailureScreen/FailureAddScreen';
-import InvitationScreen from "./screens/InvitationScreen/InvitationScreen"
+// import MainScreen from './screens/MainScreen/MainScreen';
+// import ChatScreen from "./screens/MainMessenger/ChatScreen/ChatScreen";
+// import MessageScreen from "./screens/MainMessenger/MessageScreen/MessageScreen"
+// import FailureScreen from './screens/FailureScreen/FailureScreen';
+// import NewMessageScreen from "./screens/MainMessenger/NewMessageScreen/NewMessageScreen"
+// import FailureDetailsScreen from './screens/FailureScreen/FailureDetailsScreen';
+// import FailureAddScreen from './screens/FailureScreen/FailureAddScreen';
+// import InvitationScreen from "./screens/InvitationScreen/InvitationScreen"
 import ResetPasswordScreen from './screens/ResetPasswordScreen/ResetPasswordScreen';
 import { setAuthHeader } from './api/ApiClient';
 import deviceStorage from './services/deviceStorage';
 import {logout} from './services/authService';
-import {Button, Icon} from 'react-native-elements'
+import {Button, Icon} from 'react-native-paper'
 import {revokeToken} from './services/userService'
 import {getHoasRoles} from './services/hoaService';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 const Stack = createStackNavigator();
+
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: 'black',
+    accent: '#B0A3D4',
+  },
+};
 
 export default class App extends React.Component {
   constructor() {
@@ -69,7 +78,7 @@ export default class App extends React.Component {
  
   render() {
     return (
-      <PaperProvider>
+      <PaperProvider theme={theme}>
       <NavigationContainer >
         <Stack.Navigator 
          
@@ -98,7 +107,12 @@ export default class App extends React.Component {
             ), 
 
         }}>
-          {this.state.jwt=='' ? (
+
+          <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'LOGOWANIE' }} initialParams={{newJWT:this.newJWT}}/>
+          <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'REJESTRACJA', }}/>
+          <Stack.Screen name="Reset" component={ResetPasswordScreen} options={{ title: 'RESETOWANIE HASŁA' }} />
+          {/* {this.state.jwt=='' ? (
+
           <>
           <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'LOGOWANIE' }} initialParams={{newJWT:this.newJWT}}/>
           <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'REJESTRACJA', }}/>
@@ -106,6 +120,7 @@ export default class App extends React.Component {
           </>
           ) : (
           <>
+         
           <Stack.Screen name="Main" component={MainScreen} options={{ title: 'MENU', }}  />
           <Stack.Screen name="Messages" component={MessageScreen} options={{ title: 'KOMUNIKATOR', }}  />
           <Stack.Screen name="MyInvitations" component={InvitationScreen} options={{ title: 'ZAPROSZENIA', }}  />
@@ -114,7 +129,7 @@ export default class App extends React.Component {
           <Stack.Screen name="FailureAdd" component={FailureAddScreen} options={{ title: 'NOWA AWARIA' }}  />
           <Stack.Screen  name="Chat" component={ChatScreen} options={{ title: '', }}  />
           <Stack.Screen  name="NewMessage" component={NewMessageScreen} options={{ title: 'NOWY WĄTEK', }}  />
-          </>)}
+          </>)} */}
         </Stack.Navigator>
       </NavigationContainer>
       </PaperProvider>
