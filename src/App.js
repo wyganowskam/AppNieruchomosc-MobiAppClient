@@ -90,7 +90,7 @@ export default class App extends React.Component {
             
             },
             headerRight: () => (
-              //this.state.jwt && 
+              this.state.jwt && 
               (<IconButton
                 onPress={this.logout}
                 buttonStyle={{ backgroundColor: 'white' }}

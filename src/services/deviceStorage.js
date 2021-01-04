@@ -1,5 +1,6 @@
 import  AsyncStorage  from '@react-native-community/async-storage';
 import authHeader from "./authHeader";
+import { getHoasRoles } from './hoaService';
 const deviceStorage = {
   async setItem(key, valueToSave) {
     try {
@@ -46,9 +47,12 @@ const deviceStorage = {
     deviceStorage.setItem('id_token',jwt).then(
       ()=>{
         authHeader().then(()=>{
-          this.setState({
-            jwt: jwt
-          });
+          getHoasRoles().then(()=>{
+            this.setState({
+              jwt: jwt
+            });
+          })
+          
         });
        
       }
@@ -63,11 +67,15 @@ const deviceStorage = {
 
          // console.log(JSON.parse( value));
           if (value !== null) {
-            this.setState({
-              //użytkownik zalogowany
-              jwt: value,
-              loading: false
-            });
+            getHoasRoles().then(()=>{
+              this.setState({
+                //użytkownik zalogowany
+                jwt: value,
+                loading: false
+              });
+            })
+            
+
           } else {
             this.setState({
               //użytkownik wylogowany
