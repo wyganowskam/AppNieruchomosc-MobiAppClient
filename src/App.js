@@ -14,7 +14,6 @@ import { IconButton} from 'react-native-paper';
 // import FailureAddScreen from './screens/FailureScreen/FailureAddScreen';
 // import InvitationScreen from "./screens/InvitationScreen/InvitationScreen"
 import ResetPasswordScreen from './screens/ResetPasswordScreen/ResetPasswordScreen';
-import { setAuthHeader } from './api/ApiClient';
 import deviceStorage from './services/deviceStorage';
 import {logout} from './services/authService';
 import {Button, Icon} from 'react-native-paper'
@@ -50,7 +49,7 @@ export default class App extends React.Component {
     this.logout=this.logout.bind(this);
    
     this.loadJWT();
-    console.log(this.state.jwt);
+    //console.log(this.state.jwt);
   }
   logout() {
     console.log("wylogowanie");
@@ -105,7 +104,7 @@ export default class App extends React.Component {
           {/* <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'LOGOWANIE' }} initialParams={{newJWT:this.newJWT}}/>
           <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'REJESTRACJA', }}/>
           <Stack.Screen name="Reset" component={ResetPasswordScreen} options={{ title: 'RESETOWANIE HASŁA' }} /> */}
-          {this.state.jwt=='' ? (
+          {this.state.jwt==='' ? (
 
           <>
           <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'LOGOWANIE' }} initialParams={{newJWT:this.newJWT}}/>

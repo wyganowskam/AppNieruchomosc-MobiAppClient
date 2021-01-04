@@ -1,14 +1,14 @@
 import axios from 'axios';
 import deviceStorage from "../services/deviceStorage";
 import authHeader from "../services/authHeader";
-//const baseURL='https://localhost:5001/api/';
-const baseURL='https://appnieruchomoscapi.azurewebsites.net/api/'
+const baseURL='https://localhost:5001/api/';
+//const baseURL='https://appnieruchomoscapi.azurewebsites.net/api/'
 const apiClient = axios.create({
     baseURL: baseURL
 });
 
 deviceStorage.getJWT().then((jwt) => {
-  apiClient.defaults.headers.common.Authorization=`Bearer ${jwt}`;
+  apiClient.defaults.headers.common.Authorization='Bearer ' +JSON.parse(jwt);
   deviceStorage.getItem('hoaId').then((hoaId) => {
     apiClient.defaults.headers.common.hoaId=hoaId; 
   });
@@ -65,13 +65,6 @@ apiClient.defaults.withCredentials = true;
     
 
 
-const setAuthHeader = (jwt) => {
-    if (jwt) {
-        apiClient.defaults.headers.common.Authorization=`Bearer ${jwt}`;
-    }
-    else {
-        delete apiClient.defaults.headers.common.Authorization;
-    }
-};
 
-export {apiClient,setAuthHeader};
+
+export {apiClient};

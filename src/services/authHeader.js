@@ -1,18 +1,18 @@
 import deviceStorage from "./deviceStorage";
+import {apiClient} from "../api/ApiClient"
 
 export default function authHeader() {
-    deviceStorage.getItem('id_token')
+    return deviceStorage.getItem('id_token')
         .then((userTokenVal)=>{
-    deviceStorage.getItem('hoaId')
-        .then((hoaIdVal)=>{
-            // console.log("usertokenval:");
-            // console.log(userTokenVal);
+        return deviceStorage.getItem('hoaId')
+            .then((hoaIdVal)=>{
             const userToken = userTokenVal;
             const currentHoa = hoaIdVal;
             if (userToken) {
-                return { Authorization: 'Bearer ' + userToken, hoaId: currentHoa};
+               apiClient.defaults.headers.common.Authorization= 'Bearer ' + userToken;
+               apiClient.defaults.headers.common.hoaId=currentHoa;
               } else {
-                return {};
+                apiClient.defaults.headers.common= {};
               }
 
 

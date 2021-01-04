@@ -1,5 +1,4 @@
 import  AsyncStorage  from '@react-native-community/async-storage';
-import { setAuthHeader } from "../api/ApiClient";
 import authHeader from "./authHeader";
 const deviceStorage = {
   async setItem(key, valueToSave) {
@@ -42,13 +41,16 @@ const deviceStorage = {
   },
 
   newJWT(jwt){
-    this.setState({
-      jwt: jwt
-    });
-    setAuthHeader(jwt);
+    
+  
     deviceStorage.setItem('id_token',jwt).then(
       ()=>{
-        authHeader();
+        authHeader().then(()=>{
+          this.setState({
+            jwt: jwt
+          });
+        });
+       
       }
     );
   },
@@ -58,7 +60,8 @@ const deviceStorage = {
     try {
       deviceStorage.getItem('id_token').then(
         (value)=>{
-          //console.log(JSON.parse( value));
+
+         // console.log(JSON.parse( value));
           if (value !== null) {
             this.setState({
               //użytkownik zalogowany
@@ -86,7 +89,8 @@ const deviceStorage = {
         () => {
           this.setState({
             jwt: ''
-          })
+          });
+          authHeader();
         }
       );
     } catch (error) {
