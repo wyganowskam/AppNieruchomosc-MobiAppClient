@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Dimensions, FlatList, ScrollView } from 'react-native';
-import { ListItem,Text } from 'react-native-elements';
+import { Text } from 'react-native-paper';
 import Row from "./InvitationRow";
 import colors from '../../config/colors';
-import { Button} from 'react-native-elements';
 import {getMyInvitations} from '../../services/invitationService';
-
 
 export default class FailureScreen extends Component {
   constructor(props) {
@@ -69,10 +67,8 @@ export default class FailureScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: 'white',
-   
-    alignItems:"center",
-    
+    backgroundColor: colors.light,
+    alignItems:"center",    
   },
   list: {
     marginTop: 20,

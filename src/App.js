@@ -13,7 +13,7 @@ import {Image} from 'react-native';
 // import NewMessageScreen from "./screens/MainMessenger/NewMessageScreen/NewMessageScreen"
 // import FailureDetailsScreen from './screens/FailureScreen/FailureDetailsScreen';
 // import FailureAddScreen from './screens/FailureScreen/FailureAddScreen';
-// import InvitationScreen from "./screens/InvitationScreen/InvitationScreen"
+import InvitationScreen from "./screens/InvitationScreen/InvitationScreen"
 import ResetPasswordScreen from './screens/ResetPasswordScreen/ResetPasswordScreen';
 import deviceStorage from './services/deviceStorage';
 import {logout} from './services/authService';
@@ -116,8 +116,8 @@ export default class App extends React.Component {
           <>
          
           <Stack.Screen name="Main" component={MainScreen} options={{ title: 'Dzień dobry', }}  />
-          {/* <Stack.Screen name="Messages" component={MessageScreen} options={{ title: 'KOMUNIKATOR', }}  />
           <Stack.Screen name="MyInvitations" component={InvitationScreen} options={{ title: 'ZAPROSZENIA', }}  />
+          {/* <Stack.Screen name="Messages" component={MessageScreen} options={{ title: 'KOMUNIKATOR', }}  />
           <Stack.Screen name="Failure" component={FailureScreen} options={{ title: 'AWARIE' }} />
           <Stack.Screen name="FailureDetails" component={FailureDetailsScreen} options={{ title: 'AWARIA' }}  />
           <Stack.Screen name="FailureAdd" component={FailureAddScreen} options={{ title: 'NOWA AWARIA' }}  />

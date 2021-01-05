@@ -1,33 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
 import {acceptInvitation} from '../../services/invitationService';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { Text,
+  Button, Divider,Card,  } from 'react-native-paper';
+import colors from '../../config/colors';
 export const primaryCyanLight = '#00bcd4';
-const useStyles = makeStyles((theme) => ({
-    avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.grey[800],
-    },
-    buttonProgress: {
-        color: primaryCyanLight,
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        marginTop: -13,
-        marginLeft: -13,
-      },
-  })) ;
-
-  
-function LoadingCircle() {
-    const classes = useStyles();
-  
-    return (
-        <CircularProgress size={26} className={classes.buttonProgress} />
-    );
-  }
 
 
 export default function Row(props) {
@@ -60,15 +36,19 @@ export default function Row(props) {
 
   return (
 
-      <Paper elevation={3} style={{padding:20, margin:20, maxWidth: 800, textAlign: 'left'}}>
-       <Button disabled={loading} onClick={handleSave} style={{backgroundColor: '#EEEEEE', padding:7, 
-       borderRadius:10, marginRight: 50}} >  
-            
-            {loading && <LoadingCircle />}
-            Akceptuj  
-            </Button >
-            {row.hoaName}
-        </Paper>
+      <Card style={{margin:10,}}>
+      
+        <Card.Content>
+          <Text>{row.hoaName}</Text>
+        </Card.Content>
+       
+        <Card.Actions >
+        <Button loading={loading} onPress={handleSave} labelStyle={{color:colors.button}}>  
+                Akceptuj  
+          </Button >
+          
+        </Card.Actions>
+      </Card>
 
   );
 }

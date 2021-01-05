@@ -143,7 +143,7 @@ export default class Profile extends Component {
         || (isResident && item.forResident)
         || item.forAll
         ) && <> 
-      <List.Item  //onPress={() => this.props.navigation.navigate(item.page)} 
+      <List.Item  onPress={() => this.props.navigation.navigate(item.page)} 
       title={item.title}
       style={styles.list} 
       titleStyle={{color:colors.textViolet, fontSize:16,}}  
