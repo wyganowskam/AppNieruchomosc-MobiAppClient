@@ -3,7 +3,7 @@
 export const menu = [
   {
     title: 'WIADOMOŚCI',
-    icon: 'mail',
+    icon: require('../../assets/icons/envelope.png'),
     page: 'Messages',
     forAppAdmin: true,
     forBuildingAdmin: true,
@@ -13,7 +13,7 @@ export const menu = [
   },
   {
     title: 'TABLICA OGŁOSZEŃ',
-    icon: 'pushpino',
+    icon: require('../../assets/icons/pin.png'),
     page: 'Main',
     forAppAdmin: true,
     forBuildingAdmin: true,
@@ -23,7 +23,7 @@ export const menu = [
   },
   {
     title: 'GŁOSOWANIA',
-    icon: 'carryout',
+    icon: require('../../assets/icons/vote.png'),
     page: 'Main',
     forAppAdmin: true,
     forBuildingAdmin: true,
@@ -33,7 +33,7 @@ export const menu = [
   },
   {
     title: 'ANKIETY',
-    icon: 'linechart',
+    icon: require('../../assets/icons/survey.png'),
     page: 'Main',
     forAppAdmin: true,
     forBuildingAdmin: true,
@@ -43,7 +43,7 @@ export const menu = [
   },
   {
     title: 'DOKUMENTY',
-    icon: 'folderopen',
+    icon: require('../../assets/icons/paper-clip.png'),
     page: 'Main',
     forAppAdmin: true,
     forBuildingAdmin: true,
@@ -53,7 +53,7 @@ export const menu = [
   },
   {
     title: 'AWARIE',
-    icon: 'bells',
+    icon: require('../../assets/icons/notification.png'),
     page: 'Failure',
     forAppAdmin: false,
     forBuildingAdmin: false,
@@ -63,7 +63,7 @@ export const menu = [
   },
   {
     title: 'ZAPROSZENIA',
-    icon: 'mail',
+    icon: require('../../assets/icons/invitation.png'),
     page: 'MyInvitations',
     forAppAdmin: true,
     forBuildingAdmin: true,
@@ -71,16 +71,16 @@ export const menu = [
     forResident: true,
     forAll:true,
   },
-  {
-    title: 'USTAWIENIA',
-    icon: 'setting',
-    page: 'Main',
-    forAppAdmin: true,
-    forBuildingAdmin: true,
-    forBoard: true,
-    forResident: true,
-    forAll:true,
-  },
+  // {
+  //   title: 'USTAWIENIA',
+  //   icon: 'setting',
+  //   page: 'Main',
+  //   forAppAdmin: true,
+  //   forBuildingAdmin: true,
+  //   forBoard: true,
+  //   forResident: true,
+  //   forAll:true,
+  // },
 ];
 
 

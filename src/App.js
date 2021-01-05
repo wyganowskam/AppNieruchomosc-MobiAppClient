@@ -6,6 +6,7 @@ import LoginScreen from './screens/LoginScreen/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
 import MainScreen from './screens/MainScreen/MainScreen';
 import { IconButton} from 'react-native-paper';
+import {Image} from 'react-native';
 // import ChatScreen from "./screens/MainMessenger/ChatScreen/ChatScreen";
 // import MessageScreen from "./screens/MainMessenger/MessageScreen/MessageScreen"
 // import FailureScreen from './screens/FailureScreen/FailureScreen';
@@ -85,7 +86,7 @@ export default class App extends React.Component {
           screenOptions={{
             headerTitleStyle: {color:'black', },
             headerStyle: {
-              backgroundColor: 'white',
+              
               borderBottomColor:'transparent',
             
             },
@@ -95,7 +96,7 @@ export default class App extends React.Component {
                 onPress={this.logout}
                 buttonStyle={{ backgroundColor: 'white' }}
                 underlayColor="transparent"
-                icon="logout"
+                icon={props=><Image style={{width:25,height:25,alignSelf:"center"}} source={require('./assets/icons/logout.png')} />} 
               />)
             ), 
 
@@ -114,7 +115,7 @@ export default class App extends React.Component {
           ) : (
           <>
          
-          <Stack.Screen name="Main" component={MainScreen} options={{ title: 'MENU', }}  />
+          <Stack.Screen name="Main" component={MainScreen} options={{ title: 'Dzień dobry', }}  />
           {/* <Stack.Screen name="Messages" component={MessageScreen} options={{ title: 'KOMUNIKATOR', }}  />
           <Stack.Screen name="MyInvitations" component={InvitationScreen} options={{ title: 'ZAPROSZENIA', }}  />
           <Stack.Screen name="Failure" component={FailureScreen} options={{ title: 'AWARIE' }} />
