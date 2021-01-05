@@ -67,6 +67,7 @@ const deviceStorage = {
 
          // console.log(JSON.parse( value));
           if (value !== null) {
+        
             getHoasRoles().then(()=>{
               this.setState({
                 //użytkownik zalogowany

@@ -179,16 +179,19 @@ export default class Profile extends Component {
       source={require('../../assets/grad.png')}
     resizeMode="cover"
     style={styles.headerContainer}>
-     
+     <View style={{flexDirection:"row"}}>
       <Button
            mode="text"
            labelStyle={styles.TransparentButtonText}
            compact={true}
            uppercase={false}
             onPress={this.openDialog}
-            style={{paddingBottom:30, flexWrap:"wrap",flexDirection:"row"}}
-          >{this.state.currentHoaName}
+            style={{paddingBottom:30,}}
+          >{this.state.currentHoaName+ "  "}
+            <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
           </Button>
+        
+          </View>
       <Text  style={styles.userNameText}>{username + ' ' + usersurname}</Text>
 
 
@@ -266,7 +269,7 @@ const styles = StyleSheet.create({
   },
   TransparentButtonText: {
     color: colors.black,
-    
+    flexWrap:"wrap",flexDirection:"row",
     fontSize: 18,
   },
 })

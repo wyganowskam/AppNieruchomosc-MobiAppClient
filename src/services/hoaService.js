@@ -7,7 +7,7 @@ const path = 'hoa/';
 export const getHoasRoles = () => {
   return apiClient.get(path)
   .then((response) => {
-    if (response.data) {
+    if ( response.data) {
         deviceStorage.setItem("hoas", JSON.stringify(response.data));
         deviceStorage.getItem("hoaId")
           .then((resHoaId) => {
