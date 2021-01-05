@@ -15,6 +15,7 @@ export default {
     separator: '#bdc3c7',
     error:'#D87B7B',
     button:"#725174",
+    darkviolet:"#725174",
     textViolet:"#563C57",
     backgroundViolet:"#b99dbb"
 

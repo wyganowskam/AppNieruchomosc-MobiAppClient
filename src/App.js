@@ -7,12 +7,12 @@ import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
 import MainScreen from './screens/MainScreen/MainScreen';
 import { IconButton} from 'react-native-paper';
 import {Image} from 'react-native';
-// import ChatScreen from "./screens/MainMessenger/ChatScreen/ChatScreen";
-// import MessageScreen from "./screens/MainMessenger/MessageScreen/MessageScreen"
-// import FailureScreen from './screens/FailureScreen/FailureScreen';
-// import NewMessageScreen from "./screens/MainMessenger/NewMessageScreen/NewMessageScreen"
-// import FailureDetailsScreen from './screens/FailureScreen/FailureDetailsScreen';
-// import FailureAddScreen from './screens/FailureScreen/FailureAddScreen';
+import ChatScreen from "./screens/MainMessenger/ChatScreen/ChatScreen";
+import MessageScreen from "./screens/MainMessenger/MessageScreen/MessageScreen"
+import FailureScreen from './screens/FailureScreen/FailureScreen';
+import NewMessageScreen from "./screens/MainMessenger/NewMessageScreen/NewMessageScreen"
+import FailureDetailsScreen from './screens/FailureScreen/FailureDetailsScreen';
+import FailureAddScreen from './screens/FailureScreen/FailureAddScreen';
 import InvitationScreen from "./screens/InvitationScreen/InvitationScreen"
 import ResetPasswordScreen from './screens/ResetPasswordScreen/ResetPasswordScreen';
 import deviceStorage from './services/deviceStorage';
@@ -117,12 +117,12 @@ export default class App extends React.Component {
          
           <Stack.Screen name="Main" component={MainScreen} options={{ title: 'Dzień dobry', }}  />
           <Stack.Screen name="MyInvitations" component={InvitationScreen} options={{ title: 'ZAPROSZENIA', }}  />
-          {/* <Stack.Screen name="Messages" component={MessageScreen} options={{ title: 'KOMUNIKATOR', }}  />
           <Stack.Screen name="Failure" component={FailureScreen} options={{ title: 'AWARIE' }} />
           <Stack.Screen name="FailureDetails" component={FailureDetailsScreen} options={{ title: 'AWARIA' }}  />
           <Stack.Screen name="FailureAdd" component={FailureAddScreen} options={{ title: 'NOWA AWARIA' }}  />
+          <Stack.Screen name="Messages" component={MessageScreen} options={{ title: 'KOMUNIKATOR', }}  />
           <Stack.Screen  name="Chat" component={ChatScreen} options={{ title: '', }}  />
-          <Stack.Screen  name="NewMessage" component={NewMessageScreen} options={{ title: 'NOWY WĄTEK', }}  /> */}
+          <Stack.Screen  name="NewMessage" component={NewMessageScreen} options={{ title: 'NOWY WĄTEK', }}  />
           </>)}
         </Stack.Navigator>
       </NavigationContainer>

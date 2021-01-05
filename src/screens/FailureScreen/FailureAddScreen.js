@@ -6,7 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 import {failureList} from './failureData';
 import {getUserInfo} from '../../services/authService';
 import colors from '../../config/colors';
-import { Button, Image,Text} from 'react-native-elements';
+import { Button, Image,Text} from 'react-native-paper';
 import {addFailure} from '../../services/failureService';
 import MenuItem from '@material-ui/core/MenuItem';
 export default class FailureAddScreen extends Component {

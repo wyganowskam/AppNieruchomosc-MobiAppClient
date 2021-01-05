@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions,  } from 'react-native';
-import {Text} from 'react-native-elements';
+import { View, StyleSheet, Dimensions, ScrollView  } from 'react-native';
+import {Text} from 'react-native-paper';
 import {failureList} from './failureData';
 import colors from '../../config/colors';
-import {getAllFailures} from '../../services/failureService';
+import { Card, Title, Paragraph } from 'react-native-paper';
 
 
 export default class FailureDetailsScreen extends React.Component {
@@ -28,14 +28,21 @@ export default class FailureDetailsScreen extends React.Component {
     render() {
       const {failureElement,status}=this.state;
         return (
-          <View >
-          
-            <Text h3>{failureElement.title}</Text>
-            <Text><Text style={{fontWeight: "bold"}}>{"Data: "}</Text>{ failureElement.date}</Text>
-            <Text><Text style={{fontWeight: "bold"}}>{"Adres: "} </Text> {failureElement.address}</Text>
-            <Text ><Text style={{fontWeight: "bold"}}>{"Status: "} </Text>{this.state.status.description}</Text>
-            <Text><Text style={{fontWeight: "bold"}}>{"Opis: \n" } </Text>{failureElement.description}</Text>
-          </View>
+          <ScrollView style={{margin:10}} >
+            <Card>
+              <Card.Title title={failureElement.title} subtitle="typ zgłoszenia" titleStyle={{fontSize:18, color:colors.darkviolet}} />
+              <Card.Content>
+             
+                <Paragraph>
+                <Text><Text style={{fontWeight: "bold"}}>{"Data: "}</Text>{ failureElement.date+"\n"}</Text>
+                <Text><Text style={{fontWeight: "bold"}}>{"Adres: "} </Text> {failureElement.address+"\n"}</Text>
+                <Text ><Text style={{fontWeight: "bold"}}>{"Status: "} </Text>{this.state.status.description+"\n"}</Text>
+                <Text><Text style={{fontWeight: "bold"}}>{"Opis: \n" } </Text>{failureElement.description+"\n"}</Text>
+              </Paragraph>
+              </Card.Content> 
+            </Card>
+        
+          </ScrollView>
         );
       }
 }

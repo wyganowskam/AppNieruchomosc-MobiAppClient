@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Dimensions, FlatList, ScrollView } from 'react-native';
-import { ListItem,Text } from 'react-native-elements';
-
 import colors from '../../config/colors';
-import { Button} from 'react-native-elements';
+import { Button,Text,List,Divider} from 'react-native-paper';
 import {getUserInfo} from '../../services/authService';
 import {getAllFailuresByUserId} from '../../services/failureService';
 
@@ -22,15 +20,14 @@ export default class FailureScreen extends Component {
     renderRow = ({ item }) => {
    
       return (
-        <ListItem onPress={() =>{this.props.navigation.navigate('FailureDetails',{item: item,})}}  bottomDivider>
-        
-          <ListItem.Content>
-            <ListItem.Title>{item.title}</ListItem.Title>
-            <ListItem.Subtitle>{"Data zgłoszenia: " + item.date}</ListItem.Subtitle>
-            <ListItem.Subtitle>{"Status: " + item.status.name}</ListItem.Subtitle>
-          </ListItem.Content>
-          <ListItem.Chevron />
-        </ListItem>
+        <>
+        <List.Item onPress={() =>{this.props.navigation.navigate('FailureDetails',{item: item,})}}
+          title={item.title}
+          
+          description={"Status: " + item.status.name}
+        />
+        <Divider/>
+        </>
       );
     };
     handleAddButton = () => {
