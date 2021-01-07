@@ -20,7 +20,10 @@ export default class FailureAddScreen extends Component {
         apartments:[],
         message:'',
         uriList:[],
+        type:'',
+        types:[],
         apartmentDialogVisible:false,
+        typeDialogVisible:false,
     }
    this.pickImage=this.pickImage.bind(this);
    this.renderImage=this.renderImage.bind(this);
@@ -28,13 +31,17 @@ export default class FailureAddScreen extends Component {
    this.handleAddButton=this.handleAddButton.bind(this);
    this.getApartmentsList=this.getApartmentsList.bind(this);
    this.onChangeApartment=this.onChangeApartment.bind(this);
+   this.onChangeType=this.onChangeType.bind(this);
    this.hideApartmentDialog=this.hideApartmentDialog.bind(this);
+   this.hideTypeDialog=this.hideTypeDialog.bind(this);
    this.handleXPress=this.handleXPress.bind(this);
+   this.openApartmentDialog=this.openApartmentDialog.bind(this);
+   this.openTypeDialog=this.openTypeDialog.bind(this);
     }
 
     validate= () => {
-      const {title,description,apartmentId}=this.state;
-      if(!title || !description || !apartmentId){
+      const {title,description,apartment,type}=this.state;
+      if(!title || !description || !apartment || !type){
           
           this.setState({message:"Wszystkie pola muszą być wypełnione."});
           return false;
@@ -47,6 +54,7 @@ export default class FailureAddScreen extends Component {
           this.setState({message:"Opis musi mieć co najmniej 20 znaków"});
           return false;
       }
+      
       else{
           //poprawny formularz
           return true;
@@ -65,7 +73,7 @@ export default class FailureAddScreen extends Component {
      
     if (!result.cancelled) {
       const item=this.state.uriList.find(u=>u.uri===result.uri);
-      if (!item)  this.setState({uriList:[...this.state.uriList,result]});
+      if (!item)  this.setState({uriList:[...this.state.uriList,result],message:""});
      
        
     }
@@ -93,7 +101,7 @@ export default class FailureAddScreen extends Component {
   handleXPress=(item)=> {
     console.log(item)
     const newList=this.state.uriList.filter(u=>u.uri!=item.uri);
-    this.setState({uriList:newList});
+    this.setState({uriList:newList,message:""});
   }
 
   handleAddButton = () => {
@@ -131,6 +139,11 @@ export default class FailureAddScreen extends Component {
     this.setState({apartment:apartment,apartmentName: `${apartment.type} nr ${apartment.number}, ${apartment.propertyAddress.address}`,apartmentDialogVisible:false });
   };
 
+  onChangeType (type) {
+  
+    this.setState({type:type,typeDialogVisible:false,message:"" });
+  };
+
 
   getApartmentsList = ()=> {
    
@@ -147,11 +160,18 @@ export default class FailureAddScreen extends Component {
   }
 
   hideApartmentDialog=()=> {
-    this.setState({apartmentDialogVisible:false});
+    this.setState({apartmentDialogVisible:false,message:""});
   };
 
   openApartmentDialog=()=>{
-    this.setState({apartmentDialogVisible:true});
+    this.setState({apartmentDialogVisible:true,message:""});
+  }
+  hideTypeDialog=()=> {
+    this.setState({typeDialogVisible:false,message:""});
+  };
+
+  openTypeDialog=()=>{
+    this.setState({typeDialogVisible:true,message:""});
   }
 
   
@@ -165,6 +185,17 @@ export default class FailureAddScreen extends Component {
       
     );
   };
+
+  renderTypeDialog = ({ item }) => {
+ 
+    return (
+     
+      <List.Item  onPress={()=>this.onChangeType(item)} 
+       bottomDivider
+       title={item.name}/>
+      
+    );
+  };
   
 
   
@@ -175,57 +206,41 @@ export default class FailureAddScreen extends Component {
     return (
       <ScrollView style={{margin:10}}>   
           
-          {/* <TextField
-              required
-              fullWidth
-              select
-              label="Mieszkanie"
-              onChange={this.onChangeApartment}
-            >
-              {this.state.apartments.map((apartment) => (
-                <MenuItem key={apartment.id} value={apartment.id}>
-                 {`${apartment.type} nr ${apartment.number}, ${apartment.propertyAddress.address}` }
-                </MenuItem>
-              ))}
-          </TextField> */}
          
-          <Text style={{margin:5}}>Mieszkanie : </Text>
           <Button
             mode="text"
             labelStyle={styles.TransparentButtonText}
             compact={true}
             uppercase={false}
             onPress={this.openApartmentDialog}
+            style={{margin:5}}
             >{this.state.apartment==='' ? (" Wybierz mieszkanie ") : ( this.state.apartmentName + "  ") }
               <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
           </Button>
          
 
-          {/* <View style={{flexDirection:"row"}}>
-            <Text>Rodzaj zgłoszenia : </Text>
           <Button
             mode="text"
             labelStyle={styles.TransparentButtonText}
             compact={true}
             uppercase={false}
-            style={{minWidth:100}}
-            onPress={this.openApartmentDialog}
-            >{this.state.apartment==='' ? (" Wybierz ") : ( this.state.apartment + "  ") }
+            onPress={this.openTypeDialog}
+            style={{margin:5}}
+            >{this.state.type==='' ? (" Wybierz typ zgłoszenia ") : ( this.state.type + "  ") }
               <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
           </Button>
-          </View> */}
 
           <TextInput
             label="Tytuł zgłoszenia"
             value={title}
             style={{backgroundColor:colors.lightWhite}}
-           onChangeText={(title) => this.setState({ title})}/> 
+           onChangeText={(title) => this.setState({ title,message:""})}/> 
             <TextInput
               label="Treść zgłoszenia"
               multiline
-              style={{height:350,backgroundColor:colors.lightWhite}}
+              style={{height:250,backgroundColor:colors.lightWhite}}
               value={description}
-              onChangeText={(description) => this.setState({description})}
+              onChangeText={(description) => this.setState({description,message:""})}
             /> 
  
             <View>
@@ -246,30 +261,43 @@ export default class FailureAddScreen extends Component {
               onPress={this.pickImage}
              >Załaduj plik</Button>
             
-            <Text style={{color:'red'}}>{this.state.message}</Text>
+            <Text style={{color:colors.error,alignSelf:"center"}}>{this.state.message}</Text>
             <Button
             loading={this.state.isLoading}
-            title="WYŚLIJ ZGŁOSZENIE"
-            containerStyle={{ flex: -1 }}
-            titleStyle={{fontSize:13}}
+            compact={true}
+              uppercase={false}
+            labelStyle={{fontSize:13,color:colors.white}}
             onPress={this.handleAddButton}
             disabled={this.state.isLoading}
-            buttonStyle={{backgroundColor:'grey'}}
-
-            
-            />
-
+            style={{backgroundColor:colors.button,margin:10}}>
+              WYŚLIJ ZGŁOSZENIE
+            </Button>
 
 
-<       Portal>
+
+        <Portal>
           <Dialog visible={this.state.apartmentDialogVisible} onDismiss={this.hideApartmentDialog}>
             <Dialog.Title>Wybierz mieszkanie</Dialog.Title>
-          <Dialog.Content>
+            <Dialog.Content>
               <Divider/>
               <FlatList
                 data={this.state.apartments}
                 keyExtractor={(a) => a.id}
                 renderItem={this.renderApartmentDialog}
+              />
+          </Dialog.Content>
+          </Dialog>
+        </Portal>
+
+        <Portal>
+          <Dialog visible={this.state.typeDialogVisible} onDismiss={this.hideTypeDialog}>
+            <Dialog.Title>Wybierz typ zgłoszenia</Dialog.Title>
+            <Dialog.Content>
+              <Divider/>
+              <FlatList
+                data={this.state.types}
+                keyExtractor={(a) => a.id}
+                renderItem={this.renderTypeDialog}
               />
           </Dialog.Content>
           </Dialog>
