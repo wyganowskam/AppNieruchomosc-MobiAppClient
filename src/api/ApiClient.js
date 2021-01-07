@@ -1,8 +1,8 @@
 import axios from 'axios';
 import deviceStorage from "../services/deviceStorage";
 import authHeader from "../services/authHeader";
-const baseURL='https://localhost:5001/api/';
-//const baseURL='https://appnieruchomoscapi.azurewebsites.net/api/'
+//const baseURL='https://localhost:5001/api/';
+const baseURL='https://appnieruchomoscapi.azurewebsites.net/api/'
 const apiClient = axios.create({
     baseURL: baseURL
 });

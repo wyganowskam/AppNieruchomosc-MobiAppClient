@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { FlatList,View,  TouchableWithoutFeedback,Keyboard,Text } from 'react-native';
 import styles from "./styles";
 import { TextInput,IconButton } from 'react-native-paper';
-import { Searchbar } from 'react-native-paper';
 import { Chip } from 'react-native-paper';
 import {getAllUsers,getUserByEmail} from "../../../services/userService";
 import {getUserInfo} from '../../../services/authService';
 import {sendMessage,createNewChat,getAllChats} from "../../../services/messengerService";
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
+import { Checkbox } from 'react-native-paper';
+
 //import {getAllUsers} from "../../../services/userService";
 export default class NewMessageScreen extends Component {
     constructor(props) {
@@ -21,6 +22,10 @@ export default class NewMessageScreen extends Component {
             usersList: [], 
             allUsersList:[],
             myUserId:'',
+            boardChecked:false,
+            buildingAdminChecked:false,
+            appAdminChecked:false,
+            residentsChecked:false,
         };
         this.onChangeSearch=this.onChangeSearch.bind(this);
         this.onChangeUser=this.onChangeUser.bind(this);
@@ -202,8 +207,8 @@ export default class NewMessageScreen extends Component {
              
               const resMessage =
               (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
+              error.response.data &&
+              error.response.data.message) ||
               error.message ||
               error.toString();
               console.log(resMessage);
@@ -240,35 +245,49 @@ export default class NewMessageScreen extends Component {
                     value={this.state.groupName}
                     style={styles.group}
                     onChangeText={(name) => this.setState({ groupName:name})}/> 
-                 {/* <Searchbar
-                    placeholder="Wyślij do:"
-                    onChangeText={this.onChangeSearch}
-                    value={this.state.searchQuery}
-                    onIconPress={this.onPressSearch}
-                  />   */}
-                    <TextField
-                         select
-                        value=""
-                        label="Wyślij do:"
-                        onChange={this.onChangeUser}
-                        style={{margin:20}}
-                        >
-                        {this.state.allUsersList.map((user) => (
-                            <MenuItem key={user.guid} value={user}>
-                            {user.name + " " + user.surname}
-                            </MenuItem>
-                        ))}
-                    </TextField>
+                <View style={{alignSelf:"center"}}> 
+                  <Text style={{marginTop: 5,fontSize:16}}>Odbiorcy</Text>
+                  <View style={{flexDirection:"row"}}>
+                      <Checkbox
+                      status={this.state.boardChecked ? 'checked' : 'unchecked'}
+                      onPress={() => {
+                        this.setState({boardChecked: !this.state.boardChecked});
+                      }}
+                    />
+                    <Text style={{marginTop: 5,fontSize:16}}>Zarząd wspólnoty</Text>
+                  </View>
+                  <View style={{flexDirection:"row"}}>
+                      <Checkbox
+                      status={this.state.buildingAdminChecked ? 'checked' : 'unchecked'}
+                      onPress={() => {
+                        this.setState({buildingAdminChecked: !this.state.buildingAdminChecked});
+                      }}
+                    />
+                    <Text style={{marginTop: 5,fontSize:16}}>Administartor bydynku</Text>
+                  </View>
+                  <View style={{flexDirection:"row"}}>
+                      <Checkbox
+                      status={this.state.appAdminChecked ? 'checked' : 'unchecked'}
+                      onPress={() => {
+                        this.setState({appAdminChecked: !this.state.appAdminChecked});
+                      }}
+                    />
+                    <Text style={{marginTop: 5,fontSize:16}}>Administartor aplikacji</Text>
+                  </View>
+                  <View style={{flexDirection:"row"}}>
+                      <Checkbox
+                      status={this.state.residentsChecked ? 'checked' : 'unchecked'}
+                      onPress={() => {
+                        this.setState({residentsChecked: !this.state.residentsChecked});
+                      }}
+                    />
+                    <Text style={{marginTop: 5,fontSize:16}}>Mieszkańcy wspólnoty</Text>
+                  </View>
+                </View>
+
+               
 
                  <Text style={{color:'red',alignSelf:"center"}}>{this.state.errorMessage}</Text>
-                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'}}>
-                <FlatList
-                    data={this.state.usersList}
-                    keyExtractor={(a) => a.userId}
-                    renderItem={this.renderRow}
-                                       
-                />
-                </View>
                
                  <TouchableWithoutFeedback onPress={this.dismissKeyboard}>
                 <View style={{ flex: 1 }} >
@@ -286,7 +305,7 @@ export default class NewMessageScreen extends Component {
                 <IconButton
                     icon="send"
                     size={20}
-                    onPress={this.handleSendButton}
+                   // onPress={this.handleSendButton}
                 />
                 </View>
                 

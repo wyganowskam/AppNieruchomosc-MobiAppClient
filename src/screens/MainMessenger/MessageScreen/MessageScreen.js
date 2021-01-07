@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
-import { View, FlatList, ScrollView  } from 'react-native';
+import { View, FlatList, ScrollView,Image  } from 'react-native';
 import { Button } from 'react-native-paper';
 import PropTypes from 'prop-types';
-import { ListItem,Text,Icon } from 'react-native-elements';
+import { List,Text,Divider,Avatar } from 'react-native-paper';
 import styles from './styles';
 import { FAB } from 'react-native-paper';
 import { Searchbar } from 'react-native-paper';
 import {getAllChats} from "../../../services/messengerService"
-import {getAllUsers,getUserByEmail} from "../../../services/userService"
+import {getAllUsers,getUserByEmail} from "../../../services/userService";
+import {ChatsList} from "../fake_data";
+import colors from "../../../config/colors"
 
 export default class MessagesScreen extends Component {
     constructor(props) {
         super(props);
         this.state= {
-          chatsList:[],
-          allChatsList:[],
+          chatsList:ChatsList,
+          allChatsList:ChatsList,
           message:'',
           errorMessage:'',
           searchQuery:'',
@@ -34,7 +36,7 @@ export default class MessagesScreen extends Component {
       this.searchFilterFunction(this.state.searchQuery);
     };
     componentDidMount() {
-      this.getChatsList();
+      //this.getChatsList();
     
     }
     searchFilterFunction = text => {    
@@ -70,18 +72,17 @@ export default class MessagesScreen extends Component {
     renderRow = ({ item }) => {
    
         return (
-          <ListItem  onPress={() =>{this.props.navigation.navigate('Chat',{item: item,})}}  
-          bottomDivider
-          style={{margin:4}}>
-            {/* <StatusItem item={item} /> */}
-            <Icon name='wechat' type='antdesign' color='lightblue'/>
-            <ListItem.Content>
-              <ListItem.Title>{item.chatName}</ListItem.Title>
-              <ListItem.Subtitle>{"Data: " + item.modfifiedOn}</ListItem.Subtitle>
-              {item.lastMessage && <ListItem.Subtitle>{"Wiadomość: " + item.lastMessage.substring(1,30) + '...'}</ListItem.Subtitle>}
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </ListItem>
+          <>
+          <List.Item  onPress={() =>{this.props.navigation.navigate('Chat',{item: item,})}} 
+         // title={item.chatName}
+          title={item.username}
+          description={ item.modfifiedOn+ "\n" + item.lastMessage.substring(1,30) + '...'}
+          style={styles.list} 
+          titleStyle={{color:colors.textViolet, fontSize:16,}}  
+          right={()=><Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../../assets/icons/right-arrow.png')} />} 
+          left={()=><Avatar.Text size={30} style={{backgroundColor:colors.button,alignSelf:"center"}} label={item.username.charAt(0)}/>}
+          /><Divider style={{ backgroundColor:colors.violet}} />
+          </>
         );
       };
    
@@ -104,6 +105,7 @@ export default class MessagesScreen extends Component {
                 </View>
                 
                  <ScrollView>
+                     <Divider style={{ backgroundColor:colors.violet}} />
                     <FlatList
                     data={this.state.chatsList}
                     keyExtractor={(a) => a.chatId}
