@@ -119,9 +119,9 @@ export default class App extends React.Component {
          
           <Stack.Screen name="Main" component={MainScreen} options={{ title: 'Dzień dobry', }}  />
           <Stack.Screen name="MyInvitations" component={InvitationScreen} options={{ title: 'ZAPROSZENIA', }}  />
-          <Stack.Screen name="Failure" component={FailureScreen} options={{ title: 'AWARIE' }} />
-          <Stack.Screen name="FailureDetails" component={FailureDetailsScreen} options={{ title: 'AWARIA' }}  />
-          <Stack.Screen name="FailureAdd" component={FailureAddScreen} options={{ title: 'NOWA AWARIA' }}  />
+          <Stack.Screen name="Failure" component={FailureScreen} options={{ title: 'ZGŁOSZENIA' }} />
+          <Stack.Screen name="FailureDetails" component={FailureDetailsScreen} options={{ title: 'ZGŁOSZENIE' }}  />
+          <Stack.Screen name="FailureAdd" component={FailureAddScreen} options={{ title: 'NOWE ZGŁOSZENIE' }}  />
           <Stack.Screen name="Messages" component={MessageScreen} options={{ title: 'KOMUNIKATOR', }}  />
           <Stack.Screen  name="NewMessage" component={NewMessageScreen} options={{ title: 'NOWY WĄTEK', }}  /> 
           <Stack.Screen  name="Chat" component={ChatScreen} options={{ title: '', }}  />

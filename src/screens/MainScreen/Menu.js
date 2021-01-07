@@ -52,7 +52,7 @@ export const menu = [
     forAll:false,
   },
   {
-    title: 'AWARIE',
+    title: 'ZGŁOSZENIA',
     icon: require('../../assets/icons/notification.png'),
     page: 'Failure',
     forAppAdmin: false,
