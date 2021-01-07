@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions, FlatList, ScrollView } from 'react-native';
+import { View, StyleSheet, Dimensions, FlatList, ScrollView ,Image} from 'react-native';
 import { TextInput } from 'react-native-paper';
 import TextField from '@material-ui/core/TextField';
 import * as ImagePicker from 'expo-image-picker';
-import {failureList} from './failureData';
-import {getUserInfo} from '../../services/authService';
 import colors from '../../config/colors';
-import { Button, Image,Text} from 'react-native-paper';
+import { Button,Text,Dialog, Portal,List, Divider } from 'react-native-paper';
 import {addFailure} from '../../services/failureService';
 import MenuItem from '@material-ui/core/MenuItem';
+import sharesService from '../../services/sharesService';
 export default class FailureAddScreen extends Component {
   constructor(props) {
     super(props);
@@ -16,10 +15,12 @@ export default class FailureAddScreen extends Component {
         isLoading:false,
         title:'',
         description:'',
-        apartmentId:'',
+        apartment:'',
+        apartmentName:'',
         apartments:[],
         message:'',
-        uriList:[]
+        uriList:[],
+        apartmentDialogVisible:false,
     }
    this.pickImage=this.pickImage.bind(this);
    this.renderImage=this.renderImage.bind(this);
@@ -27,6 +28,8 @@ export default class FailureAddScreen extends Component {
    this.handleAddButton=this.handleAddButton.bind(this);
    this.getApartmentsList=this.getApartmentsList.bind(this);
    this.onChangeApartment=this.onChangeApartment.bind(this);
+   this.hideApartmentDialog=this.hideApartmentDialog.bind(this);
+   this.handleXPress=this.handleXPress.bind(this);
     }
 
     validate= () => {
@@ -53,38 +56,56 @@ export default class FailureAddScreen extends Component {
 
     pickImage = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
       });
-   
+
+     
     if (!result.cancelled) {
-       this.setState({uriList:[...this.state.uriList,result]});
+      const item=this.state.uriList.find(u=>u.uri===result.uri);
+      if (!item)  this.setState({uriList:[...this.state.uriList,result]});
+     
+       
     }
-   // console.log(result);
+   
   };
       
   renderImage = ({ item }) => {
-   
+  
     return (
       <View>
-          <Image source={{uri: item.uri}} style={{height:100, width:100, resizeMode:"cover"}}/>
+          <Image source={{uri: item.uri}} style={{height:100, width:100, resizeMode:"cover"}}
+          />
+          <Button
+              mode="contained"
+              compact={true}
+              uppercase={false}
+              labelStyle={styles.xButtonText}
+              style={{position:"absolute",backgroundColor:colors.white,alignItems:"center"}}
+              onPress={()=>this.handleXPress(item)}
+             >X</Button>
       </View>
       
     );
   };
+  handleXPress=(item)=> {
+    console.log(item)
+    const newList=this.state.uriList.filter(u=>u.uri!=item.uri);
+    this.setState({uriList:newList});
+  }
 
   handleAddButton = () => {
   this.setState({message:""});
     const isValid=this.validate();
-    const {title,description,apartmentId}=this.state;
+    const {title,description,apartment}=this.state;
     if(isValid === true){
       this.setState({isLoading:true});
       addFailure({
           title: title,
           description: description,
-          apartmentId: apartmentId
+          apartmentId: apartment.id
       }).then(
         () => {
 
@@ -105,28 +126,46 @@ export default class FailureAddScreen extends Component {
     }
   };
 
-  onChangeApartment = e => {
-    const val = e.target.value;
-    this.setState({apartmentId:val});
+  onChangeApartment (apartment) {
+  
+    this.setState({apartment:apartment,apartmentName: `${apartment.type} nr ${apartment.number}, ${apartment.propertyAddress.address}`,apartmentDialogVisible:false });
   };
 
 
   getApartmentsList = ()=> {
    
-    getUserInfo().then(
-      (res) => {
-        //console.log(res);
-        if(res.status === 200){
-          //udało się zdobyć informacje o użytkowniku
-         this.setState({apartments :res.data.apartments});
-       
-        }
-      }
-    );
+    sharesService.getUserShareSubjects().then((res) => {
+      this.setState({apartments:res.data})
+    },(error) => {
+          
+    }
+  ).catch(e => { });
+
   };
   componentDidMount() {
     this.getApartmentsList();
   }
+
+  hideApartmentDialog=()=> {
+    this.setState({apartmentDialogVisible:false});
+  };
+
+  openApartmentDialog=()=>{
+    this.setState({apartmentDialogVisible:true});
+  }
+
+  
+  renderApartmentDialog = ({ item }) => {
+ 
+    return (
+     
+      <List.Item  onPress={()=>this.onChangeApartment(item)} 
+       bottomDivider
+       title=  {`${item.type} nr ${item.number}, ${item.propertyAddress.address}` }/>
+      
+    );
+  };
+  
 
   
   render() {
@@ -134,12 +173,9 @@ export default class FailureAddScreen extends Component {
     const {title,description}=this.state;
     
     return (
-      <ScrollView>   
-          <TextInput
-            label="Tytuł zgłoszenia"
-            value={title}
-           onChangeText={(title) => this.setState({ title})}/> 
-          <TextField
+      <ScrollView style={{margin:10}}>   
+          
+          {/* <TextField
               required
               fullWidth
               select
@@ -148,14 +184,46 @@ export default class FailureAddScreen extends Component {
             >
               {this.state.apartments.map((apartment) => (
                 <MenuItem key={apartment.id} value={apartment.id}>
-                  {apartment.address}
+                 {`${apartment.type} nr ${apartment.number}, ${apartment.propertyAddress.address}` }
                 </MenuItem>
               ))}
-          </TextField>
+          </TextField> */}
+         
+          <Text style={{margin:5}}>Mieszkanie : </Text>
+          <Button
+            mode="text"
+            labelStyle={styles.TransparentButtonText}
+            compact={true}
+            uppercase={false}
+            onPress={this.openApartmentDialog}
+            >{this.state.apartment==='' ? (" Wybierz mieszkanie ") : ( this.state.apartmentName + "  ") }
+              <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
+          </Button>
+         
+
+          {/* <View style={{flexDirection:"row"}}>
+            <Text>Rodzaj zgłoszenia : </Text>
+          <Button
+            mode="text"
+            labelStyle={styles.TransparentButtonText}
+            compact={true}
+            uppercase={false}
+            style={{minWidth:100}}
+            onPress={this.openApartmentDialog}
+            >{this.state.apartment==='' ? (" Wybierz ") : ( this.state.apartment + "  ") }
+              <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
+          </Button>
+          </View> */}
+
+          <TextInput
+            label="Tytuł zgłoszenia"
+            value={title}
+            style={{backgroundColor:colors.lightWhite}}
+           onChangeText={(title) => this.setState({ title})}/> 
             <TextInput
               label="Treść zgłoszenia"
               multiline
-              style={{height:450}}
+              style={{height:350,backgroundColor:colors.lightWhite}}
               value={description}
               onChangeText={(description) => this.setState({description})}
             /> 
@@ -166,17 +234,18 @@ export default class FailureAddScreen extends Component {
                  keyExtractor={(a) => a.uri}
                 renderItem={this.renderImage}
               />
+              
+         
             </View>
            
-             {/*<Button
-              title="Załaduj plik"
-              titleStyle={styles.TransparentButtonText}
-              containerStyle={{ flex: -1 }}
-              buttonStyle={{ backgroundColor: 'transparent' ,alignSelf:"flex-start"}}
-              underlayColor="transparent"
+             <Button
+              mode="text"
+              compact={true}
+              uppercase={false}
+              labelStyle={styles.TransparentButtonText}
               onPress={this.pickImage}
-             />
-             */}
+             >Załaduj plik</Button>
+            
             <Text style={{color:'red'}}>{this.state.message}</Text>
             <Button
             loading={this.state.isLoading}
@@ -189,6 +258,22 @@ export default class FailureAddScreen extends Component {
 
             
             />
+
+
+
+<       Portal>
+          <Dialog visible={this.state.apartmentDialogVisible} onDismiss={this.hideApartmentDialog}>
+            <Dialog.Title>Wybierz mieszkanie</Dialog.Title>
+          <Dialog.Content>
+              <Divider/>
+              <FlatList
+                data={this.state.apartments}
+                keyExtractor={(a) => a.id}
+                renderItem={this.renderApartmentDialog}
+              />
+          </Dialog.Content>
+          </Dialog>
+        </Portal>  
       </ScrollView>
     );
   }
@@ -203,8 +288,14 @@ const styles = StyleSheet.create({
   },
   TransparentButtonText: {
     color: 'black',
+    fontSize: 15,
+    
+  },
+  xButtonText: {
+    color: colors.button,
+    alignSelf:"center",
+    fontSize:12
    
-    fontSize: 12,
   },
   list: {
     marginTop: 20,

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Dimensions, FlatList, ScrollView } from 'react-native';
 import colors from '../../config/colors';
-import { Button,Text,List,Divider} from 'react-native-paper';
+import { Button,Text,List,Divider,FAB} from 'react-native-paper';
 import {getUserInfo} from '../../services/authService';
 import {getAllFailuresByUserId} from '../../services/failureService';
 
@@ -64,6 +64,7 @@ export default class FailureScreen extends Component {
     
     return (
       <View style={styles.container}>   
+        <Text style={{color:'red'}}>{this.state.message}</Text>
         <ScrollView>
             <FlatList
               data={this.state.failureList}
@@ -71,17 +72,12 @@ export default class FailureScreen extends Component {
               renderItem={this.renderRow}
             />
           </ScrollView> 
-          <View style={styles.bottom}>
-          <Button
-            title="ZGŁOŚ AWARIĘ"
-            containerStyle={{ flex: -1 }}
-            titleStyle={{fontSize:13}}
-            onPress={this.handleAddButton}
-            buttonStyle={{backgroundColor:'grey'}}      
-          />
-          <Text style={{color:'red'}}>{this.state.message}</Text>
-          </View>
-          
+          <FAB
+                style={styles.fab}
+                small
+                icon="plus"
+                onPress={this.handleAddButton}
+                />
       </View>
     );
   }
@@ -90,9 +86,10 @@ export default class FailureScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    backgroundColor: 'white',
-    justifyContent: 'space-around',
+    container: {
+      flex: 1,
+      backgroundColor: colors.lightWhite,
+  },
   },
   list: {
     marginTop: 20,
@@ -104,7 +101,13 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingTop: 5,
   },
-  
+  fab: {
+    position: 'absolute',
+    margin: 15,
+    right: 0,
+    top: 0,
+    backgroundColor: colors.violet
+  },
   bottom: {
     flex: 1,
     justifyContent: 'flex-end',

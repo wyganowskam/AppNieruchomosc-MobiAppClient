@@ -37,8 +37,8 @@ export default class ChatScreen extends Component {
     componentDidMount() {
       
        
-        this.getChatInfo();
-        this.getMyInfo();
+        // this.getChatInfo();
+        // this.getMyInfo();
 
 
       }

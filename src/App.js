@@ -7,7 +7,7 @@ import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
 import MainScreen from './screens/MainScreen/MainScreen';
 import { IconButton} from 'react-native-paper';
 import {Image} from 'react-native';
-// import ChatScreen from "./screens/MainMessenger/ChatScreen/ChatScreen";
+import ChatScreen from "./screens/MainMessenger/ChatScreen/ChatScreen";
 import MessageScreen from "./screens/MainMessenger/MessageScreen/MessageScreen"
 import FailureScreen from './screens/FailureScreen/FailureScreen';
 import NewMessageScreen from "./screens/MainMessenger/NewMessageScreen/NewMessageScreen"
@@ -21,6 +21,8 @@ import {Button, Icon} from 'react-native-paper'
 import {revokeToken} from './services/userService'
 import {getHoasRoles} from './services/hoaService';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+
+import { AppRegistry } from 'react-native';
 const Stack = createStackNavigator();
 
 const theme = {
@@ -122,8 +124,8 @@ export default class App extends React.Component {
           <Stack.Screen name="FailureAdd" component={FailureAddScreen} options={{ title: 'NOWA AWARIA' }}  />
           <Stack.Screen name="Messages" component={MessageScreen} options={{ title: 'KOMUNIKATOR', }}  />
           <Stack.Screen  name="NewMessage" component={NewMessageScreen} options={{ title: 'NOWY WĄTEK', }}  /> 
-          {/* <Stack.Screen  name="Chat" component={ChatScreen} options={{ title: '', }}  />
-         */}
+          <Stack.Screen  name="Chat" component={ChatScreen} options={{ title: '', }}  />
+        
           </>)}
         </Stack.Navigator>
       </NavigationContainer>
@@ -132,3 +134,4 @@ export default class App extends React.Component {
   }
 }
 
+AppRegistry.registerComponent('albums', () => App);

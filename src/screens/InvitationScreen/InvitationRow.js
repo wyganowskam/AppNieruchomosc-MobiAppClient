@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {acceptInvitation} from '../../services/invitationService';
 import { Text,
   Button, Divider,Card,  } from 'react-native-paper';
