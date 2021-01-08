@@ -24,6 +24,7 @@ export default class FailureAddScreen extends Component {
         types:[],
         apartmentDialogVisible:false,
         typeDialogVisible:false,
+        picture:[]
     }
    this.pickImage=this.pickImage.bind(this);
    this.renderImage=this.renderImage.bind(this);
@@ -41,7 +42,7 @@ export default class FailureAddScreen extends Component {
 
     validate= () => {
       const {title,description,apartment,type}=this.state;
-      if(!title || !description || !apartment || !type){
+      if(!title || !description || !apartment ){
           
           this.setState({message:"Wszystkie pola muszą być wypełnione."});
           return false;
@@ -72,16 +73,16 @@ export default class FailureAddScreen extends Component {
 
      
     if (!result.cancelled) {
-      const item=this.state.uriList.find(u=>u.uri===result.uri);
-      if (!item)  this.setState({uriList:[...this.state.uriList,result],message:""});
-     
+      //const item=this.state.uriList.find(u=>u.uri===result.uri);
+      //if (!item)  this.setState({uriList:[...this.state.uriList,result],message:""});
+      this.setState({picture:[result],message:""});
        
     }
    
   };
       
   renderImage = ({ item }) => {
-  
+ 
     return (
       <View>
           <Image source={{uri: item.uri}} style={{height:100, width:100, resizeMode:"cover"}}
@@ -100,20 +101,22 @@ export default class FailureAddScreen extends Component {
   };
   handleXPress=(item)=> {
     console.log(item)
-    const newList=this.state.uriList.filter(u=>u.uri!=item.uri);
-    this.setState({uriList:newList,message:""});
+    //const newList=this.state.uriList.filter(u=>u.uri!=item.uri);
+    //this.setState({uriList:newList,message:""});
+    this.setState({picture:[]})
   }
 
   handleAddButton = () => {
   this.setState({message:""});
     const isValid=this.validate();
-    const {title,description,apartment}=this.state;
+    const {title,description,apartment,picture}=this.state;
     if(isValid === true){
       this.setState({isLoading:true});
       addFailure({
           title: title,
           description: description,
-          apartmentId: apartment.id
+          apartmentId: apartment.id,
+         // picture:picture.uri
       }).then(
         () => {
 
@@ -245,7 +248,7 @@ export default class FailureAddScreen extends Component {
  
             <View>
             <FlatList horizontal={true}
-                 data={this.state.uriList}
+                 data={this.state.picture}
                  keyExtractor={(a) => a.uri}
                 renderItem={this.renderImage}
               />
