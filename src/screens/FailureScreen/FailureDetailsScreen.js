@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions, ScrollView  } from 'react-native';
-import {Text} from 'react-native-paper';
+import { View, StyleSheet, Dimensions, ScrollView,Image  } from 'react-native';
+import {Text,Button } from 'react-native-paper';
 import {failureList} from './failureData';
 import colors from '../../config/colors';
 import { Card, Title, Paragraph } from 'react-native-paper';
+import {getPicture} from "../../services/failureService"
 
 
 export default class FailureDetailsScreen extends React.Component {
@@ -12,17 +13,30 @@ export default class FailureDetailsScreen extends React.Component {
     this.state={
       failureElement:'',
       status:'',
+      dialogVisible:false,
+      picture:null
     };
    
     }
    
     componentDidMount() {
       const failure=this.props.route.params.item;
-      //console.log(failure);
+   
     
       this.setState({failureElement:failure, status:failure.status});
+      getPicture(failure.id).then(
+        res => { 
+          
+          this.setState({picture:res});
+  
+        },
+        (error) => {
+         
+        }
+      ).catch(e => { });
     
     }
+
   
   
     render() {
@@ -38,9 +52,15 @@ export default class FailureDetailsScreen extends React.Component {
                 <Text><Text style={{fontWeight: "bold"}}>{"Adres: "} </Text> {failureElement.address+"\n"}</Text>
                 <Text ><Text style={{fontWeight: "bold"}}>{"Status: "} </Text>{this.state.status.description+"\n"}</Text>
                 <Text><Text style={{fontWeight: "bold"}}>{"Opis: \n" } </Text>{failureElement.description+"\n"}</Text>
+                {failureElement.comment &&  <Text ><Text style={{fontWeight: "bold",color:colors.backgroundViolet}}>{"Komentarz: "} </Text>{failureElement.comment}</Text>}
+                
               </Paragraph>
               </Card.Content> 
             </Card>
+
+            {this.state.picture && <Image  source={{uri: `data:image/gif;base64,${this.state.picture}`}} style={{height:400, width:400, resizeMode:"cover",alignSelf:"center",margin:10}}
+          />}
+            
         
           </ScrollView>
         );
@@ -61,6 +81,11 @@ const styles = StyleSheet.create({
    
     alignItems: 'center',
     justifyContent: 'space-around',
+  },
+  TransparentButtonText: {
+    color: colors.backgroundViolet,
+    fontSize: 15,
+    
   },
   list: {
     marginTop: 20,
