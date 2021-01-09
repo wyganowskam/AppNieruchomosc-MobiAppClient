@@ -23,7 +23,8 @@ export default class FailureScreen extends Component {
         <>
         <List.Item onPress={() =>{this.props.navigation.navigate('FailureDetails',{item: item,})}}
           title={item.title}
-          
+          titleStyle={{fontWeight:"bold",color:colors.button}}
+          style={{backgroundColor:colors.lightWhite}}
           description={"Status: " + item.status.name}
         />
         <Divider/>
@@ -86,10 +87,8 @@ export default class FailureScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    container: {
-      flex: 1,
+    flex: 1,
       backgroundColor: colors.lightWhite,
-  },
   },
   list: {
     marginTop: 20,

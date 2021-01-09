@@ -77,7 +77,7 @@ export default class MessagesScreen extends Component {
          // title={item.chatName}
           title={item.username}
           description={ item.modfifiedOn+ "\n" + item.lastMessage.substring(1,30) + '...'}
-          style={styles.list} 
+          
           titleStyle={{color:colors.textViolet, fontSize:16,}}  
           right={()=><Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../../assets/icons/right-arrow.png')} />} 
           left={()=><Avatar.Text size={30} style={{backgroundColor:colors.button,alignSelf:"center"}} label={item.username.charAt(0)}/>}
