@@ -14,7 +14,7 @@ export const menu = [
   {
     title: 'TABLICA OGŁOSZEŃ',
     icon: require('../../assets/icons/pin.png'),
-    page: 'Annoucment',
+    page: 'Annoucments',
     forAppAdmin: true,
     forBuildingAdmin: true,
     forBoard: true,

@@ -17,6 +17,7 @@ export default {
     button:"#725174",
     darkviolet:"#725174",
     textViolet:"#563C57",
-    backgroundViolet:"#b99dbb"
+    backgroundViolet:"#b99dbb",
+    lightViolet:"#DACBDB"
 
 }

@@ -15,7 +15,8 @@ import FailureDetailsScreen from './screens/FailureScreen/FailureDetailsScreen';
 import FailureAddScreen from './screens/FailureScreen/FailureAddScreen';
 import InvitationScreen from "./screens/InvitationScreen/InvitationScreen"
 import ResetPasswordScreen from './screens/ResetPasswordScreen/ResetPasswordScreen';
-import Announcements from "./screens/AnnouncementScreen/AnnScreen"
+import Announcements from "./screens/AnnouncementScreen/AnnScreen";
+import  AnnDet from "./screens/AnnouncementScreen/Announcement";
 import deviceStorage from './services/deviceStorage';
 import {logout} from './services/authService';
 import {Button, Icon} from 'react-native-paper'
@@ -124,7 +125,8 @@ export default class App extends React.Component {
           <Stack.Screen name="Messages" component={MessageScreen} options={{ title: 'KOMUNIKATOR', }}  />
           <Stack.Screen  name="NewMessage" component={NewMessageScreen} options={{ title: 'NOWY WĄTEK', }}  /> 
           <Stack.Screen  name="Chat" component={ChatScreen} options={{ title: '', }}  />
-          <Stack.Screen name="Annoucment" component={Announcements} options={{ title: 'OGŁOSZENIA', }}  />
+          <Stack.Screen name="Annoucments" component={Announcements} options={{ title: 'TABLICA OGŁOSZEŃ', }}  />
+          <Stack.Screen name="AnnoucmentDet" component={ AnnDet} options={{ title: 'OGŁOSZENIE', }}  />
         
           </>)}
         </Stack.Navigator>

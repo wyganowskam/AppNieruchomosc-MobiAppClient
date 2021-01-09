@@ -14,7 +14,7 @@ import colors from "../../config/colors";
 export default function Announcements(props){
 
     const [page, setPage] = useState(1);
-    const [announcements, setAnouncements] = useState([{ala:1},{ala:2}]);
+    const [announcements, setAnouncements] = useState([]);
    // const [isNewPage, setIsNewPage] = useState(true);
     const [totalPages, setTotalPages] = useState(1);
 
@@ -53,16 +53,19 @@ export default function Announcements(props){
     }
 
     const renderRow = ({ item }) => {
-   
+  
         return (
           <>
-          <Card  style={{marginBottom:4,marginLeft:7, marginRight:7,borderRadius:20,marginTop:3}} >
+          <Card  style={{marginBottom:4,marginLeft:7, marginRight:7,borderRadius:20,marginTop:3}} 
+          
+           onPress={()=>props.navigation.navigate("AnnoucmentDet",{announcementId:item.id})}>
+          {/* onPress={()=>console.log("klik!")}> */}
               <Card.Title  
                 title={item.title} 
                 subtitle={item.shortText} 
                 titleStyle={{fontSize:18, color:colors.black,margin:0}} 
                 subtitleStyle={{fontSize:14,color:colors.grey}}
-                left={()=><Image style={{width:30,height:30,alignSelf:"center",margin:0}} source={require('../../assets/icons/loud-speaker.png')} />} 
+                left={()=><Image style={{width:30,height:30,alignSelf:"center",margin:0}} source={require('../../assets/icons/pin.png')} />} 
                 leftStyle={{margin:0,paddingRight:0}}
               />
               <Card.Content>
@@ -71,7 +74,7 @@ export default function Announcements(props){
                     <Text >{item.created}</Text> 
                     <Text style={{alignSelf:"flex-end",textAlign:"right"}}>{"Komentarzy: "+ item.numberOfComments}</Text> 
                 </View>
-              
+            
               </Card.Content> 
             </Card>
           </>
@@ -116,7 +119,7 @@ export default function Announcements(props){
              <Divider style={{ backgroundColor:colors.violet,marginBottom:3}} />
             <FlatList
             data={announcements}
-            keyExtractor={(a) => a.chatId}
+            keyExtractor={(a) => a.id}
             renderItem={renderRow}
             />
         </ScrollView> 
