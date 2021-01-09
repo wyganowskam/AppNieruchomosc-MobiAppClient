@@ -1,40 +1,21 @@
 import React, { useState } from 'react'
-import announcementService from '../../services/announcement.service'
-import { makeStyles } from '@material-ui/core/styles';
-import useStylesForm from '../../styles/formStyles';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import ErrorAlert from '../../components/ErrorAlert';
+import announcementService from '../../services/announcementService';
+import { View, StyleSheet, Dimensions, FlatList, ScrollView ,Image} from 'react-native';
+import { TextInput } from 'react-native-paper';
+import colors from '../../config/colors';
+import { Button,Text,Dialog, Portal,List, Divider } from 'react-native-paper';
 
-const useStyles = makeStyles((theme) => ({
-    root:{
-      margin: 20
-    },
-    addButton: {
-      marginTop:10,
-      minWidth:300
-    }
-  }));
 
-const Comments = (props) => {
 
-    const classes = useStyles();
-    const classesForm = useStylesForm();
+const AnnouncementAdd = (props) => {
+
     const [isFormValid, setIsFormValid] = useState(true);
     const [message, setMessage] = useState("");
     const [text, setText] = useState("");
     const [title, setTitle] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const onChangeText = e => {
-      const val = e.target.value;
-      setText(val);
-    };
-
-    const onChangeTitle = e => {
-        const val = e.target.value;
-        setTitle(val);
-      };
+   
 
     const validate = () => {
       if(!text || !title){
@@ -102,45 +83,34 @@ const Comments = (props) => {
     
 
     return (
-      <div className={classes.root}>
-    <form className={classesForm.form} noValidate onSubmit={handleAdd}>
-    <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="title"
-            label="Tytuł"
-            name="title"
-            className={classesForm.outlineInput}
-            onChange={onChangeTitle}
-        />
-        <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            multiline            
-            rows={20}
-            id="text"
-            label="Treść"
-            name="text"
-            className={classesForm.outlineInput}
-            onChange={onChangeText}
-        />
+     <ScrollView style={{backgroundColor:colors.white}}>
+   
+         <TextInput
+            label="Tytuł ogłoszenia"
+            value={title}
+            style={{backgroundColor:colors.lightWhite,marginLeft:10,marginRight:10}}
+            onChangeText={(t) => setTitle(t)}/> 
+            <TextInput
+              label="Treść ogłoszenia"
+              multiline
+              style={{height:400,backgroundColor:colors.lightWhite,marginLeft:10,marginRight:10}}
+              value={text}
+              onChangeText={(t) => setText(t)}
+            /> 
+
         {!isFormValid && <ErrorAlert message={message}/>}
         <Button
-            type="submit"            
-            style={{ backgroundColor: '#666666', color: '#ffffff'}}
-            variant="contained"
+            loading={loading}
+            compact={true}
+              uppercase={true}
+            labelStyle={{fontSize:13,color:colors.white}}
+            onPress={handleAdd}
             disabled={loading}
-            className={classes.addButton}
-        >
-        Dodaj ogłoszenie
-        </Button >
-        </form>
-      </div>
+            style={{backgroundColor:colors.button,margin:10}}>
+              opublikuj
+            </Button>
+        </ScrollView>
     )
 }
 
-export default Comments;
+export default AnnouncementAdd;

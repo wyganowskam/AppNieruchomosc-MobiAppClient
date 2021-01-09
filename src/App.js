@@ -16,6 +16,7 @@ import FailureAddScreen from './screens/FailureScreen/FailureAddScreen';
 import InvitationScreen from "./screens/InvitationScreen/InvitationScreen"
 import ResetPasswordScreen from './screens/ResetPasswordScreen/ResetPasswordScreen';
 import Announcements from "./screens/AnnouncementScreen/AnnScreen";
+import AnnouncementAdd from "./screens/AnnouncementScreen/AnnouncementAdd"
 import  AnnDet from "./screens/AnnouncementScreen/Announcement";
 import deviceStorage from './services/deviceStorage';
 import {logout} from './services/authService';
@@ -127,6 +128,7 @@ export default class App extends React.Component {
           <Stack.Screen  name="Chat" component={ChatScreen} options={{ title: '', }}  />
           <Stack.Screen name="Annoucments" component={Announcements} options={{ title: 'TABLICA OGŁOSZEŃ', }}  />
           <Stack.Screen name="AnnoucmentDet" component={ AnnDet} options={{ title: 'OGŁOSZENIE', }}  />
+          <Stack.Screen name="AnnoucmentAdd" component={ AnnouncementAdd} options={{ title: 'NOWE OGŁOSZENIE', }}  />
         
           </>)}
         </Stack.Navigator>

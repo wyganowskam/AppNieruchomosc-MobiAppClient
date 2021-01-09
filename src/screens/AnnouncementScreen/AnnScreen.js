@@ -59,7 +59,7 @@ export default function Announcements(props){
           <Card  style={{marginBottom:4,marginLeft:7, marginRight:7,borderRadius:20,marginTop:3}} 
           
            onPress={()=>props.navigation.navigate("AnnoucmentDet",{announcementId:item.id})}>
-          {/* onPress={()=>console.log("klik!")}> */}
+         
               <Card.Title  
                 title={item.title} 
                 subtitle={item.shortText} 
@@ -111,7 +111,7 @@ export default function Announcements(props){
         style={styles.fab}
         small
         icon="plus"
-        //onPress={() =>{this.props.navigation.navigate('NewMessage')}}  
+        onPress={() =>{props.navigation.navigate('AnnoucmentAdd')}}  
         />
         </View>
         
