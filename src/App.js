@@ -15,6 +15,7 @@ import FailureDetailsScreen from './screens/FailureScreen/FailureDetailsScreen';
 import FailureAddScreen from './screens/FailureScreen/FailureAddScreen';
 import InvitationScreen from "./screens/InvitationScreen/InvitationScreen"
 import ResetPasswordScreen from './screens/ResetPasswordScreen/ResetPasswordScreen';
+import Announcements from "./screens/AnnouncementScreen/AnnScreen"
 import deviceStorage from './services/deviceStorage';
 import {logout} from './services/authService';
 import {Button, Icon} from 'react-native-paper'
@@ -104,9 +105,7 @@ export default class App extends React.Component {
 
         }}>
 
-          {/* <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'LOGOWANIE' }} initialParams={{newJWT:this.newJWT}}/>
-          <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'REJESTRACJA', }}/>
-          <Stack.Screen name="Reset" component={ResetPasswordScreen} options={{ title: 'RESETOWANIE HASŁA' }} /> */}
+        
           {this.state.jwt==='' ? (
 
           <>
@@ -125,6 +124,7 @@ export default class App extends React.Component {
           <Stack.Screen name="Messages" component={MessageScreen} options={{ title: 'KOMUNIKATOR', }}  />
           <Stack.Screen  name="NewMessage" component={NewMessageScreen} options={{ title: 'NOWY WĄTEK', }}  /> 
           <Stack.Screen  name="Chat" component={ChatScreen} options={{ title: '', }}  />
+          <Stack.Screen name="Annoucment" component={Announcements} options={{ title: 'OGŁOSZENIA', }}  />
         
           </>)}
         </Stack.Navigator>
