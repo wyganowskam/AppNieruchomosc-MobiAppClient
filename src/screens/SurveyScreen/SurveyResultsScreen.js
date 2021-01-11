@@ -30,9 +30,14 @@ export default function SurveyResults(props) {
   return (
     <ScrollView>
       {canSeeResults === false &&
-      <Text >
-          Nie posiadasz uprawnień do wyświetlenia wyników. Wyniki będą dostępne dla wszystkich członków wspólnoty po upływie terminu przyjmowania odpowiedzi.
-          </Text>
+      <Card style={{margin:10,backgroundColor:colors.happyGreen}}>
+        <Card.Content>
+            <Text >
+              Nie posiadasz uprawnień do wyświetlenia wyników. Wyniki będą dostępne dla wszystkich członków wspólnoty po upływie terminu przyjmowania odpowiedzi.
+              </Text>
+        </Card.Content>
+      </Card>
+     
       }
 {/*  <Text><Text style={{fontWeight: "bold"}}>{"Adres: "} </Text> {"\n"}</Text> */}
       {canSeeResults && 
@@ -43,10 +48,11 @@ export default function SurveyResults(props) {
           {survey.questions.map((q, i) => (
             <Card style={{margin:10,backgroundColor:colors.white}}>
             <Card.Content>
-            <Text style={{fontSize:14, color:colors.black,margin:0,fontWeight:"bold"}} >
-                {survey.questions[i].questionText} </Text>
+
+            <Text style={{fontSize:14, color:colors.button,margin:0,fontWeight:"bold"}} >
+                {i+1+ ". " + survey.questions[i].questionText} </Text>
             
-            {q.predefinedAnswers?.map((ans, i) => (
+            {q.predefinedAnswers?.map((ans, j) => (
               <Text><Text style={{fontWeight: "bold"}}>{ans.label+ ": "}</Text>{ans.answerText}</Text>
              
             ))}
@@ -62,8 +68,8 @@ export default function SurveyResults(props) {
              
             ))}
 
-            {questionResults[i].openAnswers?.filter(ans => ans.length > 0)?.map((text, i) => (
-              <View key={i}>
+            {questionResults[i].openAnswers?.filter(ans => ans.length > 0)?.map((text, j) => (
+              <View key={j}>
               <Text>
                 {text}
                 </Text>

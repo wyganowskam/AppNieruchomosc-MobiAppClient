@@ -26,6 +26,7 @@ import {logout} from './services/authService';
 import {Button, Icon} from 'react-native-paper'
 import {revokeToken} from './services/userService'
 import {getHoasRoles} from './services/hoaService';
+import colors from "./config/colors"
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
 import { AppRegistry } from 'react-native';
@@ -36,7 +37,7 @@ const theme = {
   colors: {
     ...DefaultTheme.colors,
     primary: 'black',
-    accent: '#B0A3D4',
+    accent: colors.button,
   },
 };
 

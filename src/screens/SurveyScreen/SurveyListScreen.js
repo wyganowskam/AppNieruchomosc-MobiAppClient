@@ -49,7 +49,8 @@ export default function Surveys(props) {
     }
 
     const renderRow = ({ item }) => {
-  
+      const icon= item.isVoting===true ? require('../../assets/icons/manual-voting.png') : require('../../assets/icons/clipboard.png');
+     
         return (
           <>
           <Card  style={{marginBottom:4,marginLeft:7, marginRight:7,borderRadius:20,marginTop:3}} 
@@ -62,7 +63,7 @@ export default function Surveys(props) {
                 subtitle={item.description} 
                 titleStyle={{fontSize:18, color:colors.black,margin:0}} 
                 subtitleStyle={{fontSize:14,color:colors.grey}}
-                left={()=><Image style={{width:30,height:30,alignSelf:"center",margin:0}} source={require('../../assets/icons/pin.png')} />} 
+                left={()=><Image style={{width:30,height:30,alignSelf:"center",margin:0}} source={icon} />} 
                 leftStyle={{margin:0,paddingRight:0}}
               />
               <Card.Content>
