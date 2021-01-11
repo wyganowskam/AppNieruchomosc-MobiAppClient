@@ -110,7 +110,7 @@ export default function Announcements(props){
           <FAB
         style={styles.fab}
         small
-        icon="plus"
+        icon={props=><Image style={{width:20,height:20,alignSelf:"center",marginTop:2}} source={require('../../assets/icons/plus.png')} />}
         onPress={() =>{props.navigation.navigate('AnnoucmentAdd')}}  
         />
         </View>
@@ -133,14 +133,14 @@ export default function Announcements(props){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.backgroundViolet,
+        backgroundColor: colors.light,
     },
     fab: {
         position: 'absolute',
         margin: 15,
         right: 0,
         top: 0,
-        backgroundColor: colors.violet,
+        backgroundColor: colors.button,
         marginTop:5
       },
      

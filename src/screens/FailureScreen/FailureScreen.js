@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions, FlatList, ScrollView } from 'react-native';
+import { View, StyleSheet, Dimensions, FlatList, ScrollView ,Image} from 'react-native';
 import colors from '../../config/colors';
 import { Button,Text,List,Divider,FAB} from 'react-native-paper';
 import {getUserInfo} from '../../services/authService';
@@ -76,7 +76,7 @@ export default class FailureScreen extends Component {
           <FAB
                 style={styles.fab}
                 small
-                icon="plus"
+                icon={props=><Image style={{width:20,height:20,alignSelf:"center",marginTop:2}} source={require('../../assets/icons/plus.png')} />}
                 onPress={this.handleAddButton}
                 />
       </View>
@@ -88,7 +88,7 @@ export default class FailureScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-      backgroundColor: colors.lightWhite,
+      backgroundColor: colors.light,
   },
   list: {
     marginTop: 20,
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     margin: 15,
     right: 0,
     top: 0,
-    backgroundColor: colors.violet
+    backgroundColor: colors.button
   },
   bottom: {
     flex: 1,

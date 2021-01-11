@@ -61,7 +61,7 @@ export default function Surveys(props) {
               <Card.Title  
                 title={item.title} 
                 subtitle={item.description} 
-                titleStyle={{fontSize:18, color:colors.black,margin:0}} 
+                titleStyle={{fontSize:18, color:colors.black,margin:0, flexWrap:"wrap"}} 
                 subtitleStyle={{fontSize:14,color:colors.grey}}
                 left={()=><Image style={{width:30,height:30,alignSelf:"center",margin:0}} source={icon} />} 
                 leftStyle={{margin:0,paddingRight:0}}
@@ -108,7 +108,7 @@ export default function Surveys(props) {
           <FAB
         style={styles.fab}
         small
-        icon="plus"
+        icon={props=><Image style={{width:20,height:20,alignSelf:"center",marginTop:2}} source={require('../../assets/icons/plus.png')} />}
         onPress={() =>{props.navigation.navigate('NewSurvey')}}  
         />
         </View>
@@ -132,14 +132,14 @@ export default function Surveys(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.backgroundViolet,
+        backgroundColor: colors.light,
     },
     fab: {
         position: 'absolute',
         margin: 15,
         right: 0,
         top: 0,
-        backgroundColor: colors.violet,
+        backgroundColor: colors.button,
         marginTop:5
       },
      

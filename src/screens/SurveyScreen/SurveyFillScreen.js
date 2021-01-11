@@ -2,11 +2,9 @@ import React, { useState, useEffect } from "react";
 import surveyService from '../../services/surveyService';
 import { View, FlatList, ScrollView,StyleSheet ,Image } from 'react-native';
 import { Button } from 'react-native-paper';
-import { Text,Divider,Card,RadioButton } from 'react-native-paper';
+import { Text,Divider,Card,RadioButton, TextInput } from 'react-native-paper';
 import { FAB } from 'react-native-paper';
 import colors from "../../config/colors";
-import { TextInput } from "react-native-gesture-handler";
-
 
 
 export default function CreateSurvey(props) {
@@ -223,18 +221,18 @@ export default function CreateSurvey(props) {
         {q.typeKey === 'Open' && 
         <View>
           <Text style={{color:colors.grey,fontSize:12}} >Pytanie otwarte</Text>
-       
+         
             <TextInput
                 
-                label="Odpowiedź"
-                style={{width:300}}
-                mode="outlined"
+                
+                multiline
+                style={{height:100,backgroundColor:colors.lightWhite,margin:5,}}
+               
                 disabled={(survey.isFilled || !survey.acceptAnswers)??true}
                 value={(survey.isFilled ? q.myAnswers[0] : answers[i][0])??""}
                 onChangeText={t => onAnswerChangeOpen(i, t)}
-                
-            >
-            </TextInput> </View>}
+              />
+               </View>}
 
             </Card.Content>
            </Card>

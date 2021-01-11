@@ -93,7 +93,7 @@ export default class App extends React.Component {
         <Stack.Navigator 
          
           screenOptions={{
-            headerTitleStyle: {color:'black', },
+            headerTitleStyle: {color:'black', fontSize:16 },
             headerStyle: {
               
               borderBottomColor:'transparent',

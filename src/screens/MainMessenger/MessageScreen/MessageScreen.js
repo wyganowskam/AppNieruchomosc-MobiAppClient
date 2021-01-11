@@ -116,7 +116,7 @@ export default class MessagesScreen extends Component {
                 <FAB
                 style={styles.fab}
                 small
-                icon="plus"
+                icon={props=><Image style={{width:20,height:20,alignSelf:"center",marginTop:2}} source={require('../../../assets/icons/plus.png')} />}
                 onPress={() =>{this.props.navigation.navigate('NewMessage')}}  
                 />
             </View>

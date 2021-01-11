@@ -1,6 +1,6 @@
 export default {
     base: "#EFF5F9",
-    light:"#F8F5F5",
+    light:"#EDE5ED",
     mid:"#B1D6E4",
     dark:"#1863BF",
     violet:"#D9B1E4",
@@ -19,6 +19,6 @@ export default {
     textViolet:"#563C57",
     backgroundViolet:"#b99dbb",
     lightViolet:"#DACBDB",
-    happyGreen:"#95D87B",
+    happyGreen:"#B4D3A2",
 
 }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, FlatList, ScrollView,StyleSheet ,Image } from 'react-native';
-import { TextInput } from "react-native-gesture-handler";
-import { Button } from 'react-native-paper';
+import { Button, TextInput } from 'react-native-paper';
 import { Text,Divider,Card, } from 'react-native-paper';
 import CreateSurveyAnswers from './CreateSurveyAnswers';
 import surveyService from '../../services/surveyService';

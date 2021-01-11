@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         margin: 15,
         right: 0,
         top: 0,
-        backgroundColor: colors.violet
+        backgroundColor: colors.button
       },
       search: {
           width: SCREEN_WIDTH-100,
