@@ -61,7 +61,7 @@ export default function CreateSurvey(props) {
   }
 
   const onAnswerChangeSingleChoice = (i, val) => {
-    console.log(answers);
+   
     setAnswers(ans => {
         ans[i] = [val];
         return [...ans];
@@ -170,26 +170,9 @@ export default function CreateSurvey(props) {
             
 
         {q.typeKey === 'SingleChoice' && 
-            // <FormControl component="fieldset"
-            //     disabled={(survey.isFilled || !survey.acceptAnswers)??true}
-            // >
+           
             <View>
-            {/* <RadioButton.Group
-            value={(survey.isFilled ? q.myAnswers[0] : answers[i][0])??""} 
-            onChange={e => onAnswerChangeSingleChoice(i, e.target.value)}
-            >
-                {q.predefinedAnswers?.map(ans => (
-
-                      <View>
-                      <RadioButton value={ans.label} />
-                      <Text><Text style={{fontWeight:"bold"}}>{ans.label}</Text>{ans.answerText}</Text> 
-                      </View>
-                     
-                    
-                ))}
-            </RadioButton.Group> */}
-
-
+            
             <RadioButton.Group  
             value={(survey.isFilled ? q.myAnswers[0] : answers[i][0])??""} 
             onValueChange={newValue => onAnswerChangeSingleChoice(i, newValue)}
@@ -197,13 +180,15 @@ export default function CreateSurvey(props) {
                 
                 {q.predefinedAnswers?.map(ans => (
                     <View >
-                      <RadioButton value={ans.label} />
+                      <RadioButton value={ans.label} 
+                      disabled={(survey.isFilled || !survey.acceptAnswers)??true}
+                      />
                       <Text><Text style={{fontWeight:"bold"}}>{ans.label}</Text>{ans.answerText}</Text> 
                     </View>
                 ))}
                 </RadioButton.Group>
                 </View>
-            // </FormControl>
+         
         }
 
         
@@ -215,18 +200,11 @@ export default function CreateSurvey(props) {
                     <RadioButton 
                     status={ survey.isFilled ? (q.myAnswers.includes(ans.label) ? 'checked' : 'unchecked') : (answers[i].includes(ans.label)?'checked' : 'unchecked') }
                      onPress={e => onAnswerChangeMultipleChoice(i, ans.label)}  
-                    //onPress={e => onAnswerChangeMultipleChoice(e)}  
+                     disabled={(survey.isFilled || !survey.acceptAnswers)??true}
                     value={ans.label} />
                     <Text><Text style={{fontWeight:"bold"}}>{ans.label}</Text>{ans.answerText}</Text> 
                </View>
-                // <FormControlLabel
-                //     key={ans.id}
-                //     control={<Checkbox 
-                //     checked={(survey.isFilled ? q.myAnswers.includes(ans.label) : answers[i].includes(ans.label))??false} 
-                //     onChange=...
-                //      />}
-                //
-                // />
+             
             ))}
             </View>
            
@@ -240,7 +218,7 @@ export default function CreateSurvey(props) {
                 mode="outlined"
                 disabled={(survey.isFilled || !survey.acceptAnswers)??true}
                 value={(survey.isFilled ? q.myAnswers[0] : answers[i][0])??""}
-                onChangeText={e => onAnswerChangeOpen(i, e.target.value)}
+                onChangeText={t => onAnswerChangeOpen(i, t)}
                 
             >
             </TextInput>}
