@@ -1,14 +1,14 @@
 import React from 'react';
-import { View, FlatList, ScrollView,StyleSheet ,Image } from 'react-native';
-import { TextInput } from "react-native-gesture-handler";
-import { Button } from 'react-native-paper';
-import { Text,Divider,Card, } from 'react-native-paper';
-import CreateSurveyAnswers from './CreateSurveyAnswers';
-import surveyService from '../../services/surveyService';
-import { FAB } from 'react-native-paper';
+import {  ScrollView, } from 'react-native';
+import { Text } from 'react-native-paper';
 import colors from "../../config/colors";
 import SurveyFill from './SurveyFillScreen';
 import SurveyResults from './SurveyResultsScreen';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+
+
+const Tab = createMaterialTopTabNavigator();
+
 
 
 export default function Survey(props) {
@@ -19,13 +19,23 @@ export default function Survey(props) {
     setValue(newValue);
   };
 
-  return (
-    <ScrollView>
-      <Text>Survey fill</Text>
+  function FillScreen() {
+    return (
       <SurveyFill surveyId={surveyId}/>
-      <Text>survey results</Text>
+    );
+  }
+  
+  function ResultsScreen() {
+    return (
       <SurveyResults surveyId={surveyId}/>
-   
-      </ScrollView>
+    );
+  }
+
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="A" component={FillScreen} />
+      <Tab.Screen name="B" component={ResultsScreen}  />
+    </Tab.Navigator>
   );
 }
+

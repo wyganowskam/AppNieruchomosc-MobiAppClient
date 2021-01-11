@@ -42,9 +42,11 @@ export default function SurveyResults(props) {
 {/*  <Text><Text style={{fontWeight: "bold"}}>{"Adres: "} </Text> {"\n"}</Text> */}
       {canSeeResults && 
         <View >
-          
-          <Text style={{fontWeight:"bold"}}>{survey.title}</Text>
-         
+           <Card  style={{margin:10,backgroundColor:colors.lightViolet,borderRadius:10,}}>
+          <Card.Content>
+          <Text style={{fontWeight:"600",fontSize:16,color:colors.button}}>{survey.title}</Text>
+          </Card.Content>
+          </Card>
           {survey.questions.map((q, i) => (
             <Card style={{margin:10,backgroundColor:colors.white}}>
             <Card.Content>
