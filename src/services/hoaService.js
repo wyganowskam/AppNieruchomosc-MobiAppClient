@@ -1,5 +1,6 @@
 import {apiClient} from "../api/ApiClient";
 import deviceStorage from "./deviceStorage";
+import authHeader from "./authHeader";
 
 const path = 'hoa/';
 
@@ -31,6 +32,7 @@ export const refreshRoles = async () => {
         deviceStorage.getItem("hoaId")
           .then((resHoaId) => {
             var hoaId = resHoaId;
+            console.log(resHoaId);
             deviceStorage.getItem("hoas")
               .then((resHoas)=>{
               var hoas=JSON.parse(resHoas);
@@ -41,6 +43,7 @@ export const refreshRoles = async () => {
                    deviceStorage.setItem("isBuildingAdmin", roles.includes("Administrator"));
                    deviceStorage.setItem("isBoard" , roles.includes("BoardMember"));
                    deviceStorage.setItem("isResident", roles.includes("HomeOwner"));
+                  authHeader();
                 }
                
                 };

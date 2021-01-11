@@ -1,26 +1,13 @@
 import React, { useState, useEffect } from "react";
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Box from '@material-ui/core/Box';
-import useStylesForm from '../../styles/formStyles';
-import ErrorAlert from '../../components/ErrorAlert';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
-import Typography from '@material-ui/core/Typography';
+import { View, FlatList, ScrollView,StyleSheet ,Image } from 'react-native';
+import { TextInput } from "react-native-gesture-handler";
+import { Button } from 'react-native-paper';
+import { Text,Divider,Card, } from 'react-native-paper';
 import CreateSurveyAnswers from './CreateSurveyAnswers';
-import surveyService from '../../services/survey.service';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import IconButton from '@material-ui/core/IconButton';
-
-const theme = createMuiTheme({
-  palette: {
-    secondary: {
-      main: '#aaa',
-    },
-  },
-});
+import surveyService from '../../services/surveyService';
+import { FAB } from 'react-native-paper';
+import colors from "../../config/colors";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 function CreateSurvey(props) {
@@ -39,7 +26,6 @@ function CreateSurvey(props) {
     qanswersCountArr[i] = 1;
   }
 
-  const classesForm = useStylesForm();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [questions, setQuestions] = useState([...questionsArr]);
@@ -185,84 +171,70 @@ function CreateSurvey(props) {
 
   }
   const handleAdd = (e) => {
-    e.preventDefault();
-    setMessage("");
-    let isValid = validate();
+    // e.preventDefault();
+    // setMessage("");
+    // let isValid = validate();
     
-    if(isValid === true){
-      console.log({
-        title: title,
-        description: description,
-        acceptAnswersDeadline: deadline,
-        questions: questions.slice(0, questionsCount).map((q, i) => {return {
-          questionText: q.questionText,
-          typeKey: q.type,
-          predefinedAnswers: q.answers.slice(0, qanswersCount[i])
-        }}),
-    });
-      setLoading(true);
-      surveyService.createSurvey({
-          title: title,
-          description: description,
-          acceptAnswersDeadline: deadline,
-          questions: questions.slice(0, questionsCount).map((q, i) => {return {
-            questionText: q.questionText,
-            typeKey: q.type,
-            predefinedAnswers: q.answers.slice(0, qanswersCount[i])
-          }}),
-      }).then(
-        (result) => {
-          props.navigation.push('Surveys',{surveyId:id})
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+    // if(isValid === true){
+    //   console.log({
+    //     title: title,
+    //     description: description,
+    //     acceptAnswersDeadline: deadline,
+    //     questions: questions.slice(0, questionsCount).map((q, i) => {return {
+    //       questionText: q.questionText,
+    //       typeKey: q.type,
+    //       predefinedAnswers: q.answers.slice(0, qanswersCount[i])
+    //     }}),
+    // });
+    //   setLoading(true);
+    //   surveyService.createSurvey({
+    //       title: title,
+    //       description: description,
+    //       acceptAnswersDeadline: deadline,
+    //       questions: questions.slice(0, questionsCount).map((q, i) => {return {
+    //         questionText: q.questionText,
+    //         typeKey: q.type,
+    //         predefinedAnswers: q.answers.slice(0, qanswersCount[i])
+    //       }}),
+    //   }).then(
+    //     (result) => {
+    //       props.navigation.push('Surveys',{surveyId:id})
+    //     },
+    //     (error) => {
+    //       const resMessage =
+    //         (error.response &&
+    //           error.response.data &&
+    //           error.response.data.message) ||
+    //         error.message ||
+    //         error.toString();
 
-          setLoading(false);
-          setIsFormValid(false);
-          setMessage(resMessage);
+    //       setLoading(false);
+    //       setIsFormValid(false);
+    //       setMessage(resMessage);
 
-        }
-      );
-      setLoading(false);
-    }
+    //     }
+    //   );
+    //   setLoading(false);
+    // }
   };
 
   return (
-      <ThemeProvider theme={theme}>    
+     <ScrollView> 
 
-      <div style={{margin: 10, marginTop: 10, maxWidth: 1200, textAlign: 'left'}}>
-        <form className={classesForm.form} noValidate onSubmit={handleAdd}>
-        <TextField
-            variant="outlined"
-            margin="normal"
-            color="secondary"
-            required
-            fullWidth
-            id="title"
+      <View>
+        {/* <form className={classesForm.form} noValidate onSubmit={handleAdd}> */}
+        <TextInput
             label="Tytuł ankiety"
-            name="title"
-            onChange={onChangeTitle}
+            onChangeText={onChangeTitle}
             style={{borderRadius:0}}
         />
-        <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            color="secondary"
-            fullWidth
-            multiline
-            rows={3}
-            id="desc"
+        <TextInput
             label="Opis"
-            name="desc"
-            onChange={onChangeDescription}
+            onChangeText={onChangeDescription}
         />
-           <TextField
+
+        {/* FORMAT "2021-01-21T17:58" */}
+           {/* <TextField
         label="Przyjmuje odpowiedzi do"
         type="datetime-local"
         color="secondary"
@@ -275,35 +247,31 @@ function CreateSurvey(props) {
         InputLabelProps={{
           shrink: true,
         }}
-      />
-        <div style ={{marginBottom:50}}>
-          <Typography style={{float:"left", marginTop:10, marginRight: 10}}>
-            Pytania</Typography>
-        <Button variant="outlined" style={{float:"left", marginRight:10}} onClick={onMinusClick}>
-          <RemoveIcon />
+      /> */}
+        <View>
+          <Text>Pytania</Text>
+        <Button mode="outlined" style={{float:"left", marginRight:10}} onPress={onMinusClick}>
+         -
         </Button>
-        <Button variant="outlined" style={{float:"left"}} onClick={onPlusClick}>
-          <AddIcon />
+        <Button mode="outlined" style={{float:"left"}} onPress={onPlusClick}>
+          +
         </Button>
-          </div>    
+        </View>   
        
         {[...Array(questionsCount)].map((e, i) => 
-        <Box border={2} key={i} id="question-div" style={{textAlign: 'left', padding:10,paddingTop: 0,
+        <View key={i} id="question-div" style={{textAlign: 'left', padding:10,paddingTop: 0,
         marginBottom: 20, borderRadius:3, borderColor: '#ddd'}}>
 
-        <TextField
-            margin="normal"
-            color="secondary"
-            required
-            fullWidth
-            id="title"
+        <TextInput
+            
             label="Treść pytania"
-            name="title"
+            
             style={{maxWidth:700}}
-           onChange={e => onQuestionTextChange(i, e.target.value)}
+           onChangeText={e => onQuestionTextChange(i, e.target.value)}
         />
-        <div style={{clear:'left'}} />
-        <TextField
+       {/* tuuuuuu */}
+       <Text>Tu zzrobić wybór typu pytania</Text>
+        {/* <TextInput
             style={{width:'100%'}}
             color="secondary"
             select
@@ -327,31 +295,31 @@ function CreateSurvey(props) {
                 {type.description}
                 </MenuItem>
             ))}
-        </TextField>
+        </TextInput> */}
             {(questions[i]?.type === 'SingleChoice' || questions[i]?.type === 'MultipleChoice') 
-            && <div style={{marginTop:20}}> 
+            && <View>
             <CreateSurveyAnswers 
               maxAnswers={maxAnswers}
               onQuestionAnswerLabelChange={onQuestionAnswerLabelChange}
               onQuestionAnswerTextChange={onQuestionAnswerTextChange}
               questionNumber={i}
               setParentAnswersCount={setAnswersCount}
-            /> </div> }
+            /> </View>}
         
-        </Box>)}
+        </View>)}
 
-        {!isFormValid && <div style={{marginBottom: 20}}><ErrorAlert message={message} /></div>}
+        {!isFormValid && <View style={{marginBottom: 20}}><Text>{message} </Text></View>}
         <Button
-            type="submit"
-            variant="contained"
+            mode="contained"
             disabled={loading}
             style={{width:200}}
+            onPress={handleAdd}
         >
         Stwórz ankietę
         </Button>
-        </form>
-    </div>
-    </ThemeProvider>
+        {/* </form> */}
+        </View>
+    </ScrollView>  
   );
 }
 

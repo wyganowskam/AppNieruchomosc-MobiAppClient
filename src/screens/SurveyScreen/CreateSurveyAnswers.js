@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
-import Typography from '@material-ui/core/Typography';
+import { View, FlatList, ScrollView,StyleSheet ,Image } from 'react-native';
+import { Button, TextInput } from 'react-native-paper';
+import { Text,Divider,Card, } from 'react-native-paper';
+import { FAB } from 'react-native-paper';
+import colors from "../../config/colors";
 
 export default function CreateHoaAnswers(props) {
   const {maxAnswers, onQuestionAnswerLabelChange, onQuestionAnswerTextChange, 
@@ -35,48 +35,41 @@ export default function CreateHoaAnswers(props) {
 
 
   return (
-    <div>
+    <View>
 
-        <div>
-          <Typography style={{float:"left", marginTop:10, marginRight: 10}}>
-            Odpowiedzi</Typography>
-        <Button style={{float:"left"}} onClick={onMinusClick}>
-          <RemoveIcon />
+        <View>
+          <Text>
+            Odpowiedzi</Text>
+        <Button style={{float:"left"}} onPress={onMinusClick}>
+          -
         </Button>
-        <Button style={{float:"left"}} onClick={onPlusClick}>
-          <AddIcon />
+        <Button style={{float:"left"}} onPress={onPlusClick}>
+          +
         </Button>
-          </div>    
-        <div style={{clear:'left'}} />
+          </View>    
+        <View/>
         {[...Array(answersCount)].map((e, i) => 
-        <div key={i} id="answers-div">
+        <View>
           
-          <TextField
-            margin="normal"
-            color="secondary"
-            required
-            fullWidth
+          <TextInput
+            
             id="title"
             label="Etykieta"
-            name="title"
             style={{width:'19%', marginRight: '2%'}}
-            onChange={e => onQuestionAnswerLabelChange(questionNumber, i, e.target.value)}
+            onChangeText ={e => onQuestionAnswerLabelChange(questionNumber, i, e.target.value)}
         />
                   
-                  <TextField
-            margin="normal"
-            color="secondary"
-            required
-            fullWidth
+          <TextInput
+            
             id="title"
             label="Treść odpowiedzi"
             name="title"
             style={{width:'79%'}}
-            onChange={e => onQuestionAnswerTextChange(questionNumber, i, e.target.value)}
+            onChangeText={e => onQuestionAnswerTextChange(questionNumber, i, e.target.value)}
         />
         {/* {i !== answersCount-1 && <Divider style={{marginTop:15}} /> } */}
-        </div>)}
+        </View>)}
 
-    </div>
+        </View>
   );
 }

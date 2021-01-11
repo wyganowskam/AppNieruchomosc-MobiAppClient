@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import surveyService from '../../services/survey.service';
-import { Alert } from "@material-ui/lab";
-import { Divider } from "@material-ui/core";
-
+import { View, FlatList, ScrollView,StyleSheet ,Image } from 'react-native';
+import { Button } from 'react-native-paper';
+import { Text,Divider,Card, } from 'react-native-paper';
+import { FAB } from 'react-native-paper';
+import colors from "../../config/colors";
+import surveyService from '../../services/surveyService';
 
 export default function SurveyResults(props) {
 
@@ -28,57 +28,56 @@ export default function SurveyResults(props) {
   }, []);
 
   return (
-    <div>
+    <ScrollView>
       {canSeeResults === false &&
-      <Alert style={{marginBottom:15, maxWidth:900}} severity="info">
+      <Text >
           Nie posiadasz uprawnień do wyświetlenia wyników. Wyniki będą dostępne dla wszystkich członków wspólnoty po upływie terminu przyjmowania odpowiedzi.
-      </Alert>
+          </Text>
       }
-
+{/*  <Text><Text style={{fontWeight: "bold"}}>{"Adres: "} </Text> {"\n"}</Text> */}
       {canSeeResults && 
-        <div style={{maxWidth:800, textAlign:'left', color:'#444'}}>
+        <View >
           
-          <Typography variant="body1" style={{marginBottom:25}}>
-            <strong>{survey.title}</strong>
-          </Typography>
-
+          <Text style={{fontWeight:"bold"}}>{survey.title}</Text>
+         
           {survey.questions.map((q, i) => (
-              <Box key={i} border={2} 
-              style={{padding: 20 , marginBottom: 30, borderRadius:3, borderColor: '#ddd', maxHeight:500, overflowY:'auto'}}>
-
-            <Typography variant="body1" style={{marginBottom:20}}>
-            <strong>{survey.questions[i].questionText}</strong>
-            </Typography>
-
+            <Card style={{margin:10,backgroundColor:colors.white}}>
+            <Card.Content>
+            <Text style={{fontSize:14, color:colors.black,margin:0,fontWeight:"bold"}} >
+                {survey.questions[i].questionText} </Text>
+            
             {q.predefinedAnswers?.map((ans, i) => (
-              <Typography key={i} variant="body2" style={{marginBottom:20}}>
-              <strong>{ans.label}:</strong>&nbsp;{ans.answerText}
-              </Typography>
+              <Text><Text style={{fontWeight: "bold"}}>{ans.label+ ": "}</Text>{ans.answerText}</Text>
+             
             ))}
-            <Divider style={{marginTop:20, marginBottom:20}} />
+
+            <Divider style={{marginTop:10, marginBottom:10}} />
+          
             {q.predefinedAnswers?.map((ans, j) => (
-              <Typography key={j} variant="body2" style={{marginBottom:20}}>
-              <strong>{ans.label}:</strong>&nbsp;
-              {questionResults[i]?.answersResults?.find(a=>a.label===ans.label)?.votes??0}&nbsp;głosów
-              {q.typeKey === 'SingleChoice' && `(${questionResults[i]?.answersResults?.find(a=>a.label===ans.label)?.votesPercent??0}%)`}
-              </Typography>
+                 <Text style={{color:colors.textViolet}}><Text style={{fontWeight: "bold",color:colors.black}}>
+                   <Text style={{fontWeight: "bold"}}>{ans.label + ":  "}</Text>
+                   
+                   </Text >{questionResults[i]?.answersResults?.find(a=>a.label===ans.label)?.votes??0}&nbsp;głosów
+                 {q.typeKey === 'SingleChoice' && `(${questionResults[i]?.answersResults?.find(a=>a.label===ans.label)?.votesPercent??0}%)`}</Text>
+             
             ))}
 
             {questionResults[i].openAnswers?.filter(ans => ans.length > 0)?.map((text, i) => (
-              <div key={i} >
-              <Typography variant="body2" style={{marginBottom:10}}>
+              <View key={i}>
+              <Text>
                 {text}
-              </Typography>
-              <Divider />
-              </div>
+                </Text>
+                <Divider style={{marginTop:10, marginBottom:10}} />
+              </View>
             ))}
-              
-            </Box>
+
+            </Card.Content>
+            </Card>
           ))}
 
-        </div>
+        </View>
       }
 
-    </div>
+    </ScrollView>
   );
 }

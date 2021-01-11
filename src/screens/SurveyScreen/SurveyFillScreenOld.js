@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import surveyService from '../../services/surveyService';
 import { View, FlatList, ScrollView,StyleSheet ,Image } from 'react-native';
 import { Button } from 'react-native-paper';
-import { Text,Divider,Card,RadioButton } from 'react-native-paper';
+import { Text,Divider,Card, } from 'react-native-paper';
 import { FAB } from 'react-native-paper';
 import colors from "../../config/colors";
-import { TextInput } from "react-native-gesture-handler";
 
 
 
@@ -24,7 +23,6 @@ export default function CreateSurvey(props) {
     setLoadingSurvey(true);
       surveyService.getSurveyDetails(surveyId).then(res => {
         setSurvey(res.data);
-        
         for(let i=0; i < res.data.questions.length; i++){
             if(res.data.questions[i].typeKey === 'Open'){
                 answers.push([""]);
@@ -43,7 +41,6 @@ export default function CreateSurvey(props) {
 
   useEffect(()=>{
     loadSurvey();
-   
   }, [surveyId]);
 
 
@@ -61,18 +58,18 @@ export default function CreateSurvey(props) {
   }
 
   const onAnswerChangeSingleChoice = (i, val) => {
-    console.log(answers);
     setAnswers(ans => {
         ans[i] = [val];
         return [...ans];
     })
   }
 
-  const onAnswerChangeMultipleChoice = (i, label) => {
-    
-    if(!answers[i].includes(label)){//jesli jescze nie ma
+  const onAnswerChangeMultipleChoice = (i, checked, label) => {
+    if(checked){
         setAnswers(ans => {
-            ans[i].push(label);
+            if(!ans[i].includes(label)){
+                ans[i].push(label);
+            }
             return [...ans];
         })
     }
@@ -133,129 +130,107 @@ export default function CreateSurvey(props) {
   };
 
   return (
- <ScrollView>
+    <ThemeProvider theme={theme}>
+
     {survey.isFilled &&
-    <Card style={{ margin:10 , backgroundColor:colors.happyGreen}}>
-      <Card.Content>
-      <Text >
-        Wypełniłeś/-aś już ten formularz
-       </Text>
-      </Card.Content>
-    </Card>
-   
+    <Alert style={{marginBottom:15, maxWidth:970}} severity="info">
+        Wypełniłeś/-aś już tą ankietę
+    </Alert>
     }
 
     {survey.acceptAnswers === false &&
-    <Card style={{ margin:10 , backgroundColor:colors.happyGreen}}>
-    <Card.Content>
-    <Text>
-        Upłynał termin wypełnienia formularza.
-    </Text>
-    </Card.Content>
-  </Card>
+    <Alert style={{marginBottom:15, maxWidth:970}} severity="info">
+        Upłynał termin wypełnienia ankiety.
+    </Alert>
     }
 
     {!loadingSurvey &&
-    <View>
-        <View>
-        <Text>{survey.title}</Text>
-        <Text>{survey.description}</Text>
-        <Text>Przyjmuje odpowiedzi do <Text style={{fontWeight:"bold"}}>{survey.acceptAnswersDeadlineFormatted}</Text>.</Text>
-        
-        </View>
+    <div style={{textAlign: 'left', wordWrap: 'break-word', maxWidth:1000}}>
+    <Box border={2} id="question-div" style={{padding:20,
+        marginBottom: 20, borderRadius:3, borderColor: '#ddd', backgroundColor: '#f5f5f5'}}>
+        <Typography variant="body1" style={{marginBottom:15}}>
+            <strong>{survey.title}</strong>
+        </Typography>
+        <Typography variant="body2" style={{whiteSpace: 'pre-line', marginBottom: 15}}>
+            {survey.description}
+        </Typography>
+        <Typography variant="body2" style={{marginBottom:15}}>
+            Przyjmuje odpowiedzi do&nbsp; <strong>{survey.acceptAnswersDeadlineFormatted}</strong>.
+        </Typography>
+    </Box>
 
     {survey.questions?.map((q, i) => (
-        <View>
-        <Text>{q.questionText}</Text>
-            
+        <Box key={q.id} border={q.typeKey === "Open" ? 0 : 2} 
+        style={{padding:q.typeKey === "Open" ? 0 : 20 , marginBottom: 30, borderRadius:3, borderColor: '#ddd'}}>
+        <Typography variant="body2" style={{marginBottom:15}}>
+            <strong>{q.questionText}</strong>
+        </Typography> 
 
         {q.typeKey === 'SingleChoice' && 
-            // <FormControl component="fieldset"
-            //     disabled={(survey.isFilled || !survey.acceptAnswers)??true}
-            // >
-            <View>
-            {/* <RadioButton.Group
+            <FormControl component="fieldset"
+                disabled={(survey.isFilled || !survey.acceptAnswers)??true}
+            >
+            <RadioGroup
             value={(survey.isFilled ? q.myAnswers[0] : answers[i][0])??""} 
             onChange={e => onAnswerChangeSingleChoice(i, e.target.value)}
             >
                 {q.predefinedAnswers?.map(ans => (
-
-                      <View>
-                      <RadioButton value={ans.label} />
-                      <Text><Text style={{fontWeight:"bold"}}>{ans.label}</Text>{ans.answerText}</Text> 
-                      </View>
-                     
-                    
+                      <FormControlLabel key={ans.id} value={ans.label} control={<Radio />} label={
+                      <span>  
+                          <strong>{ans.label}</strong>:&nbsp;{ans.answerText}
+                      </span> } />
                 ))}
-            </RadioButton.Group> */}
-
-
-            <RadioButton.Group  
-            value={(survey.isFilled ? q.myAnswers[0] : answers[i][0])??""} 
-            onValueChange={newValue => onAnswerChangeSingleChoice(i, newValue)}
-            >
-                
-                {q.predefinedAnswers?.map(ans => (
-                    <View >
-                      <RadioButton value={ans.label} />
-                      <Text><Text style={{fontWeight:"bold"}}>{ans.label}</Text>{ans.answerText}</Text> 
-                    </View>
-                ))}
-                </RadioButton.Group>
-                </View>
-            // </FormControl>
+            </RadioGroup>
+            </FormControl>
         }
 
         
         {q.typeKey === 'MultipleChoice' && 
-           
-            <View>
+            <FormControl component="fieldset"
+                disabled={(survey.isFilled || !survey.acceptAnswers)??true}
+            >
+            <FormGroup>
             {q.predefinedAnswers?.map(ans => (
-                 <View>
-                    <RadioButton 
-                    status={ survey.isFilled ? (q.myAnswers.includes(ans.label) ? 'checked' : 'unchecked') : (answers[i].includes(ans.label)?'checked' : 'unchecked') }
-                     onPress={e => onAnswerChangeMultipleChoice(i, ans.label)}  
-                    //onPress={e => onAnswerChangeMultipleChoice(e)}  
-                    value={ans.label} />
-                    <Text><Text style={{fontWeight:"bold"}}>{ans.label}</Text>{ans.answerText}</Text> 
-               </View>
-                // <FormControlLabel
-                //     key={ans.id}
-                //     control={<Checkbox 
-                //     checked={(survey.isFilled ? q.myAnswers.includes(ans.label) : answers[i].includes(ans.label))??false} 
-                //     onChange=...
-                //      />}
-                //
-                // />
+                <FormControlLabel
+                    key={ans.id}
+                    control={<Checkbox 
+                    checked={(survey.isFilled ? q.myAnswers.includes(ans.label) : answers[i].includes(ans.label))??false} 
+                    onChange={e => onAnswerChangeMultipleChoice(i, e.target.checked, ans.label)}  
+                     />}
+                label={
+                    <span>  
+                        <strong>{ans.label}</strong>:&nbsp;{ans.answerText}
+                    </span> }
+                />
             ))}
-            </View>
-           
+            </FormGroup>
+            </FormControl>
         }
 
         {q.typeKey === 'Open' && 
-            <TextInput
-                
-                label="Odpowiedź"
-                style={{width:300}}
-                mode="outlined"
+            <TextField
+                multiline
+                color="secondary"
+                rows={4}
+                variant="outlined"
+                fullWidth
                 disabled={(survey.isFilled || !survey.acceptAnswers)??true}
                 value={(survey.isFilled ? q.myAnswers[0] : answers[i][0])??""}
-                onChangeText={e => onAnswerChangeOpen(i, e.target.value)}
-                
+                onChange={e => onAnswerChangeOpen(i, e.target.value)}
             >
-            </TextInput>}
+            </TextField>}
 
-        </View>
+        </Box>
     ))}
     {isFormValid === false &&
-        <Text>
+        <Alert style={{marginBottom:15, maxWidth:970}} severity="error">
             {message}
-        </Text>}
+        </Alert>}
     <Button disabled={(survey.isFilled || !survey.acceptAnswers || loadingSendAnswers)??true} variant="contained" style={{margin:20, marginLeft:0, textTransform: 'none'}}
         onClick={(e) => handleAdd()}>
         Wyślij odpowiedzi
     </Button>
-    </View>}
-    </ScrollView>
+    </div>}
+    </ThemeProvider>
   );
 }

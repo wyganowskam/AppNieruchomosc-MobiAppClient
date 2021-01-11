@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import announcementService from '../../services/announcementService'
-import AnnouncementDetails from './AnnDetScreen'
-import AnnouncementComments from './AnnComScreen'
+import AnnouncementDetails from './AnnDetails'
+import AnnouncementComments from './AnnComments'
 import {View, FlatList, ScrollView,StyleSheet ,Image} from 'react-native'
 import {Divider,Button, Text, Switch, Card,Chip, TextInput} from 'react-native-paper';
 import colors from "../../config/colors";
@@ -32,7 +32,7 @@ export default function AnnDet(props) {
 
 
   return (
-    <ScrollView style={{backgroundColor: "#CEBACF"}}>
+    <ScrollView style={{backgroundColor: colors.backgroundViolet}}>
  
       {/* <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}

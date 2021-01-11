@@ -65,7 +65,7 @@ const deviceStorage = {
       deviceStorage.getItem('id_token').then(
         (value)=>{
 
-         // console.log(JSON.parse( value));
+          
           if (value !== null) {
         
             getHoasRoles().then(()=>{
@@ -74,6 +74,9 @@ const deviceStorage = {
                 jwt: value,
                 loading: false
               });
+            }).catch(()=>{
+
+              this.deleteJWT();
             })
             
 

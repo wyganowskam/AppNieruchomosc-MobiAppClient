@@ -18,6 +18,7 @@ export default {
     darkviolet:"#725174",
     textViolet:"#563C57",
     backgroundViolet:"#b99dbb",
-    lightViolet:"#DACBDB"
+    lightViolet:"#DACBDB",
+    happyGreen:"#95D87B",
 
 }

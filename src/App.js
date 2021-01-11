@@ -15,9 +15,12 @@ import FailureDetailsScreen from './screens/FailureScreen/FailureDetailsScreen';
 import FailureAddScreen from './screens/FailureScreen/FailureAddScreen';
 import InvitationScreen from "./screens/InvitationScreen/InvitationScreen"
 import ResetPasswordScreen from './screens/ResetPasswordScreen/ResetPasswordScreen';
-import Announcements from "./screens/AnnouncementScreen/AnnScreen";
+import Announcements from "./screens/AnnouncementScreen/AnnouncmentsScreen";
 import AnnouncementAdd from "./screens/AnnouncementScreen/AnnouncementAdd"
 import  AnnDet from "./screens/AnnouncementScreen/Announcement";
+import Survey from "./screens/SurveyScreen/SurveyScreen"
+import Surveys from "./screens/SurveyScreen/SurveyListScreen"
+import CreateSurvey from "./screens/SurveyScreen/CreateSurveyScreen"
 import deviceStorage from './services/deviceStorage';
 import {logout} from './services/authService';
 import {Button, Icon} from 'react-native-paper'
@@ -129,7 +132,9 @@ export default class App extends React.Component {
           <Stack.Screen name="Annoucments" component={Announcements} options={{ title: 'TABLICA OGŁOSZEŃ', }}  />
           <Stack.Screen name="AnnoucmentDet" component={ AnnDet} options={{ title: 'OGŁOSZENIE', }}  />
           <Stack.Screen name="AnnoucmentAdd" component={ AnnouncementAdd} options={{ title: 'NOWE OGŁOSZENIE', }}  />
-        
+          <Stack.Screen name="SurveyDet" component={Survey} options={{ title: 'SZCZEGÓŁY', }}  />
+          <Stack.Screen name="Surveys" component={ Surveys} options={{ title: 'GŁOSOWANIA I ANKIETY', }}  />
+          <Stack.Screen name="NewSurvey" component={ CreateSurvey} options={{ title: 'NOWE GŁOSOWANIE/ANKIETA', }}  />
           </>)}
         </Stack.Navigator>
       </NavigationContainer>

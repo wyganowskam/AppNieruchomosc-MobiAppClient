@@ -113,11 +113,11 @@ export default class Profile extends Component {
   
 
  onChangeHoa(value) {
-
+    console.log(value.hoaId);
     deviceStorage.setItem("hoaId",value.hoaId)
     .then(()=>{
       refreshRoles().then(()=>{this.loadHoa(this.state.usersurname,this.state.username);  this.setState({hoaDialogVisible:false});});
-      
+     
      
     });
   
@@ -135,7 +135,7 @@ export default class Profile extends Component {
   renderRow = ({ item }) => {
  
     const {isAppAdmin,isBuildingAdmin,isResident,isBoard}=this.state;
-    
+   
     return (
       ( (isAppAdmin && item.forAppAdmin)
         || (isBuildingAdmin && item.forBuildingAdmin)

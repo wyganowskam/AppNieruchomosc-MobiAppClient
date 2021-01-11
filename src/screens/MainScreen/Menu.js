@@ -24,7 +24,7 @@ export const menu = [
   {
     title: 'GŁOSOWANIA I ANKIETY',
     icon: require('../../assets/icons/vote.png'),
-    page: 'Main',
+    page: 'Surveys',
     forAppAdmin: true,
     forBuildingAdmin: true,
     forBoard: true,
