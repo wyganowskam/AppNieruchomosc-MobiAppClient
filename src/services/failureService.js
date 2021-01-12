@@ -23,6 +23,11 @@ export const getAllStatuses = () => {
       })
       .then(response => Buffer.from(response.data, 'binary').toString('base64'));
     };
+
+export const getTypes = () => {
+    console.log("AAAAAAA")
+      return apiClient.get("malfunctions/types");
+    };
   
   export const updateFailureStatus = (data) => {
       return apiClient.post("malfunctions/status", data);

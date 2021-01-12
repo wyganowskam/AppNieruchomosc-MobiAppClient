@@ -32,7 +32,7 @@ export default function AnnDet(props) {
 
 
   return (
-    <ScrollView style={{backgroundColor: colors.backgroundViolet}}>
+    <ScrollView style={{backgroundColor: colors.lightViolet}}>
  
       {/* <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}

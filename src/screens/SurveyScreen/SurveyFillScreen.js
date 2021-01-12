@@ -224,7 +224,7 @@ export default function CreateSurvey(props) {
          
             <TextInput
                 
-                
+                label="Odpowiedź"
                 multiline
                 style={{height:100,backgroundColor:colors.lightWhite,margin:5,}}
                
@@ -232,6 +232,13 @@ export default function CreateSurvey(props) {
                 value={(survey.isFilled ? q.myAnswers[0] : answers[i][0])??""}
                 onChangeText={t => onAnswerChangeOpen(i, t)}
               />
+              {/* <TextInput
+              label="Treść zgłoszenia"
+              multiline
+              style={{height:250,backgroundColor:colors.lightWhite}}
+              value={description}
+              onChangeText={(description) => this.setState({description,message:""})}
+            />  */}
                </View>}
 
             </Card.Content>

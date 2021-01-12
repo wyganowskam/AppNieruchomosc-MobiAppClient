@@ -166,7 +166,7 @@ const nextPage = () => {
 
 
       {comments.map((comment, index) => (
-        <Card  key={comment.id} style={{margin:10, borderRadius:20, backgroundColor:colors.lightWhite,padding:0}} 
+        <Card  key={comment.id} style={{margin:10, borderRadius:20, backgroundColor:colors.white,padding:0}} 
         >
               
               <Card.Content>
@@ -190,7 +190,7 @@ const nextPage = () => {
                 label="Komentarz"
                 value={text}
                 mode="outlined"
-                style={{margin:10,backgroundColor:colors.lightViolet,flex:1}}
+                style={{margin:10,backgroundColor:colors.white,flex:1}}
                 onChangeText={t => {setText(t);  setMessage("");}}
                 multiline
             />

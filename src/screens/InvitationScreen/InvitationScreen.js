@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Dimensions, FlatList, ScrollView } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text ,Card} from 'react-native-paper';
 import Row from "./InvitationRow";
 import colors from '../../config/colors';
 import {getMyInvitations} from '../../services/invitationService';
@@ -56,7 +56,14 @@ export default class FailureScreen extends Component {
              ))}
             </>
         :
-            <Text style={{marginTop:50}}>Brak nowych zaproszeń</Text>}
+        
+        <Card style={{margin:10, marginTop:60, height:50, backgroundColor:colors.happyGreen,alignSelf:"center"}}>
+          <Card.Content>
+          <Text >Brak nowych zaproszeń</Text>
+          </Card.Content>
+        </Card>
+       
+      }
   
       </View>
     );

@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import * as ImagePicker from 'expo-image-picker';
 import colors from '../../config/colors';
 import { Button,Text,Dialog, Portal,List, Divider } from 'react-native-paper';
-import {addFailure} from '../../services/failureService';
+import {addFailure,getTypes} from '../../services/failureService';
 import MenuItem from '@material-ui/core/MenuItem';
 import sharesService from '../../services/sharesService';
 export default class FailureAddScreen extends Component {
@@ -38,6 +38,20 @@ export default class FailureAddScreen extends Component {
    this.handleXPress=this.handleXPress.bind(this);
    this.openApartmentDialog=this.openApartmentDialog.bind(this);
    this.openTypeDialog=this.openTypeDialog.bind(this);
+   this.getAllTypes=this.getAllTypes.bind(this);
+
+   this.getAllTypes();
+    }
+
+    getAllTypes=()=> {
+      console.log("BBBBBBB")
+      getTypes().then((res) => {
+        console.log(res.data)
+        this.setState({ types: res.data});
+      },(error) => {
+            
+      }
+    ).catch(e => { });
     }
 
     validate= () => {
@@ -80,6 +94,8 @@ export default class FailureAddScreen extends Component {
     }
    
   };
+
+  
       
   renderImage = ({ item }) => {
  
@@ -109,13 +125,14 @@ export default class FailureAddScreen extends Component {
   handleAddButton = () => {
   this.setState({message:""});
     const isValid=this.validate();
-    const {title,description,apartment,picture}=this.state;
+    const {title,description,apartment,type,picture}=this.state;
     if(isValid === true){
       this.setState({isLoading:true});
       addFailure({
           title: title,
           description: description,
-          apartmentId: apartment.id,
+          shareSubjectId: apartment.id,
+          typeId:type.id,
          // picture:picture.uri
       }).then(
         () => {
@@ -195,7 +212,7 @@ export default class FailureAddScreen extends Component {
      
       <List.Item  onPress={()=>this.onChangeType(item)} 
        bottomDivider
-       title={item.name}/>
+       title={item.title}/>
       
     );
   };
@@ -229,7 +246,7 @@ export default class FailureAddScreen extends Component {
             uppercase={false}
             onPress={this.openTypeDialog}
             style={{margin:5}}
-            >{this.state.type==='' ? (" Wybierz typ zgłoszenia ") : ( this.state.type + "  ") }
+            >{this.state.type==='' ? (" Wybierz typ zgłoszenia ") : ( this.state.type.title + "  ") }
               <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
           </Button>
 
@@ -251,6 +268,7 @@ export default class FailureAddScreen extends Component {
                  data={this.state.picture}
                  keyExtractor={(a) => a.uri}
                 renderItem={this.renderImage}
+                
               />
               
          
@@ -279,7 +297,7 @@ export default class FailureAddScreen extends Component {
 
 
         <Portal>
-          <Dialog visible={this.state.apartmentDialogVisible} onDismiss={this.hideApartmentDialog}>
+          <Dialog visible={this.state.apartmentDialogVisible} onDismiss={this.hideApartmentDialog} style={{maxHeight:600}}>
             <Dialog.Title>Wybierz mieszkanie</Dialog.Title>
             <Dialog.Content>
               <Divider/>
@@ -287,21 +305,26 @@ export default class FailureAddScreen extends Component {
                 data={this.state.apartments}
                 keyExtractor={(a) => a.id}
                 renderItem={this.renderApartmentDialog}
+                style={{maxHeight:500}}
               />
           </Dialog.Content>
           </Dialog>
         </Portal>
 
         <Portal>
-          <Dialog visible={this.state.typeDialogVisible} onDismiss={this.hideTypeDialog}>
+          <Dialog visible={this.state.typeDialogVisible} onDismiss={this.hideTypeDialog} style={{maxHeight:600}}>
             <Dialog.Title>Wybierz typ zgłoszenia</Dialog.Title>
             <Dialog.Content>
+             
               <Divider/>
+             
               <FlatList
                 data={this.state.types}
                 keyExtractor={(a) => a.id}
                 renderItem={this.renderTypeDialog}
+                style={{maxHeight:500}}
               />
+
           </Dialog.Content>
           </Dialog>
         </Portal>  
