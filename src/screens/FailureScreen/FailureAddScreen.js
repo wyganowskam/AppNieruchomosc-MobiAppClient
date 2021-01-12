@@ -24,7 +24,7 @@ export default class FailureAddScreen extends Component {
         types:[],
         apartmentDialogVisible:false,
         typeDialogVisible:false,
-        picture:[]
+        picture:undefined
     }
    this.pickImage=this.pickImage.bind(this);
    this.renderImage=this.renderImage.bind(this);
@@ -128,16 +128,21 @@ export default class FailureAddScreen extends Component {
     const {title,description,apartment,type,picture}=this.state;
     if(isValid === true){
       this.setState({isLoading:true});
-      addFailure({
-          title: title,
-          description: description,
-          shareSubjectId: apartment.id,
-          typeId:type.id,
-         // picture:picture.uri
-      }).then(
+
+      const formData = new FormData();
+      formData.append('picture', picture);
+      formData.append('title', title);
+      formData.append('description', description);
+      formData.append('shareSubjectId', apartment.id);
+      formData.append('typeId', type.id);
+      addFailure(formData).then(
         () => {
 
-          this.props.navigation.goBack();
+          // this.props.navigation.goBack();
+          this.props.navigation.reset({
+            index: 1,
+            routes: [{ name: 'Main' }, {name:'Failure'}],
+          });
         },
         (error) => {
           const resMessage =
