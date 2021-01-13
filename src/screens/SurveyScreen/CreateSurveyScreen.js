@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, FlatList, ScrollView,StyleSheet ,Image } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Text,Divider,Card, } from 'react-native-paper';
+import { Dialog, Portal,List } from 'react-native-paper';
 import CreateSurveyAnswers from './CreateSurveyAnswers';
 import surveyService from '../../services/surveyService';
 import { FAB } from 'react-native-paper';
@@ -33,8 +34,18 @@ function CreateSurvey(props) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [isFormValid, setIsFormValid] = useState(true);
+  const [isVoting, setIsVoting] = useState(false);
   const [questionTypes, setQuestionTypes] = useState([]);
   const [deadline, setDeadline] = useState("");
+  const [typeDialogVisible,setTypeDialogVisible]=useState(false);
+  const [votingDialogVisible,setVotingDialogVisible]=useState(false);
+  const [date, setDate] = useState(new Date());
+  const [dateString, setDateString]=useState('');
+  const [showDate, setShowDate] = useState(false);
+  const [time, setTime] = useState(new Date());
+  const [timeString, setTimeString]=useState('');
+  const [showTime, setShowTime] = useState(false);
+
   
   useEffect(()=>{
     
@@ -217,13 +228,116 @@ function CreateSurvey(props) {
     // }
   };
 
+  const openDialog=()=> {
+    setTypeDialogVisible(true);
+  }
+
+  const hideDialog=()=> {
+    setTypeDialogVisible(false);
+  }
+
+  const openVotingDialog=()=> {
+    setVotingDialogVisible(true);
+  }
+
+  const hideVotingDialog=()=> {
+    setVotingDialogVisible(false);
+  }
+
+  const onChangeDate=(newdate)=>{
+   //setDate({date:date.nativeEvent.timestamp}); 
+   setShowDate(false);
+   if(newdate.type!="dismissed"){
+    const d= new Date(newdate.nativeEvent.timestamp);
+    const year=d.getFullYear();
+    const month=d.getMonth();
+    const day=d.getDate();
+    const m= month<9 ? "0" : "";
+    const n= day<10 ? "0" : "";
+    const dd=year+"/"+ m+(month+1)+"/"+n+day;
+    setDateString(dd);
+    setDate(new Date(dd));
+   }
+  
+  }
+
+  const onChangeTime=(newtime)=>{
+    setShowTime(false);
+    if(newtime.type!="dismissed"){
+        const d= new Date(newtime.nativeEvent.timestamp);
+        const h=d.getHours();
+        const m=d.getMinutes();
+        const n= m<10 ? "0": ""
+        const t=new Date().setHours(h,m);
+        setTimeString(h+":"+n+m)
+        setTime(t)
+        
+    }
+    
+   }
+
+  const renderTypes = ({ item }) => {
+
+    
+    return (
+     <></>
+      // <List.Item  onPress={()=>this.onChangeHoa(item)} 
+      //  bottomDivider
+      //  title={item.hoaName}/>
+      
+    );
+  };
+
+ 
   return (
-     <ScrollView> 
+     <ScrollView style={{margin:10}}> 
 
       <View>
-        {/* <form className={classesForm.form} noValidate onSubmit={handleAdd}> */}
+      <Text style={{color:colors.grey,}}>Typ: </Text>
+        <View style={{flexDirection:"row"}}>
+          <Button
+            mode="text"
+            labelStyle={{}}
+            compact={true}
+            uppercase={false}
+              onPress={openVotingDialog}
+              style={{}}
+            >
+              {isVoting? "Głosowanie " : "Ankieta "}
+              <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
+            </Button>
+          </View>
+          <Text style={{color:colors.grey,}}>Przyjmuje odpowiedzi do: </Text>
+          <View style={{flexDirection:"row"}}>
+          <Button
+            mode="text"
+            labelStyle={{}}
+            compact={true}
+            uppercase={false}
+              onPress={()=>setShowDate(true)}
+              
+            >
+              {"Data: " + dateString+ " "}
+              <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
+            </Button>
+          </View>
+          <View style={{flexDirection:"row"}}>
+          <Button
+            mode="text"
+            labelStyle={{}}
+            compact={true}
+            uppercase={false}
+              onPress={()=>setShowTime(true)}
+              style={{paddingBottom:30, }}
+            >
+              {"Godzina: " + timeString+ " "}
+              <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
+            </Button>
+          </View>
+      
+        
         <TextInput
-            label="Tytuł ankiety"
+            label="Tytuł"
             onChangeText={onChangeTitle}
             style={{borderRadius:0}}
         />
@@ -268,8 +382,19 @@ function CreateSurvey(props) {
             style={{maxWidth:700}}
            onChangeText={e => onQuestionTextChange(i, e.target.value)}
         />
-       {/* tuuuuuu */}
-       <Text>Tu zzrobić wybór typu pytania</Text>
+      <View style={{flexDirection:"row"}}>
+      {/* <Button
+           mode="text"
+           labelStyle={{}}
+           compact={true}
+           uppercase={false}
+            onPress={this.openDialog}
+            style={{paddingBottom:30,}}
+          >{this.state.currentHoaName+ "  "}
+            <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
+          </Button> */}
+        
+          </View>
         {/* <TextInput
             style={{width:'100%'}}
             color="secondary"
@@ -318,6 +443,56 @@ function CreateSurvey(props) {
         </Button>
         {/* </form> */}
         </View>
+
+
+        <Portal>
+          <Dialog visible={typeDialogVisible} onDismiss={hideDialog}>
+            <Dialog.Title>Wybierz wspólnotę</Dialog.Title>
+          <Dialog.Content>
+              <Divider/>
+              <FlatList
+                data={questionTypes}
+                keyExtractor={(a) => a.id}
+                renderItem={renderTypes}
+              />
+          </Dialog.Content>
+          </Dialog>
+        </Portal>  
+
+        <Portal>
+          <Dialog visible={votingDialogVisible} onDismiss={hideVotingDialog}>
+            <Dialog.Title>Wybierz typ formularza</Dialog.Title>
+          <Dialog.Content>
+              <Divider/>
+               <List.Item  onPress={()=>{setIsVoting(true); setVotingDialogVisible(false)}} 
+                bottomDivider
+                title="Głosowanie"/>
+               <List.Item  onPress={()=>{setIsVoting(false); setVotingDialogVisible(false) }} 
+                bottomDivider
+                title="Ankieta"/>
+          </Dialog.Content>
+          </Dialog>
+        </Portal>  
+
+        {showDate && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode="date"
+          is24Hour={true}
+          display="default"
+          onChange={(d)=>onChangeDate(d)}
+        />)}
+
+        {showTime && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={time}
+          mode="time"
+          is24Hour={true}
+          display="default"
+          onChange={(d)=>onChangeTime(d)}
+        />)}
     </ScrollView>  
   );
 }
