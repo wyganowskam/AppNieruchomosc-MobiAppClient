@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { View, FlatList, ScrollView,StyleSheet ,Image } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Text,Divider,Card, } from 'react-native-paper';
-import { Dialog, Portal,List } from 'react-native-paper';
+import { Dialog, Portal,List ,IconButton} from 'react-native-paper';
 import CreateSurveyAnswers from './CreateSurveyAnswers';
 import surveyService from '../../services/surveyService';
 import { FAB } from 'react-native-paper';
 import colors from "../../config/colors";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { color } from "react-native-reanimated";
 
 
 function CreateSurvey(props) {
@@ -55,14 +56,12 @@ function CreateSurvey(props) {
 
   }, []);
 
-  const onChangeTitle = e => {
-    const email = e.target.value;
-    setTitle(email);
+  const onChangeTitle = val => {
+    setTitle(val);
   };
 
-  const onChangeDescription = e => {
-    const desc = e.target.value;
-    setDescription(desc);
+  const onChangeDescription = val => {
+    setDescription(val);
   };
 
   const onPlusClick = e => {
@@ -84,9 +83,11 @@ function CreateSurvey(props) {
 
   const onQuestionTypeChange = (i, val) => {
     setQuestions(prop => {
-      prop[i].type = val;
+      prop[i].type = val.type;
+      prop[i].description=val.description;
       return [...prop];
-    })
+    });
+    setTypeDialogVisible(false);
   };
 
 
@@ -267,33 +268,26 @@ function CreateSurvey(props) {
         const d= new Date(newtime.nativeEvent.timestamp);
         const h=d.getHours();
         const m=d.getMinutes();
-        const n= m<10 ? "0": ""
+        const n= m<10 ? "0": "";
+        const j=h<10? "0": "";
         const t=new Date().setHours(h,m);
-        setTimeString(h+":"+n+m)
+        setTimeString(j+h+":"+n+m)
         setTime(t)
         
     }
     
    }
 
-  const renderTypes = ({ item }) => {
-
-    
-    return (
-     <></>
-      // <List.Item  onPress={()=>this.onChangeHoa(item)} 
-      //  bottomDivider
-      //  title={item.hoaName}/>
-      
-    );
-  };
+  
 
  
   return (
      <ScrollView style={{margin:10}}> 
 
-      <View>
-      <Text style={{color:colors.grey,}}>Typ: </Text>
+
+        <Card  style={{margin:10,backgroundColor:colors.lightViolet,borderRadius:10,}}>
+          <Card.Content>
+          <Text style={{color:colors.button, fontSize:16}}>Typ: </Text>
         <View style={{flexDirection:"row"}}>
           <Button
             mode="text"
@@ -307,7 +301,7 @@ function CreateSurvey(props) {
               <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
             </Button>
           </View>
-          <Text style={{color:colors.grey,}}>Przyjmuje odpowiedzi do: </Text>
+          <Text style={{color:colors.button, fontSize:15}}>Przyjmuje odpowiedzi do: </Text>
           <View style={{flexDirection:"row"}}>
           <Button
             mode="text"
@@ -328,73 +322,100 @@ function CreateSurvey(props) {
             compact={true}
             uppercase={false}
               onPress={()=>setShowTime(true)}
-              style={{paddingBottom:30, }}
+             
             >
               {"Godzina: " + timeString+ " "}
               <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
             </Button>
           </View>
-      
-        
-        <TextInput
-            label="Tytuł"
-            onChangeText={onChangeTitle}
-            style={{borderRadius:0}}
-        />
-        <TextInput
-            label="Opis"
-            onChangeText={onChangeDescription}
-        />
 
-        {/* FORMAT "2021-01-21T17:58" */}
-           {/* <TextField
-        label="Przyjmuje odpowiedzi do"
-        type="datetime-local"
-        color="secondary"
-        style={{
-          marginBottom:20,
-          marginTop:20
-        }}
-        value={deadline}
-        onChange={e => setDeadline(e.target.value)}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      /> */}
+          <TextInput
+            label="Tytuł"
+            onChangeText={t=>onChangeTitle(t)}
+            value={title}
+            style={{borderRadius:0,backgroundColor:colors.lightWhite}}
+          />
+          <TextInput
+              label="Opis"
+              multiline
+              value={description}
+              onChangeText={t=>onChangeDescription(t)}
+              style={{borderRadius:0,height:100,backgroundColor:colors.lightWhite}}
+          />
+
+          <View style={{flexDirection:"row"}} >
+            <Text style={{color:colors.button, fontSize:15,alignSelf:"center"}} >Liczba pytań: </Text>
+            <Text style={{alignSelf:"center", fontSize:18}}>{questionsCount}</Text>
+            <IconButton
+                      icon={()=><Text style={{fontSize:18}}>+</Text>}
+                      size={24}
+                      onPress={onPlusClick}
+                  />
+            <IconButton
+                      icon={()=><Text style={{fontSize:18}}>-</Text>}
+                      size={24}
+                      onPress={onMinusClick}
+                  />
+          </View>
+
+
+           </Card.Content>
+        </Card>
+
+      <View>
+  
+     
         <View>
-          <Text>Pytania</Text>
-        <Button mode="outlined" style={{float:"left", marginRight:10}} onPress={onMinusClick}>
-         -
-        </Button>
-        <Button mode="outlined" style={{float:"left"}} onPress={onPlusClick}>
-          +
-        </Button>
+          
+          
+
+
+      
         </View>   
        
         {[...Array(questionsCount)].map((e, i) => 
-        <View key={i} id="question-div" style={{textAlign: 'left', padding:10,paddingTop: 0,
-        marginBottom: 20, borderRadius:3, borderColor: '#ddd'}}>
+        <Card style={{margin:10,backgroundColor:colors.white,borderRadius:10,}} key={i}>
+          <Card.Content>
 
-        <TextInput
-            
-            label="Treść pytania"
-            
-            style={{maxWidth:700}}
-           onChangeText={e => onQuestionTextChange(i, e.target.value)}
-        />
-      <View style={{flexDirection:"row"}}>
-      {/* <Button
+        <Text style={{color:colors.button,fontWeight:"bold"}}>Pytanie {i+1}</Text>
+        
+
+        
+        <View style={{flexDirection:"row",margin:0}}>
+      <Button
            mode="text"
            labelStyle={{}}
            compact={true}
            uppercase={false}
-            onPress={this.openDialog}
-            style={{paddingBottom:30,}}
-          >{this.state.currentHoaName+ "  "}
+           disabled={isVoting}
+            onPress={openDialog}
+          >Rodzaj: {questions[i]?.description===undefined ? " wybierz " : questions[i]?.description } 
             <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
-          </Button> */}
-        
+          </Button>
+          <Portal>
+            <Dialog visible={typeDialogVisible} onDismiss={hideDialog}>
+              <Dialog.Title>Wybierz typ pytania</Dialog.Title>
+                <Dialog.Content>
+                    <Divider/>
+                        {
+                      questionTypes.map((type) => (
+                        <List.Item  onPress={()=>onQuestionTypeChange(i,type)} 
+                        bottomDivider
+                        key={type.type}
+                        title={type.description}/>
+                      ))}
+                </Dialog.Content>
+            </Dialog>
+        </Portal>  
           </View>
+          <TextInput
+            
+            label="Treść pytania"
+            value={questions[i]?.questionText || ''}
+            style={{borderRadius:0,backgroundColor:colors.lightWhite, }}
+           onChangeText={t => onQuestionTextChange(i, t)}
+        />
+        
         {/* <TextInput
             style={{width:'100%'}}
             color="secondary"
@@ -422,15 +443,24 @@ function CreateSurvey(props) {
         </TextInput> */}
             {(questions[i]?.type === 'SingleChoice' || questions[i]?.type === 'MultipleChoice') 
             && <View>
-            <CreateSurveyAnswers 
+            {/* <CreateSurveyAnswers 
               maxAnswers={maxAnswers}
               onQuestionAnswerLabelChange={onQuestionAnswerLabelChange}
               onQuestionAnswerTextChange={onQuestionAnswerTextChange}
               questionNumber={i}
               setParentAnswersCount={setAnswersCount}
-            /> </View>}
+            /> */}
+             </View>}
+
+
+         
         
-        </View>)}
+       
+        </Card.Content>
+        </Card>)
+        
+        
+        }
 
         {!isFormValid && <View style={{marginBottom: 20}}><Text>{message} </Text></View>}
         <Button
@@ -445,19 +475,7 @@ function CreateSurvey(props) {
         </View>
 
 
-        <Portal>
-          <Dialog visible={typeDialogVisible} onDismiss={hideDialog}>
-            <Dialog.Title>Wybierz wspólnotę</Dialog.Title>
-          <Dialog.Content>
-              <Divider/>
-              <FlatList
-                data={questionTypes}
-                keyExtractor={(a) => a.id}
-                renderItem={renderTypes}
-              />
-          </Dialog.Content>
-          </Dialog>
-        </Portal>  
+        
 
         <Portal>
           <Dialog visible={votingDialogVisible} onDismiss={hideVotingDialog}>
@@ -480,7 +498,7 @@ function CreateSurvey(props) {
           value={date}
           mode="date"
           is24Hour={true}
-          display="default"
+          display="spinner"
           onChange={(d)=>onChangeDate(d)}
         />)}
 
@@ -490,7 +508,7 @@ function CreateSurvey(props) {
           value={time}
           mode="time"
           is24Hour={true}
-          display="default"
+          display="spinner"
           onChange={(d)=>onChangeTime(d)}
         />)}
     </ScrollView>  

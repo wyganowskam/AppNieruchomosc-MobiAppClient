@@ -135,7 +135,7 @@ export default class App extends React.Component {
           <Stack.Screen name="AnnoucmentAdd" component={ AnnouncementAdd} options={{ title: 'NOWE OGŁOSZENIE', }}  />
           <Stack.Screen name="SurveyDet" component={Survey} options={{ title: 'SZCZEGÓŁY', }}  />
           <Stack.Screen name="Surveys" component={ Surveys} options={{ title: 'GŁOSOWANIA I ANKIETY', }}  />
-          <Stack.Screen name="NewSurvey" component={ CreateSurvey} options={{ title: 'NOWE GŁOSOWANIE/ANKIETA', }}  />
+          <Stack.Screen name="NewSurvey" component={ CreateSurvey} options={{ title: 'NOWY FORMULARZ', }}  />
           </>)}
         </Stack.Navigator>
       </NavigationContainer>

@@ -35,41 +35,42 @@ export default function CreateHoaAnswers(props) {
 
 
   return (
-    <View>
+    <></>
+    // <View>
 
-        <View>
-          <Text>
-            Odpowiedzi</Text>
-        <Button style={{float:"left"}} onPress={onMinusClick}>
-          -
-        </Button>
-        <Button style={{float:"left"}} onPress={onPlusClick}>
-          +
-        </Button>
-          </View>    
-        <View/>
-        {[...Array(answersCount)].map((e, i) => 
-        <View>
+    //     <View style={{flexDirection:"row"}}>
+    //       <Text>
+    //         Odpowiedzi</Text>
+    //     <Button style={{float:"left"}} onPress={onMinusClick}>
+    //       -
+    //     </Button>
+    //     <Button style={{float:"left"}} onPress={onPlusClick}>
+    //       +
+    //     </Button>
+    //       </View>    
+    //     <View/>
+    //     {[...Array(answersCount)].map((e, i) => 
+    //     <View>
           
-          <TextInput
+    //       <TextInput
             
-            id="title"
-            label="Etykieta"
-            style={{width:'19%', marginRight: '2%'}}
-            onChangeText ={e => onQuestionAnswerLabelChange(questionNumber, i, e.target.value)}
-        />
+    //         id="title"
+    //         label="Etykieta"
+    //         style={{width:'19%', marginRight: '2%'}}
+    //         onChangeText ={e => onQuestionAnswerLabelChange(questionNumber, i, e.target.value)}
+    //     />
                   
-          <TextInput
+    //       <TextInput
             
-            id="title"
-            label="Treść odpowiedzi"
-            name="title"
-            style={{width:'79%'}}
-            onChangeText={e => onQuestionAnswerTextChange(questionNumber, i, e.target.value)}
-        />
-        {/* {i !== answersCount-1 && <Divider style={{marginTop:15}} /> } */}
-        </View>)}
+    //         id="title"
+    //         label="Treść odpowiedzi"
+    //         name="title"
+    //         style={{width:'79%'}}
+    //         onChangeText={e => onQuestionAnswerTextChange(questionNumber, i, e.target.value)}
+    //     />
+    //     {/* {i !== answersCount-1 && <Divider style={{marginTop:15}} /> } */}
+    //     </View>)}
 
-        </View>
+    //     </View>
   );
 }
