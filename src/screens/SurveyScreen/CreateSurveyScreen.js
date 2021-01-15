@@ -114,7 +114,7 @@ function CreateSurvey(props) {
   }
 
   const validate= () => {
-    if(!title || !description || !deadline || deadline === ""){
+    if(!title || !description || !date || !time ){
         setMessage("Wypełnij wszystkie wymagane pola");
         setIsFormValid(false);
         return false;
@@ -183,51 +183,59 @@ function CreateSurvey(props) {
 
   }
   const handleAdd = (e) => {
-    // e.preventDefault();
-    // setMessage("");
-    // let isValid = validate();
+    const deadline= dateString +"T"+timeString;
+   
+    e.preventDefault();
+    setMessage("");
+    let isValid = validate();
     
-    // if(isValid === true){
-    //   console.log({
-    //     title: title,
-    //     description: description,
-    //     acceptAnswersDeadline: deadline,
-    //     questions: questions.slice(0, questionsCount).map((q, i) => {return {
-    //       questionText: q.questionText,
-    //       typeKey: q.type,
-    //       predefinedAnswers: q.answers.slice(0, qanswersCount[i])
-    //     }}),
-    // });
-    //   setLoading(true);
-    //   surveyService.createSurvey({
-    //       title: title,
-    //       description: description,
-    //       acceptAnswersDeadline: deadline,
-    //       questions: questions.slice(0, questionsCount).map((q, i) => {return {
-    //         questionText: q.questionText,
-    //         typeKey: q.type,
-    //         predefinedAnswers: q.answers.slice(0, qanswersCount[i])
-    //       }}),
-    //   }).then(
-    //     (result) => {
-    //       props.navigation.push('Surveys',{surveyId:id})
-    //     },
-    //     (error) => {
-    //       const resMessage =
-    //         (error.response &&
-    //           error.response.data &&
-    //           error.response.data.message) ||
-    //         error.message ||
-    //         error.toString();
+    if(isValid === true){
+      console.log({
+        title: title,
+        description: description,
+        acceptAnswersDeadline: deadline,
+        questions: questions.slice(0, questionsCount).map((q, i) => {return {
+          questionText: q.questionText,
+          typeKey: q.type,
+          predefinedAnswers: q.answers.slice(0, qanswersCount[i])
+        }}),
+    });
 
-    //       setLoading(false);
-    //       setIsFormValid(false);
-    //       setMessage(resMessage);
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('description', description);
+      formData.append('acceptAnswersDeadline', deadline);
+      formData.append('isVoting', isVoting);
+      let questionsToSend = []
+      for(let i=0; i < questionsCount; i++){
+        questionsToSend.push({
+          questionText: questions[i].questionText,
+          typeKey: questions[i].type,
+          predefinedAnswers: questions[i].answers.slice(0, qanswersCount[i])
+        });
+      }
+      formData.append('questionsJson', JSON.stringify(questionsToSend));
+      setLoading(true);
+      surveyService.createSurvey(formData).then(
+        (result) => {
+          props.navigation.push('Surveys',{surveyId:id})
+        },
+        (error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
 
-    //     }
-    //   );
-    //   setLoading(false);
-    // }
+          setLoading(false);
+          setIsFormValid(false);
+          setMessage(resMessage);
+
+        }
+      );
+      setLoading(false);
+    }
   };
 
   const openDialog=(i)=> {
@@ -259,7 +267,7 @@ function CreateSurvey(props) {
     const day=d.getDate();
     const m= month<9 ? "0" : "";
     const n= day<10 ? "0" : "";
-    const dd=year+"/"+ m+(month+1)+"/"+n+day;
+    const dd=year+"-"+ m+(month+1)+"-"+n+day;
     setDateString(dd);
     setDate(new Date(dd));
    }

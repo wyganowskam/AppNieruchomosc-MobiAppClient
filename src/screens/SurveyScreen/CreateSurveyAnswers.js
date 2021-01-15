@@ -62,7 +62,7 @@ export default function CreateHoaAnswers(props) {
             id="title"
             label="Etykieta"
             style={{width:'30%', marginRight: '2%',backgroundColor:colors.lightWhite}}
-            onChangeText ={e => onQuestionAnswerLabelChange(questionNumber, i, e.target.value)}
+            onChangeText ={e => onQuestionAnswerLabelChange(questionNumber, i, e)}
         />
                   
           <TextInput
@@ -71,7 +71,7 @@ export default function CreateHoaAnswers(props) {
             label="Treść odpowiedzi"
             name="title"
             style={{width:'68%',backgroundColor:colors.lightWhite}}
-            onChangeText={e => onQuestionAnswerTextChange(questionNumber, i, e.target.value)}
+            onChangeText={e => onQuestionAnswerTextChange(questionNumber, i, e)}
         />
       
         </View>)}
