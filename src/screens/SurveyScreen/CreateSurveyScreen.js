@@ -388,15 +388,16 @@ function CreateSurvey(props) {
             <Text style={{color:colors.button, fontSize:15,alignSelf:"center"}} >Liczba pytań: </Text>
             <Text style={{alignSelf:"center", fontSize:18}}>{questionsCount}</Text>
             <IconButton
-                      icon={()=><Text style={{fontSize:18}}>+</Text>}
-                      size={24}
-                      onPress={onPlusClick}
-                  />
-            <IconButton
                       icon={()=><Text style={{fontSize:18}}>-</Text>}
                       size={24}
                       onPress={onMinusClick}
                   />
+            <IconButton
+                      icon={()=><Text style={{fontSize:18}}>+</Text>}
+                      size={24}
+                      onPress={onPlusClick}
+                  />
+            
           </View>
 
 

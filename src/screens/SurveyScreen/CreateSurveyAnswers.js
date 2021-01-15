@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, FlatList, ScrollView,StyleSheet ,Image } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { Button, TextInput, IconButton } from 'react-native-paper';
 import { Text,Divider,Card, } from 'react-native-paper';
 import { FAB } from 'react-native-paper';
 import colors from "../../config/colors";
@@ -35,42 +35,46 @@ export default function CreateHoaAnswers(props) {
 
 
   return (
-    <></>
-    // <View>
+    // <></>
+    <View>
 
-    //     <View style={{flexDirection:"row"}}>
-    //       <Text>
-    //         Odpowiedzi</Text>
-    //     <Button style={{float:"left"}} onPress={onMinusClick}>
-    //       -
-    //     </Button>
-    //     <Button style={{float:"left"}} onPress={onPlusClick}>
-    //       +
-    //     </Button>
-    //       </View>    
-    //     <View/>
-    //     {[...Array(answersCount)].map((e, i) => 
-    //     <View>
+        <View style={{flexDirection:"row"}}>
+          <Text>
+            Odpowiedzi</Text>
+            <IconButton
+                      icon={()=><Text style={{fontSize:18}}>-</Text>}
+                      size={24}
+                      onPress={onMinusClick}
+                  />
+            <IconButton
+                      icon={()=><Text style={{fontSize:18}}>+</Text>}
+                      size={24}
+                      onPress={onPlusClick}
+                  />
+          </View>    
+        <View/>
+        {[...Array(answersCount)].map((e, i) => 
+        <View key={i}>
           
-    //       <TextInput
+          <TextInput
             
-    //         id="title"
-    //         label="Etykieta"
-    //         style={{width:'19%', marginRight: '2%'}}
-    //         onChangeText ={e => onQuestionAnswerLabelChange(questionNumber, i, e.target.value)}
-    //     />
+            id="title"
+            label="Etykieta"
+            style={{width:'19%', marginRight: '2%'}}
+            onChangeText ={e => onQuestionAnswerLabelChange(questionNumber, i, e.target.value)}
+        />
                   
-    //       <TextInput
+          <TextInput
             
-    //         id="title"
-    //         label="Treść odpowiedzi"
-    //         name="title"
-    //         style={{width:'79%'}}
-    //         onChangeText={e => onQuestionAnswerTextChange(questionNumber, i, e.target.value)}
-    //     />
-    //     {/* {i !== answersCount-1 && <Divider style={{marginTop:15}} /> } */}
-    //     </View>)}
+            id="title"
+            label="Treść odpowiedzi"
+            name="title"
+            style={{width:'79%'}}
+            onChangeText={e => onQuestionAnswerTextChange(questionNumber, i, e.target.value)}
+        />
+        {/* {i !== answersCount-1 && <Divider style={{marginTop:15}} /> } */}
+        </View>)}
 
-    //     </View>
+        </View>
   );
 }
