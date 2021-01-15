@@ -39,8 +39,9 @@ export default function CreateHoaAnswers(props) {
     <View>
 
         <View style={{flexDirection:"row"}}>
-          <Text>
-            Odpowiedzi</Text>
+          <Text style={{color:colors.button, fontSize:15,alignSelf:"center"}}>
+            Liczba odpowiedzi: </Text>
+            <Text style={{alignSelf:"center", fontSize:18}}>{answersCount}</Text>
             <IconButton
                       icon={()=><Text style={{fontSize:18}}>-</Text>}
                       size={24}
@@ -54,13 +55,13 @@ export default function CreateHoaAnswers(props) {
           </View>    
         <View/>
         {[...Array(answersCount)].map((e, i) => 
-        <View key={i}>
+        <View key={i} style={{flexDirection:"row"}}>
           
           <TextInput
             
             id="title"
             label="Etykieta"
-            style={{width:'19%', marginRight: '2%'}}
+            style={{width:'30%', marginRight: '2%',backgroundColor:colors.lightWhite}}
             onChangeText ={e => onQuestionAnswerLabelChange(questionNumber, i, e.target.value)}
         />
                   
@@ -69,10 +70,10 @@ export default function CreateHoaAnswers(props) {
             id="title"
             label="Treść odpowiedzi"
             name="title"
-            style={{width:'79%'}}
+            style={{width:'68%',backgroundColor:colors.lightWhite}}
             onChangeText={e => onQuestionAnswerTextChange(questionNumber, i, e.target.value)}
         />
-        {/* {i !== answersCount-1 && <Divider style={{marginTop:15}} /> } */}
+      
         </View>)}
 
         </View>

@@ -419,7 +419,7 @@ function CreateSurvey(props) {
         <Card style={{margin:10,backgroundColor:colors.white,borderRadius:10,}} key={i}>
           <Card.Content>
           
-        <Text style={{color:colors.button,fontWeight:"bold"}}>Pytanie {i+1}</Text>
+        <Text style={{color:colors.button,fontWeight:"bold",fontSize:18}}>Pytanie {i+1}</Text>
         
 
         
@@ -431,7 +431,7 @@ function CreateSurvey(props) {
            uppercase={false}
            disabled={isVoting}
             onPress={()=>openDialog(i)}
-          >Rodzaj: {questions[i]?.description===undefined ? " wybierz " : questions[i]?.description } 
+          >{questions[i]?.description===undefined ? (isVoting ? "Pytanie jednokrotnego wyboru" :" Wybierz typ pytania ") : questions[i]?.description } 
             <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
 
             
