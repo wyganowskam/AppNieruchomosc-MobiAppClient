@@ -278,6 +278,44 @@ function CreateSurvey(props) {
     
    }
 
+   const onSurveyTypeChange = (val) => {
+    setIsVoting(val);
+    if(val){
+      for (let i = 0; i < maxQuestions; i++){
+        onQuestionTypeChange(i, 'SingleChoice');
+        onQuestionTextChange(i, 'Wybierz odpowiedź');
+       // addVotingAnswers(i);
+      }
+    }
+    else{
+      for (let i = 0; i < maxQuestions; i++){
+        clearQuestion(i);
+      }
+    }
+    setVotingDialogVisible(false);
+  }
+
+  const addVotingAnswers = (i) => {
+    setAnswersCount(i, 3);
+    onQuestionAnswerLabelChange(i, 0, 'Tak');
+    onQuestionAnswerTextChange(i, 0, 'Za');
+    onQuestionAnswerLabelChange(i, 1, 'Nie');
+    onQuestionAnswerTextChange(i, 1, 'Przeciw');
+    onQuestionAnswerLabelChange(i, 2, 'Wstrzymano');
+    onQuestionAnswerTextChange(i, 2, 'Głos wstrzymany');
+  }
+
+  const clearQuestion = (i) => {
+    onQuestionTextChange(i, '');
+    setAnswersCount(i, 1);
+    for (let j = 0; j < maxAnswers; j++){
+      onQuestionAnswerLabelChange(i, j, '');
+      onQuestionAnswerTextChange(i, j, '');
+    }
+  
+  }
+
+
   
 
  
@@ -389,7 +427,7 @@ function CreateSurvey(props) {
            uppercase={false}
            disabled={isVoting}
             onPress={openDialog}
-          >Rodzaj: {questions[i]?.description===undefined ? " wybierz " : questions[i]?.description } 
+          >Rodzaj: {questions[i]?.description===undefined ? (isVoting ? "Pytanie jednokrotnego wyboru" : " wybierz ") : questions[i]?.description } 
             <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
           </Button>
           <Portal>
@@ -416,31 +454,7 @@ function CreateSurvey(props) {
            onChangeText={t => onQuestionTextChange(i, t)}
         />
         
-        {/* <TextInput
-            style={{width:'100%'}}
-            color="secondary"
-            select
-            required
-            SelectProps={{
-                MenuProps: {
-                anchorOrigin: {
-                    vertical: "bottom",
-                    horizontal: "left"
-                },
-                getContentAnchorEl: null
-                }
-            }}
-            value = {questions[i]?.type??""}
-            label="Rodzaj"
-            onChange={e => onQuestionTypeChange(i, e.target.value)}
-            >
-            {
-            questionTypes.map((type) => (
-                <MenuItem key={type.type} value={type.type}>
-                {type.description}
-                </MenuItem>
-            ))}
-        </TextInput> */}
+      
             {(questions[i]?.type === 'SingleChoice' || questions[i]?.type === 'MultipleChoice') 
             && <View>
             {/* <CreateSurveyAnswers 
@@ -466,10 +480,11 @@ function CreateSurvey(props) {
         <Button
             mode="contained"
             disabled={loading}
-            style={{width:200}}
+            uppercase={true}
+            style={{backgroundColor:colors.button,margin:10}}
             onPress={handleAdd}
         >
-        Stwórz ankietę
+         Stwórz {isVoting ? "głosowanie" : "ankietę"}
         </Button>
         {/* </form> */}
         </View>
@@ -482,10 +497,10 @@ function CreateSurvey(props) {
             <Dialog.Title>Wybierz typ formularza</Dialog.Title>
           <Dialog.Content>
               <Divider/>
-               <List.Item  onPress={()=>{setIsVoting(true); setVotingDialogVisible(false)}} 
+               <List.Item  onPress={()=>{onSurveyTypeChange(true)}} 
                 bottomDivider
                 title="Głosowanie"/>
-               <List.Item  onPress={()=>{setIsVoting(false); setVotingDialogVisible(false) }} 
+               <List.Item  onPress={()=>{onSurveyTypeChange(false)}} 
                 bottomDivider
                 title="Ankieta"/>
           </Dialog.Content>

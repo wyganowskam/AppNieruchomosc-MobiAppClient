@@ -252,8 +252,9 @@ export default function CreateSurvey(props) {
         disabled={(survey.isFilled || !survey.acceptAnswers || loadingSendAnswers)??true} 
         style={{margin:20, backgroundColor:colors.button}}
         mode="contained"
-        onClick={(e) => handleAdd()}>
-        Wyślij odpowiedzi
+        labelStyle={{color:colors.white}}
+        onPress={handleAdd}>
+        Wyślij
     </Button>
     </View>}
     </ScrollView>
