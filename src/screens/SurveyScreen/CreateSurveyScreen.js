@@ -39,6 +39,7 @@ function CreateSurvey(props) {
   const [questionTypes, setQuestionTypes] = useState([]);
   const [deadline, setDeadline] = useState("");
   const [typeDialogVisible,setTypeDialogVisible]=useState(false);
+  const [typeDialogNumber,setTypeDialogNumber]=useState(0);
   const [votingDialogVisible,setVotingDialogVisible]=useState(false);
   const [date, setDate] = useState(new Date());
   const [dateString, setDateString]=useState('');
@@ -229,8 +230,11 @@ function CreateSurvey(props) {
     // }
   };
 
-  const openDialog=()=> {
+  const openDialog=(i)=> {
+   
     setTypeDialogVisible(true);
+    setTypeDialogNumber(i);
+   
   }
 
   const hideDialog=()=> {
@@ -315,8 +319,7 @@ function CreateSurvey(props) {
   
   }
 
-
-  
+ 
 
  
   return (
@@ -414,7 +417,7 @@ function CreateSurvey(props) {
         {[...Array(questionsCount)].map((e, i) => 
         <Card style={{margin:10,backgroundColor:colors.white,borderRadius:10,}} key={i}>
           <Card.Content>
-
+          
         <Text style={{color:colors.button,fontWeight:"bold"}}>Pytanie {i+1}</Text>
         
 
@@ -426,25 +429,13 @@ function CreateSurvey(props) {
            compact={true}
            uppercase={false}
            disabled={isVoting}
-            onPress={openDialog}
-          >Rodzaj: {questions[i]?.description===undefined ? (isVoting ? "Pytanie jednokrotnego wyboru" : " wybierz ") : questions[i]?.description } 
+            onPress={()=>openDialog(i)}
+          >Rodzaj: {questions[i]?.description===undefined ? " wybierz " : questions[i]?.description } 
             <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
+
+            
           </Button>
-          <Portal>
-            <Dialog visible={typeDialogVisible} onDismiss={hideDialog}>
-              <Dialog.Title>Wybierz typ pytania</Dialog.Title>
-                <Dialog.Content>
-                    <Divider/>
-                        {
-                      questionTypes.map((type) => (
-                        <List.Item  onPress={()=>onQuestionTypeChange(i,type)} 
-                        bottomDivider
-                        key={type.type}
-                        title={type.description}/>
-                      ))}
-                </Dialog.Content>
-            </Dialog>
-        </Portal>  
+          
           </View>
           <TextInput
             
@@ -456,15 +447,15 @@ function CreateSurvey(props) {
         
       
             {(questions[i]?.type === 'SingleChoice' || questions[i]?.type === 'MultipleChoice') 
-            && <View>
-            {/* <CreateSurveyAnswers 
+            && 
+             <CreateSurveyAnswers 
               maxAnswers={maxAnswers}
               onQuestionAnswerLabelChange={onQuestionAnswerLabelChange}
               onQuestionAnswerTextChange={onQuestionAnswerTextChange}
               questionNumber={i}
               setParentAnswersCount={setAnswersCount}
-            /> */}
-             </View>}
+            /> 
+             }
 
 
          
@@ -505,6 +496,22 @@ function CreateSurvey(props) {
                 title="Ankieta"/>
           </Dialog.Content>
           </Dialog>
+        </Portal>  
+
+        <Portal>
+            <Dialog visible={typeDialogVisible} onDismiss={hideDialog}>
+              <Dialog.Title>Wybierz typ pytania</Dialog.Title>
+                <Dialog.Content>
+                    <Divider/>
+                        {
+                      questionTypes.map((type) => (
+                        <List.Item  onPress={()=>onQuestionTypeChange(typeDialogNumber,type)} 
+                        bottomDivider
+                        key={type.type}
+                        title={type.description}/>
+                      ))}
+                </Dialog.Content>
+            </Dialog>
         </Portal>  
 
         {showDate && (
