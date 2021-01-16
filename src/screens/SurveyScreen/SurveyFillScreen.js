@@ -131,11 +131,11 @@ export default function CreateSurvey(props) {
   };
 
   return (
- <ScrollView>
+ <ScrollView >
     {survey.isFilled &&
     <Card style={{ margin:10 , backgroundColor:colors.happyGreen}}>
       <Card.Content>
-      <Text >
+      <Text style={{fontSize:16}} >
         Wypełniłeś/-aś już ten formularz
        </Text>
       </Card.Content>
@@ -145,8 +145,8 @@ export default function CreateSurvey(props) {
 
     {survey.acceptAnswers === false &&
     <Card style={{ margin:10 , backgroundColor:colors.happyGreen}}>
-    <Card.Content>
-    <Text>
+    <Card.Content >
+    <Text style={{fontSize:16}}>
         Upłynał termin wypełnienia formularza.
     </Text>
     </Card.Content>
@@ -157,10 +157,10 @@ export default function CreateSurvey(props) {
     <View>
         <Card  style={{margin:10,backgroundColor:colors.lightViolet,borderRadius:10,}}>
           <Card.Content>
-            <Text style={{fontWeight:"600",fontSize:16,color:colors.button}}>{survey.title}</Text>
-            <Text>{survey.description}</Text>
+            <Text style={{fontWeight:"600",fontSize:20,color:colors.button}}>{survey.title}</Text>
+            <Text style={{fontSize:16}}>{survey.description}</Text>
             <Divider style={{marginTop:10,marginBottom:10}}/>
-            <Text>Przyjmuje odpowiedzi do <Text style={{fontWeight:"bold"}}>{survey.acceptAnswersDeadlineFormatted}</Text>.</Text>
+            <Text >Przyjmuje odpowiedzi do <Text style={{fontWeight:"bold"}}>{survey.acceptAnswersDeadlineFormatted}</Text>.</Text>
            </Card.Content>
         </Card>
 
@@ -171,7 +171,7 @@ export default function CreateSurvey(props) {
       <Card style={{margin:10,backgroundColor:colors.white,}} key={i}>
       <Card.Content>
         
-        <Text style={{color:colors.button,fontWeight:"bold"}}>{i+1 + ". " + q.questionText}</Text>
+        <Text style={{color:colors.button,fontWeight:"bold",fontSize:18}}>{i+1 + ". " + q.questionText}</Text>
             
 
         {q.typeKey === 'SingleChoice' && 
@@ -179,7 +179,7 @@ export default function CreateSurvey(props) {
 
            
             <View>
-             <Text style={{color:colors.grey,fontSize:12}} >Pytanie jednokrotnego wyboru</Text>
+             <Text style={{color:colors.grey,fontSize:15}} >Pytanie jednokrotnego wyboru</Text>
             <RadioButton.Group  
             value={(survey.isFilled ? q.myAnswers[0] : answers[i][0])??""} 
             onValueChange={newValue => onAnswerChangeSingleChoice(i, newValue)}
@@ -190,7 +190,7 @@ export default function CreateSurvey(props) {
                       <RadioButton value={ans.label} 
                       disabled={(survey.isFilled || !survey.acceptAnswers)??true}
                       />
-                      <Text style={{marginTop:10}}><Text style={{fontWeight:"bold"}}>{ans.label +": "}</Text>{ans.answerText}</Text> 
+                      <Text style={{marginTop:10,fontSize:15}}><Text style={{fontWeight:"bold"}}>{ans.label +": "}</Text>{ans.answerText}</Text> 
                     </View>
                 ))}
                 </RadioButton.Group>
@@ -202,7 +202,7 @@ export default function CreateSurvey(props) {
         {q.typeKey === 'MultipleChoice' && 
            
             <View>
-            <Text style={{color:colors.grey,fontSize:12}} >Pytanie wielokrotnego wyboru</Text>
+            <Text style={{color:colors.grey,fontSize:15}} >Pytanie wielokrotnego wyboru</Text>
             {q.predefinedAnswers?.map(ans => (
                  <View style={{flexDirection:"row"}}>
                     <RadioButton 
@@ -210,7 +210,7 @@ export default function CreateSurvey(props) {
                      onPress={e => onAnswerChangeMultipleChoice(i, ans.label)}  
                      disabled={(survey.isFilled || !survey.acceptAnswers)??true}
                     value={ans.label} />
-                     <Text style={{marginTop:10}}><Text style={{fontWeight:"bold"}}>{ans.label +": "}</Text>{ans.answerText}</Text> 
+                     <Text style={{marginTop:10,fontSize:15}}><Text style={{fontWeight:"bold"}}>{ans.label +": "}</Text>{ans.answerText}</Text> 
                </View>
              
             ))}
@@ -220,7 +220,7 @@ export default function CreateSurvey(props) {
 
         {q.typeKey === 'Open' && 
         <View>
-          <Text style={{color:colors.grey,fontSize:12}} >Pytanie otwarte</Text>
+          <Text style={{color:colors.grey,fontSize:15}} >Pytanie otwarte</Text>
          
             <TextInput
                 

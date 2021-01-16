@@ -44,25 +44,25 @@ export default function SurveyResults(props) {
         <View >
            <Card  style={{margin:10,backgroundColor:colors.lightViolet,borderRadius:10,}}>
           <Card.Content>
-          <Text style={{fontWeight:"600",fontSize:16,color:colors.button}}>{survey.title}</Text>
+          <Text style={{fontWeight:"600",fontSize:20,color:colors.button}}>{survey.title}</Text>
           </Card.Content>
           </Card>
           {survey.questions.map((q, i) => (
             <Card style={{margin:10,backgroundColor:colors.white}} key={i}>
             <Card.Content>
 
-            <Text style={{fontSize:14, color:colors.button,margin:0,fontWeight:"bold"}} >
+            <Text style={{fontSize:18, color:colors.button,margin:0,fontWeight:"bold"}} >
                 {i+1+ ". " + survey.questions[i].questionText} </Text>
             
             {q.predefinedAnswers?.map((ans, j) => (
-              <Text key={j}><Text style={{fontWeight: "bold"}}>{ans.label+ ": "}</Text>{ans.answerText}</Text>
+              <Text key={j} style={{fontSize:16}}><Text style={{fontWeight: "bold"}}>{ans.label+ ": "}</Text>{ans.answerText}</Text>
              
             ))}
 
             <Divider style={{marginTop:10, marginBottom:10}} />
           
             {q.predefinedAnswers?.map((ans, j) => (
-                 <Text key={j} style={{color:colors.textViolet}}><Text style={{fontWeight: "bold",color:colors.black}}>
+                 <Text key={j} style={{color:colors.textViolet,fontSize:16}}><Text style={{fontWeight: "bold",color:colors.black}}>
                    <Text style={{fontWeight: "bold"}}>{ans.label + ":  "}</Text>
                    
                    </Text >{questionResults[i]?.answersResults?.find(a=>a.label===ans.label)?.votes??0}&nbsp;głosów

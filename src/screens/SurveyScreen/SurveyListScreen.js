@@ -54,7 +54,7 @@ export default function Surveys(props) {
         return (
           <>
           <Card  style={{marginBottom:4,marginLeft:7, marginRight:7,borderRadius:20,marginTop:3}} 
-          
+          key={item.id}
            onPress={()=>props.navigation.navigate("SurveyDet",{surveyId:item.id})}
            >
          
@@ -112,14 +112,14 @@ export default function Surveys(props) {
         />
         </View>
         
-         <ScrollView>
+       
              <Divider style={{ backgroundColor:colors.violet,marginBottom:3}} />
             <FlatList
             data={surveys}
             keyExtractor={(a) => a.id}
             renderItem={renderRow}
             />
-        </ScrollView> 
+       
 
      
     </View> 

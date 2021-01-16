@@ -166,14 +166,14 @@ const nextPage = () => {
 
 
       {comments.map((comment, index) => (
-        <Card  key={comment.id} style={{margin:10, borderRadius:20, backgroundColor:colors.white,padding:0}} 
+        <Card   key={comment.id} style={{margin:10, borderRadius:20, backgroundColor:colors.white,padding:0,shadowColor:colors.button,}} 
         >
               
               <Card.Content>
                 <Text style={{color:colors.grey,alignSelf:"flex-start",flex:1,textAlign:"right",fontSize:13,marginBottom:5}} >{comment.created}</Text>
          
                   <View style={{flexDirection:"row",flex:1, alignContent:"center"}}>
-                  <Text style={{fontSize:14,fontWeight:"bold"}}>{comment.authorName+ " "+  comment.authorSurname} </Text>
+                  <Text style={{fontSize:15,color:colors.grey}}>{comment.authorName+ " "+  comment.authorSurname} </Text>
                   <View style={{flexDirection:"row",flex:1 ,alignItems:"flex-end",alignContent:"flex-end"}}>
                   {comment.isAuthorBoardMember && <Text style={{color:colors.grey,textAlign:"right",flex:1}}> Zarząd{ comment.isAuthorBoardMember && comment.isAuthorAdministrator ?"," :""} </Text> }
                   {comment.isAuthorAdministrator && <Text style={{color:colors.grey,textAlign:"right",}}> Administrator </Text> }

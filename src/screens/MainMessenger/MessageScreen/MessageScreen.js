@@ -104,14 +104,14 @@ export default class MessagesScreen extends Component {
                   <Text style={{color:'red',alignSelf:"center"}}>{this.state.errorMessage}</Text>
                 </View>
                 
-                 <ScrollView>
+               
                      <Divider style={{ backgroundColor:colors.violet}} />
                     <FlatList
                     data={this.state.chatsList}
                     keyExtractor={(a) => a.chatId}
                     renderItem={this.renderRow}
                     />
-                </ScrollView> 
+               
 
                 <FAB
                 style={styles.fab}

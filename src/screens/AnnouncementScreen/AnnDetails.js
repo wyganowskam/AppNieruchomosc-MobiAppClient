@@ -16,7 +16,7 @@ const AnnouncementDetails = (props) => {
               <Card.Title title={ann.title} subtitle={"Utworzono: " + ann.created} titleStyle={{fontSize:20, color:colors.button}} subtitleStyle={{fontSize:14}} />
               <Card.Content>
               <Divider style={{margin:10}}/>
-              <Text style={{fontSize:15}}>{ann.longText+"\n"}</Text>
+              <Text style={{fontSize:16}}>{ann.longText+"\n"}</Text>
               
       
               </Card.Content> 

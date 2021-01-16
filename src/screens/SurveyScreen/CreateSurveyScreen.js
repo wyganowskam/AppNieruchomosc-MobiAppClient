@@ -218,7 +218,11 @@ function CreateSurvey(props) {
       setLoading(true);
       surveyService.createSurvey(formData).then(
         (result) => {
-          props.navigation.push('Surveys',{surveyId:id})
+          this.props.navigation.reset({
+            index: 1,
+            routes: [{ name: 'Main' }, {name:'Surveys'}],
+          });
+          // props.navigation.push('',{surveyId:id})
         },
         (error) => {
           const resMessage =

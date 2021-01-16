@@ -62,7 +62,11 @@ const AnnouncementAdd = (props) => {
             text: text,
         }).then(
           () => {
-            props.navigation.push('Announcements');
+            this.props.navigation.reset({
+              index: 1,
+              routes: [{ name: 'Main' }, {name:'Announcements'}],
+            });
+            // props.navigation.push('Announcements');
           },
           (error) => {
             const resMessage =

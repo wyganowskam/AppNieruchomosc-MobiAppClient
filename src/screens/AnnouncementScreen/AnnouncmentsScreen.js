@@ -115,14 +115,14 @@ export default function Announcements(props){
         />
         </View>
         
-         <ScrollView>
+       
              <Divider style={{ backgroundColor:colors.violet,marginBottom:3}} />
             <FlatList
             data={announcements}
             keyExtractor={(a) => a.id}
             renderItem={renderRow}
             />
-        </ScrollView> 
+    
 
      
     </View> 

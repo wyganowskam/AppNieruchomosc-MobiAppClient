@@ -32,7 +32,7 @@ export default class FailureScreen extends Component {
         
              <Card.Title  
                title={item.title} 
-               subtitle={<Text><Text>
+               subtitle={<Text style={{fontSize:14}} ><Text>
                 {"Status: "}<Text style={{color:col}}> {item.status.name+"\n"}</Text>
               </Text></Text>
             }

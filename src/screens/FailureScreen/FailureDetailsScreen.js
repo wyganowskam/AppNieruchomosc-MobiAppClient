@@ -52,19 +52,22 @@ export default class FailureDetailsScreen extends React.Component {
         return (
           <ScrollView style={{backgroundColor:colors.delicateButton}} >
             <Card style={{margin:10}}>
-              <Card.Title title={failureElement.title} subtitle={failureElement.date} titleStyle={{fontSize:18, color:colors.black}} />
+              <Card.Title title={failureElement.title} subtitle={failureElement.date} titleStyle={{fontSize:20, color:colors.black}} />
               <Card.Content>
              
                 
                 <Divider style={{marginBottom:10}}/>
-                  
-                <Text  style={styles.text} ><Text style={{fontWeight: "bold",}}>{"Adres: "} </Text> {failureElement.address+"\n"}</Text>
-               
-                <Text style={styles.text}><Text style={{fontWeight: "bold"}}>{"Status: "} </Text><Text style={{color:col}}>{this.state.status.description+"\n"}</Text></Text>
-                <Text  style={styles.text}><Text style={{fontWeight: "bold"}}>{"Typ zgłoszenia: "} </Text> {failureElement.type?.title +"\n"}</Text>
-                <Text  style={styles.text}><Text style={{fontWeight: "bold"}}>{"Opis: \n"}</Text>{failureElement.description+"\n"}</Text>
+                <Paragraph style={{}}>
+                <Text style={styles.text}>{"Status:\n"}</Text>
+                <Text style={styles.text2}><Text style={{color:col}}>{this.state.status.description+"\n"}</Text></Text>
+                <Text style={styles.text}>{"Adres:\n"}</Text>
+                <Text  style={styles.text2} >{failureElement.address+"\n"}</Text>
+                <Text style={styles.text}>{"Typ zgłoszenia:\n"}</Text>
+                <Text  style={styles.text2}>{failureElement.type?.title +"\n"}</Text>
+                <Text style={styles.text}>{"Opis: \n"}</Text>
+                <Text  style={styles.text2}>{failureElement.description+"\n"}</Text>
                 {failureElement.comment &&  <Text  style={styles.text} ><Text style={{fontWeight: "bold",color:colors.backgroundViolet}}>{"Komentarz: "} </Text>{failureElement.comment}</Text>}
-              
+                </Paragraph>
               </Card.Content> 
             </Card>
 
@@ -117,6 +120,12 @@ const styles = StyleSheet.create({
   },
   text: {
     marginBottom:2,
-    fontSize:16
+    fontSize:16,
+    lineHeight:30,
+    fontWeight:"bold"
+  },
+  text2: {
+    marginBottom:2,
+    fontSize:16,
   }
 });

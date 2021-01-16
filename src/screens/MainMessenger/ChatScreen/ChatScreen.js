@@ -157,16 +157,19 @@ export default class ChatScreen extends Component {
             <View style={{ flex: 1 }}>
                  <TouchableWithoutFeedback onPress={this.dismissKeyboard}>
                 <View style={styles.mess} >
-                    <ScrollView 
+                    {/* <ScrollView 
                      ref={ref => {this.scrollView = ref}}
-                     onContentSizeChange={() => this.scrollView.scrollToEnd({animated: true})}>
+                     onContentSizeChange={() => this.scrollView.scrollToEnd({animated: true})}
+                     > */}
                     
                         <FlatList
                         data={this.state.chatLines}
+                        ref={ref => {this.scrollView = ref}}
                         keyExtractor={(a) => a.id}
+                        onContentSizeChange={() => this.scrollView.scrollToEnd({animated: true})}
                         renderItem={this.renderRow}
                         />
-                    </ScrollView> 
+                    {/* </ScrollView>  */}
                 </View>
                 </TouchableWithoutFeedback>
                 <Text style={{color:'red',alignSelf:"center"}}>{this.state.errorMessage}</Text>
