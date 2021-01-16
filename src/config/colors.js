@@ -18,7 +18,11 @@ export default {
     darkviolet:"#725174",
     textViolet:"#563C57",
     backgroundViolet:"#b99dbb",
-    lightViolet:"#DACBDB",
+    lightViolet:"#B99DBB",
     happyGreen:"#B4D3A2",
+    calmBlue:"#7BA1D8",
+    brown:"#6D4D50",
+    beige:"#EAE1E2",
+    delicateButton:"#C1AFC6"
 
 }

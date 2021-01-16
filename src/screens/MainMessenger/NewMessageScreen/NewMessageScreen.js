@@ -183,7 +183,7 @@ export default class NewMessageScreen extends Component {
                                message:this.state.text
                            }).then((res2)=>{
                                 if (res2.status===200){
-                                    console.log("papa");
+                                   
                                     this.props.navigation.reset({
                                         index: 1,
                                         routes: [{ name: 'Main' }, {name:'Messages'}],

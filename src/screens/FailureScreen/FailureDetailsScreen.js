@@ -42,9 +42,9 @@ export default class FailureDetailsScreen extends React.Component {
     render() {
       const {failureElement,status}=this.state;
         return (
-          <ScrollView style={{margin:10}} >
-            <Card>
-              <Card.Title title={failureElement.title} subtitle="typ zgłoszenia" titleStyle={{fontSize:18, color:colors.darkviolet}} />
+          <ScrollView style={{backgroundColor:colors.beige}} >
+            <Card style={{margin:10}}>
+              <Card.Title title={failureElement.title} subtitle={failureElement.type?.title??""} titleStyle={{fontSize:18, color:colors.darkviolet}} />
               <Card.Content>
              
                 <Paragraph>
@@ -58,7 +58,7 @@ export default class FailureDetailsScreen extends React.Component {
               </Card.Content> 
             </Card>
 
-            {this.state.picture && <Image  source={{uri: `data:image/gif;base64,${this.state.picture}`}} style={{height:400, width:400, resizeMode:"cover",alignSelf:"center",margin:10}}
+            {this.state.picture && <Image  source={{uri: `data:image/png;base64,${this.state.picture}`}} style={{width: 100, height: 50, resizeMode: Image.resizeMode.contain, borderWidth: 1, borderColor: 'red'}}
           />}
             
         

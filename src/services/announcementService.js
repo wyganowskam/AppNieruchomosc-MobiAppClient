@@ -19,7 +19,7 @@ const getAnnouncementsPagesCount = () => {
 };
 
 const getCommentPagesCount = (id) => {
-  console.log(id);
+  
   return api.get(path + id + '/pages');
 };
 

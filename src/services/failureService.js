@@ -21,11 +21,11 @@ export const getAllStatuses = () => {
       return apiClient.get("malfunctions/picture/" + id, {
         responseType: 'arraybuffer'
       })
-      .then(response => Buffer.from(response.data, 'binary').toString('base64'));
+      .then(response => {console.log(response.data);Buffer.from(response.data, 'binary').toString('base64')});
     };
 
 export const getTypes = () => {
-    console.log("AAAAAAA")
+   
       return apiClient.get("malfunctions/types");
     };
   

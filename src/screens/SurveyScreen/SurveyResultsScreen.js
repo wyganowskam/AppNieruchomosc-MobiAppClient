@@ -48,21 +48,21 @@ export default function SurveyResults(props) {
           </Card.Content>
           </Card>
           {survey.questions.map((q, i) => (
-            <Card style={{margin:10,backgroundColor:colors.white}}>
+            <Card style={{margin:10,backgroundColor:colors.white}} key={i}>
             <Card.Content>
 
             <Text style={{fontSize:14, color:colors.button,margin:0,fontWeight:"bold"}} >
                 {i+1+ ". " + survey.questions[i].questionText} </Text>
             
             {q.predefinedAnswers?.map((ans, j) => (
-              <Text><Text style={{fontWeight: "bold"}}>{ans.label+ ": "}</Text>{ans.answerText}</Text>
+              <Text key={j}><Text style={{fontWeight: "bold"}}>{ans.label+ ": "}</Text>{ans.answerText}</Text>
              
             ))}
 
             <Divider style={{marginTop:10, marginBottom:10}} />
           
             {q.predefinedAnswers?.map((ans, j) => (
-                 <Text style={{color:colors.textViolet}}><Text style={{fontWeight: "bold",color:colors.black}}>
+                 <Text key={j} style={{color:colors.textViolet}}><Text style={{fontWeight: "bold",color:colors.black}}>
                    <Text style={{fontWeight: "bold"}}>{ans.label + ":  "}</Text>
                    
                    </Text >{questionResults[i]?.answersResults?.find(a=>a.label===ans.label)?.votes??0}&nbsp;głosów

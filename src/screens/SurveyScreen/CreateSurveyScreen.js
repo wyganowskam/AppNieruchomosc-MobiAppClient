@@ -37,7 +37,7 @@ function CreateSurvey(props) {
   const [isFormValid, setIsFormValid] = useState(true);
   const [isVoting, setIsVoting] = useState(false);
   const [questionTypes, setQuestionTypes] = useState([]);
-  const [deadline, setDeadline] = useState("");
+ 
   const [typeDialogVisible,setTypeDialogVisible]=useState(false);
   const [typeDialogNumber,setTypeDialogNumber]=useState(0);
   const [votingDialogVisible,setVotingDialogVisible]=useState(false);
@@ -155,8 +155,8 @@ function CreateSurvey(props) {
         
         
           if(questions[i].type === 'SingleChoice' || questions[i].type==='MultipleChoice'){
-            console.log(questions[i].answers);
-            console.log(qanswersCount[i]);
+            // console.log(questions[i].answers);
+            // console.log(qanswersCount[i]);
             for(let j = 0; j < qanswersCount[i]; j++){
             if(!questions[i].answers[j].label || !questions[i].answers[j].answerText ||
               questions[i].answers[j].length === 0 || questions[i].answers[j].answerText.length === 0 ){
@@ -190,16 +190,16 @@ function CreateSurvey(props) {
     let isValid = validate();
     
     if(isValid === true){
-      console.log({
-        title: title,
-        description: description,
-        acceptAnswersDeadline: deadline,
-        questions: questions.slice(0, questionsCount).map((q, i) => {return {
-          questionText: q.questionText,
-          typeKey: q.type,
-          predefinedAnswers: q.answers.slice(0, qanswersCount[i])
-        }}),
-    });
+    //   console.log({
+    //     title: title,
+    //     description: description,
+    //     acceptAnswersDeadline: deadline,
+    //     questions: questions.slice(0, questionsCount).map((q, i) => {return {
+    //       questionText: q.questionText,
+    //       typeKey: q.type,
+    //       predefinedAnswers: q.answers.slice(0, qanswersCount[i])
+    //     }}),
+    // });
 
       const formData = new FormData();
       formData.append('title', title);
@@ -292,11 +292,13 @@ function CreateSurvey(props) {
 
    const onSurveyTypeChange = (val) => {
     setIsVoting(val);
+   
     if(val){
       for (let i = 0; i < maxQuestions; i++){
-        onQuestionTypeChange(i, 'SingleChoice');
+        const singleChoice=questionTypes.find(el=>el.type==='SingleChoice');
+        onQuestionTypeChange(i,singleChoice);
         onQuestionTextChange(i, 'Wybierz odpowiedź');
-       // addVotingAnswers(i);
+        addVotingAnswers(i);
       }
     }
     else{
@@ -304,6 +306,7 @@ function CreateSurvey(props) {
         clearQuestion(i);
       }
     }
+   
     setVotingDialogVisible(false);
   }
 
@@ -462,7 +465,9 @@ function CreateSurvey(props) {
               onQuestionAnswerLabelChange={onQuestionAnswerLabelChange}
               onQuestionAnswerTextChange={onQuestionAnswerTextChange}
               questionNumber={i}
+              questions={questions}
               setParentAnswersCount={setAnswersCount}
+              answersCount={qanswersCount[i]}
             /> 
              }
 

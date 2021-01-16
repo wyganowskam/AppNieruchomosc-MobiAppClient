@@ -20,7 +20,7 @@ export default function Surveys(props) {
         surveyService.getTotalPages().then(
             res => {
                 setTotalPages(res.data);
-                console.log(totalPages)       
+                    
             },
             (error) => {
               
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
         margin: 15,
         right: 0,
         top: 0,
-        backgroundColor: colors.button,
+        backgroundColor: colors.delicateButton,
         marginTop:5
       },
      

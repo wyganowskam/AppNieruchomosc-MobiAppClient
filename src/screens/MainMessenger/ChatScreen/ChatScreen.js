@@ -88,8 +88,6 @@ export default class ChatScreen extends Component {
 
     getChatInfo(){
 
-        
-        console.log(this.state.chatId)
         getChatContent(this.state.chatId).then(
             res => {
                 if(res!=undefined){

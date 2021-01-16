@@ -113,7 +113,7 @@ export default class Profile extends Component {
   
 
  onChangeHoa(value) {
-    console.log(value.hoaId);
+    // console.log(value.hoaId);
     deviceStorage.setItem("hoaId",value.hoaId)
     .then(()=>{
       refreshRoles().then(()=>{this.loadHoa(this.state.usersurname,this.state.username);  this.setState({hoaDialogVisible:false});});

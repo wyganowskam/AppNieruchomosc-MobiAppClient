@@ -168,7 +168,7 @@ export default function CreateSurvey(props) {
             
     {survey.questions?.map((q, i) => (
 
-      <Card style={{margin:10,backgroundColor:colors.white,}}>
+      <Card style={{margin:10,backgroundColor:colors.white,}} key={i}>
       <Card.Content>
         
         <Text style={{color:colors.button,fontWeight:"bold"}}>{i+1 + ". " + q.questionText}</Text>

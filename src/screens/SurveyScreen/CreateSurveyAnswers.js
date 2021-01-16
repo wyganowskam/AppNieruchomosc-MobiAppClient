@@ -7,9 +7,9 @@ import colors from "../../config/colors";
 
 export default function CreateHoaAnswers(props) {
   const {maxAnswers, onQuestionAnswerLabelChange, onQuestionAnswerTextChange, 
-    questionNumber, setParentAnswersCount} = props;
+    questionNumber, setParentAnswersCount,questions,answersCount,} = props;
   const [answers, setAnswers] = useState([]);
-  const [answersCount, setAnswersCount] = useState(1);
+ 
   
   useEffect(()=>{
     for (let i = 0; i < maxAnswers; i++){
@@ -19,18 +19,12 @@ export default function CreateHoaAnswers(props) {
 
   const onPlusClick = e => {
     if(answersCount >= maxAnswers) return;
-    setAnswersCount(x => {
-      setParentAnswersCount(questionNumber, x + 1);
-      return x + 1;
-    });
+    setParentAnswersCount(questionNumber, answersCount + 1);
   };
 
   const onMinusClick = e => {
     if(answersCount === 1) return;
-    setAnswersCount(x => {
-      setParentAnswersCount(questionNumber, x - 1);
-      return x - 1;
-    });
+    setParentAnswersCount(questionNumber, answersCount- 1);
   };
 
 
@@ -61,6 +55,7 @@ export default function CreateHoaAnswers(props) {
             
             id="title"
             label="Etykieta"
+            value={questions[questionNumber].answers[i].label || ''}
             style={{width:'30%', marginRight: '2%',backgroundColor:colors.lightWhite}}
             onChangeText ={e => onQuestionAnswerLabelChange(questionNumber, i, e)}
         />
@@ -70,6 +65,7 @@ export default function CreateHoaAnswers(props) {
             id="title"
             label="Treść odpowiedzi"
             name="title"
+            value={questions[questionNumber].answers[i]?.answerText || ''}
             style={{width:'68%',backgroundColor:colors.lightWhite}}
             onChangeText={e => onQuestionAnswerTextChange(questionNumber, i, e)}
         />

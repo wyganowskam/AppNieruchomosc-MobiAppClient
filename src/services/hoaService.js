@@ -32,7 +32,7 @@ export const refreshRoles = async () => {
         deviceStorage.getItem("hoaId")
           .then((resHoaId) => {
             var hoaId = resHoaId;
-            console.log(resHoaId);
+            // console.log(resHoaId);
             deviceStorage.getItem("hoas")
               .then((resHoas)=>{
               var hoas=JSON.parse(resHoas);

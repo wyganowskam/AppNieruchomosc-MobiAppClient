@@ -44,9 +44,9 @@ export default class FailureAddScreen extends Component {
     }
 
     getAllTypes=()=> {
-      console.log("BBBBBBB")
+     
       getTypes().then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
         this.setState({ types: res.data});
       },(error) => {
             
@@ -116,7 +116,7 @@ export default class FailureAddScreen extends Component {
     );
   };
   handleXPress=(item)=> {
-    console.log(item)
+    //console.log(item)
     //const newList=this.state.uriList.filter(u=>u.uri!=item.uri);
     //this.setState({uriList:newList,message:""});
     this.setState({picture:[]})
