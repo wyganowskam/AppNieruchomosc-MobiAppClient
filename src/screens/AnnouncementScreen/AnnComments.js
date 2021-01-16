@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import announcementService from '../../services/announcementService';
 import {View, FlatList, ScrollView,StyleSheet ,Image} from 'react-native'
-import {Divider,Button, Text, Switch, Card,Chip, TextInput,Checkbox} from 'react-native-paper';
+import {Divider,Button, Text, Switch, Card,Chip, TextInput,Checkbox, RadioButton} from 'react-native-paper';
 import colors from "../../config/colors";
 
 
@@ -128,7 +128,7 @@ const nextPage = () => {
      
     <ScrollView>
 
-    <Text style={{fontSize:16,alignSelf:"center",color:colors.black}} >Komentarze</Text>
+    <Text style={{fontSize:16,alignSelf:"center",color:colors.darkviolet}} >Komentarze</Text>
    
     <View style={{height:50,flexDirection:"row",padding:10,alignItems:"center",alignSelf:"center"}}>
         <Button
@@ -153,7 +153,7 @@ const nextPage = () => {
             </Button>
         </View>
         <View style={{flexDirection:"row"}}>
-        <Checkbox
+        <RadioButton
         status={allowComments ? 'checked' : 'unchecked'}
         onPress={switchChange}
         theme={{colors:{
@@ -170,14 +170,20 @@ const nextPage = () => {
         >
               
               <Card.Content>
-                <View style={{flexDirection:"row",flex:1,alignItems:"center",alignContent:"flex-start",marginBottom:4}}>
-                  <Text style={{fontSize:16}}>{comment.authorName+ " "+  comment.authorSurname+"  "} </Text>
-                  {comment.isAuthorBoardMember && <Chip mode="outlined">Zarząd</Chip> }
-                  {comment.isAuthorAdministrator && <Chip mode="outlined">Administrator</Chip> }
-                  <Text style={{color:colors.grey,alignSelf:"flex-start",flex:1,textAlign:"right",fontSize:11}} >{comment.created}</Text>
-                </View>
+                <Text style={{color:colors.grey,alignSelf:"flex-start",flex:1,textAlign:"right",fontSize:13,marginBottom:5}} >{comment.created}</Text>
+         
+                  <View style={{flexDirection:"row",flex:1, alignContent:"center"}}>
+                  <Text style={{fontSize:14,fontWeight:"bold"}}>{comment.authorName+ " "+  comment.authorSurname} </Text>
+                  <View style={{flexDirection:"row",flex:1 ,alignItems:"flex-end",alignContent:"flex-end"}}>
+                  {comment.isAuthorBoardMember && <Text style={{color:colors.grey,textAlign:"right",flex:1}}> Zarząd{ comment.isAuthorBoardMember && comment.isAuthorAdministrator ?"," :""} </Text> }
+                  {comment.isAuthorAdministrator && <Text style={{color:colors.grey,textAlign:"right",}}> Administrator </Text> }
+                  </View>
+                
+                  </View>
+                  
+            
                 <Divider/>
-                <Text style={{marginTop:20}} >{comment.text}</Text> 
+                <Text style={{marginTop:20,fontSize:18}} >{comment.text}</Text> 
                
               </Card.Content> 
             </Card>

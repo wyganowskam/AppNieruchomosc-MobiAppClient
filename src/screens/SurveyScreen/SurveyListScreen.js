@@ -59,10 +59,9 @@ export default function Surveys(props) {
            >
          
               <Card.Title  
-                title={item.title} 
-                subtitle={item.description} 
-                titleStyle={{fontSize:18, color:colors.black,margin:0, flexWrap:"wrap"}} 
-                subtitleStyle={{fontSize:14,color:colors.grey}}
+                subtitle={item.title} 
+                subtitleNumberOfLines={2}
+                subtitleStyle={{fontSize:18, color:colors.black,margin:0, flexWrap:"wrap"}} 
                 left={()=><Image style={{width:30,height:30,alignSelf:"center",margin:0}} source={icon} />} 
                 leftStyle={{margin:0,paddingRight:0}}
               />

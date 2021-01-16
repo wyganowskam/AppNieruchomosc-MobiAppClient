@@ -214,11 +214,15 @@ export default class FailureAddScreen extends Component {
   renderTypeDialog = ({ item }) => {
  
     return (
-     
+     <>
       <List.Item  onPress={()=>this.onChangeType(item)} 
        bottomDivider
-       title={item.title}/>
-      
+       title={item.title}
+       titleStyle={{flexWrap:"wrap"}}
+       titleNumberOfLines={3}
+       />
+       <Divider/>
+      </>
     );
   };
   
@@ -304,7 +308,7 @@ export default class FailureAddScreen extends Component {
         <Portal>
           <Dialog visible={this.state.apartmentDialogVisible} onDismiss={this.hideApartmentDialog} style={{maxHeight:600}}>
             <Dialog.Title>Wybierz mieszkanie</Dialog.Title>
-            <Dialog.Content>
+            <Dialog.Content >
               <Divider/>
               <FlatList
                 data={this.state.apartments}

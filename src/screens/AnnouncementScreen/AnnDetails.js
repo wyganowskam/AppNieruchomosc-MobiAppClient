@@ -12,11 +12,11 @@ const AnnouncementDetails = (props) => {
 
     return (
       
-            <Card style={{margin:10,marginBottom:50,backgroundColor:colors.white}}>
-              <Card.Title title={ann.title} subtitle={"Utworzono: " + ann.created} titleStyle={{fontSize:18, color:colors.black}} />
+            <Card style={{margin:10,marginBottom:50,backgroundColor:colors.delicateButton}}>
+              <Card.Title title={ann.title} subtitle={"Utworzono: " + ann.created} titleStyle={{fontSize:20, color:colors.button}} subtitleStyle={{fontSize:14}} />
               <Card.Content>
               <Divider style={{margin:10}}/>
-              <Text>{ann.longText+"\n"}</Text>
+              <Text style={{fontSize:15}}>{ann.longText+"\n"}</Text>
               
       
               </Card.Content> 

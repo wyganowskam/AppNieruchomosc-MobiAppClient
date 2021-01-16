@@ -53,7 +53,7 @@ export const menu = [
   },
   {
     title: 'ZGŁOSZENIA',
-    icon: require('../../assets/icons/notification.png'),
+    icon: require('../../assets/icons/alert.png'),
     page: 'Failure',
     forAppAdmin: false,
     forBuildingAdmin: false,

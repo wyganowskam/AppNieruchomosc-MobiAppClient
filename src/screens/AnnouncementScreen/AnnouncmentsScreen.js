@@ -61,10 +61,10 @@ export default function Announcements(props){
            onPress={()=>props.navigation.navigate("AnnoucmentDet",{announcementId:item.id})}>
          
               <Card.Title  
-                title={item.title} 
-                subtitle={item.shortText} 
-                titleStyle={{fontSize:18, color:colors.black,margin:0}} 
-                subtitleStyle={{fontSize:14,color:colors.grey}}
+                subtitleNumberOfLines={2}
+                subtitle={item.title} 
+                subtitleStyle={{fontSize:18, color:colors.black,margin:0}} 
+              
                 left={()=><Image style={{width:30,height:30,alignSelf:"center",margin:0}} source={require('../../assets/icons/pin.png')} />} 
                 leftStyle={{margin:0,paddingRight:0}}
               />

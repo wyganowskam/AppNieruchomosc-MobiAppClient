@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Dimensions, ScrollView,Image  } from 'react-native';
-import {Text,Button } from 'react-native-paper';
+import {Text,Button, Divider } from 'react-native-paper';
 import {failureList} from './failureData';
 import colors from '../../config/colors';
 import { Card, Title, Paragraph } from 'react-native-paper';
@@ -24,37 +24,47 @@ export default class FailureDetailsScreen extends React.Component {
    
     
       this.setState({failureElement:failure, status:failure.status});
-      getPicture(failure.id).then(
-        res => { 
+      // getPicture(failure.id).then(
+      //   res => { 
           
-          this.setState({picture:res});
+      //     this.setState({picture:res});
   
-        },
-        (error) => {
+      //   },
+      //   (error) => {
          
-        }
-      ).catch(e => { });
+      //   }
+      // ).catch(e => { });
     
     }
 
-  
+    getStatusColor = (name) => {
+      if(name === "Nowa") return colors.happyGreen;
+      if(name === "Realizowana") return colors.calmBlue;
+      if(name === "Zamknięta") return colors.brown;
+  };
+
   
     render() {
       const {failureElement,status}=this.state;
+    //  console.log(failureElement)
+      const col=this.getStatusColor(this.state.status.name);
+      
         return (
-          <ScrollView style={{backgroundColor:colors.beige}} >
+          <ScrollView style={{backgroundColor:colors.delicateButton}} >
             <Card style={{margin:10}}>
-              <Card.Title title={failureElement.title} subtitle={failureElement.type?.title??""} titleStyle={{fontSize:18, color:colors.darkviolet}} />
+              <Card.Title title={failureElement.title} subtitle={failureElement.date} titleStyle={{fontSize:18, color:colors.black}} />
               <Card.Content>
              
-                <Paragraph>
-                <Text><Text style={{fontWeight: "bold"}}>{"Data: "}</Text>{ failureElement.date+"\n"}</Text>
-                <Text><Text style={{fontWeight: "bold"}}>{"Adres: "} </Text> {failureElement.address+"\n"}</Text>
-                <Text ><Text style={{fontWeight: "bold"}}>{"Status: "} </Text>{this.state.status.description+"\n"}</Text>
-                <Text><Text style={{fontWeight: "bold"}}>{"Opis: \n" } </Text>{failureElement.description+"\n"}</Text>
-                {failureElement.comment &&  <Text ><Text style={{fontWeight: "bold",color:colors.backgroundViolet}}>{"Komentarz: "} </Text>{failureElement.comment}</Text>}
                 
-              </Paragraph>
+                <Divider style={{marginBottom:10}}/>
+                  
+                <Text  style={styles.text} ><Text style={{fontWeight: "bold",}}>{"Adres: "} </Text> {failureElement.address+"\n"}</Text>
+               
+                <Text style={styles.text}><Text style={{fontWeight: "bold"}}>{"Status: "} </Text><Text style={{color:col}}>{this.state.status.description+"\n"}</Text></Text>
+                <Text  style={styles.text}><Text style={{fontWeight: "bold"}}>{"Typ zgłoszenia: "} </Text> {failureElement.type?.title +"\n"}</Text>
+                <Text  style={styles.text}><Text style={{fontWeight: "bold"}}>{"Opis: \n"}</Text>{failureElement.description+"\n"}</Text>
+                {failureElement.comment &&  <Text  style={styles.text} ><Text style={{fontWeight: "bold",color:colors.backgroundViolet}}>{"Komentarz: "} </Text>{failureElement.comment}</Text>}
+              
               </Card.Content> 
             </Card>
 
@@ -105,4 +115,8 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     color: 'grey',
   },
+  text: {
+    marginBottom:2,
+    fontSize:16
+  }
 });

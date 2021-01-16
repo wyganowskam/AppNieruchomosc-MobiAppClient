@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Dimensions, FlatList, ScrollView ,Image} from 'react-native';
 import colors from '../../config/colors';
-import { Button,Text,List,Divider,FAB} from 'react-native-paper';
+import { Button,Text,List,Divider,FAB,Card} from 'react-native-paper';
 import {getUserInfo} from '../../services/authService';
 import {getAllFailuresByUserId} from '../../services/failureService';
 
@@ -22,22 +22,34 @@ export default class FailureScreen extends Component {
     
     renderRow = ({ item }) => {
       const col=this.getStatusColor(item.status.name);
+      
       return (
         <>
-        <List.Item onPress={() =>{this.props.navigation.navigate('FailureDetails',{item: item,})}}
-          title={item.title}
-          titleStyle={{fontWeight:"bold",color:colors.black}}
-          right={()=><Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/right-arrow.png')} />} 
-          style={{backgroundColor:colors.lightWhite,margin:10,borderRadius:15}}
-          description={<Text><Text>
-            {"Status: "}<Text style={{color:col}}> {item.status.name+"\n"}</Text>
-          </Text>
+        <Card  style={{marginBottom:0,marginLeft:7, marginRight:7,borderRadius:20,marginTop:7}} 
           
-          <Text>{item.date}</Text> 
-         
-           </Text>
-        }
-        />
+            onPress={() =>{this.props.navigation.navigate('FailureDetails',{item: item,})}}
+            >
+        
+             <Card.Title  
+               title={item.title} 
+               subtitle={<Text><Text>
+                {"Status: "}<Text style={{color:col}}> {item.status.name+"\n"}</Text>
+              </Text></Text>
+            }
+               titleStyle={{fontSize:18, color:colors.black,margin:0}} 
+              // subtitleStyle={{fontSize:14,color:colors.grey}}
+               left={()=><Image style={{width:28,height:28,alignSelf:"center",margin:0}} source={require('../../assets/icons/alert.png')} />} 
+               leftStyle={{margin:0,paddingRight:0}}
+             />
+             <Card.Content>
+               <Divider style={{ marginBottom:5}} />
+               <View style={{flexDirection:"row",justifyContent:"space-between",flex:1}}>
+                   <Text >{item.date}</Text> 
+                   <Text style={{alignSelf:"flex-end",textAlign:"right"}}>{item.comment && <Text> "Dodano komentarz"</Text>}</Text>
+               </View>
+           
+             </Card.Content> 
+           </Card>
         
         </>
       );
@@ -83,8 +95,8 @@ export default class FailureScreen extends Component {
     return (
       <View style={styles.container}>   
 
-<View style={{height:50,backgroundColor:colors.white,flexDirection:"row",padding:10}}>
-        {/* <Button
+<View style={{height:50,backgroundColor:colors.white,flexDirection:"row",}}>
+        <Button
             mode="text"
             labelStyle={styles.TransparentButtonText}
             compact={true}
@@ -95,7 +107,9 @@ export default class FailureScreen extends Component {
               
             </Button>
         <Text style={{fontSize:20,alignSelf:"center",marginLeft:6,paddingBottom:2}}>
-        {page} </Text>
+        {/* {page} */}
+        312878
+         </Text>
           <Button
             mode="text"
             labelStyle={styles.TransparentButtonText}
@@ -105,7 +119,7 @@ export default class FailureScreen extends Component {
             style={{alignSelf:"center"}}
           > <Image style={{width:20,height:20,alignSelf:"center"}} source={require('../../assets/icons/right-arrow-bold.png')} />
               
-            </Button> */}
+            </Button>
             <FAB
                 style={styles.fab}
                 small
@@ -113,7 +127,7 @@ export default class FailureScreen extends Component {
                 onPress={this.handleAddButton}
                 />
         </View>
-        <Text style={{color:colors.error}}>{this.state.message}</Text>
+        {this.state.message!=='' && <Text style={{color:colors.error}}>{this.state.message}</Text>}
         <FlatList
               data={this.state.failureList}
               keyExtractor={(a) => a.id}
@@ -129,7 +143,7 @@ export default class FailureScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.beige,
+    backgroundColor: colors.delicateButton,
     margin:0
   },
   list: {
