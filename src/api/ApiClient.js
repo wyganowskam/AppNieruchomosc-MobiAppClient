@@ -64,7 +64,5 @@ apiClient.defaults.withCredentials = true;
       });;
     
 
-//hjsahshhja
-
 
 export {apiClient};

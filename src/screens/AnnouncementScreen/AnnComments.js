@@ -9,6 +9,7 @@ const Comments = (props) => {
 
    
     const announcementId = props.announcementId;
+    const announcment=props.announcement;
     const [allowComments, setAllowComments] = useState(true);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -107,7 +108,14 @@ const Comments = (props) => {
 
 
   const switchChange = () => {
-   setAllowComments(!allowComments);
+    setAllowComments(!allowComments);
+    announcementService.setAllowComments({
+      allow: allowComments,
+      announcementId: announcementId
+    }).then(() => {}, error => setAllowComments(!allowComments));
+
+    
+   //setAllowComments(!allowComments);
    setMessage("");
     
 };
@@ -152,9 +160,10 @@ const nextPage = () => {
               
             </Button>
         </View>
-        <View style={{flexDirection:"row"}}>
+        { announcement.isAuthor && <View style={{flexDirection:"row"}}>
+        
         <RadioButton
-        status={allowComments ? 'checked' : 'unchecked'}
+        status={allowComments??props.announcement.allowComments  ? 'checked' : 'unchecked'}
         onPress={switchChange}
         theme={{colors:{
             primary:colors.white,
@@ -162,7 +171,7 @@ const nextPage = () => {
         }}}
         />
         <Text style={{marginTop: 5,fontSize:16}}>Pozwalaj na komentowanie</Text>
-    </View>
+    </View>}
 
 
       {comments.map((comment, index) => (
