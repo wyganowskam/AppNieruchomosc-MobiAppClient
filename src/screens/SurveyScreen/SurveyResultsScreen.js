@@ -32,7 +32,7 @@ export default function SurveyResults(props) {
       {canSeeResults === false &&
       <Card style={{margin:10,backgroundColor:colors.happyGreen}}>
         <Card.Content>
-            <Text >
+            <Text style={{fontSize:16}} >
               Nie posiadasz uprawnień do wyświetlenia wyników. Wyniki będą dostępne dla wszystkich członków wspólnoty po upływie terminu przyjmowania odpowiedzi.
               </Text>
         </Card.Content>
