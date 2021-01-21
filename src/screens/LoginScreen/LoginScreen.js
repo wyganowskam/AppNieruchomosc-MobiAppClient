@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
 import {
-  Alert,
   LayoutAnimation,
-  TouchableOpacity,
   Dimensions,
   Image,
-  UIManager,
+  ImageBackground,
   KeyboardAvoidingView,
   StyleSheet,
-  ScrollView,
-  Text,
   View,
+  ScrollView
 } from 'react-native';
-import { Input, Button, Icon } from 'react-native-elements';
-import FormInput from '../../components/common/FormInput';
+import {  Text, Button,TextInput,Portal } from 'react-native-paper';
 import {login} from '../../services/authService';
+import colors from "../../config/colors"
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -47,7 +44,7 @@ export default class LoginScreen extends Component {
       emailValid &&
       passwordValid
     ) {
-     this.setState({ isLoading: true });
+     this.setState({ isLoading: true, message:'' });
      login(email,password).then(result =>{
        this.props.route.params.newJWT(result.data.token);
      },
@@ -63,6 +60,10 @@ export default class LoginScreen extends Component {
       //this.clearForm();
        });
     }
+    else{
+      if (!emailValid) this.setState({message:"Nieprawidłowy adres email"});
+      else this.setState({message:"Nieprawidłowe hasło"});
+    }
   }
 
   clearForm(){
@@ -75,8 +76,8 @@ export default class LoginScreen extends Component {
     const emailValid = re.test(email);
     LayoutAnimation.easeInEaseOut();
     this.setState({ emailValid });
-    emailValid || this.emailInput.shake();
-    return emailValid;
+  
+    return true;
   }
 
   validatePassword() {
@@ -84,7 +85,7 @@ export default class LoginScreen extends Component {
     const passwordValid = password.length >= 8;
     LayoutAnimation.easeInEaseOut();
     this.setState({ passwordValid });
-    passwordValid || this.passwordInput.shake();
+  
     return passwordValid;
   }
 
@@ -109,6 +110,9 @@ export default class LoginScreen extends Component {
     } = this.state;
 
     return (
+   <ScrollView style={{flex:1}} contentContainerStyle={{flexGrow:1}}>
+
+  
       <View
         style={styles.container}       
       >
@@ -118,68 +122,68 @@ export default class LoginScreen extends Component {
         >
         
           <View style={{ width: SCREEN_WIDTH*0.8, alignItems: 'center' }}>
-            
-            <FormInput
-              refInput={(input) => (this.emailInput = input)}
-              icon="mail"
+          <Image
+            style={styles.logo}
+            source={require('../../assets/cover.png')}
+          />
+         
+            <TextInput
+              
               value={email}
-              onChangeText={(email) => this.setState({ email })}
+              onChangeText={(email) =>{ this.setState({ email });  if(this.state.message!=='') this.setState({message:''})}}
               placeholder="Email"
-              keyboardType="email-address"
-              returnKeyType="next"
-              errorMessage={
-                emailValid ? null : 'Nieprawidłowy adres email'
-              }
-              onSubmitEditing={() => {
-                this.validateEmail();
-                this.passwordInput.focus();
-              }}
+              editable={true}
+              style={styles.inputStyle}
+
             />
-            <FormInput
-              refInput={(input) => (this.passwordInput = input)}
-              icon="lock"
+          
+            
+            <TextInput
               value={password}
-              onChangeText={(password) => this.setState({ password })}
+              onChangeText={(password) => {this.setState({ password }); if(this.state.message!=='') this.setState({message:''})}}
               placeholder="Hasło"
               secureTextEntry
-              returnKeyType="next"
-              errorMessage={
-                passwordValid ? null : 'Nieprawidłowe hasło'
-              }
-              onSubmitEditing={() => {
-                this.validatePassword();
-                this.loginHandler();
-              }}
+              editable={true}
+              style={styles.inputStyle}
+
             />
-            <Text style={{color:'red'}}>{this.state.message}</Text>
-            <Button
-            loading={isLoading}
-            title="Zaloguj się"
-            containerStyle={{ flex: -1 }}
-            
-            titleStyle={styles.LoginButtonText}
-            onPress={this.loginHandler}
-            disabled={isLoading}
-            buttonStyle={styles.LoginButton}
-            
-          />
-          
+            <Text style={{color:colors.error, margin:5}}>{this.state.message}</Text>
+           
           </View>
          
         </KeyboardAvoidingView>
         <View style={{alignItems:"center"}}>
-        <View style={styles.loginHereContainer}>
+        <View style={styles.buttonContainer}>
+        <Button
+            loading={isLoading}
+            mode="contained"
+            labelStyle={styles.LoginButtonText}
+            onPress={this.loginHandler}
+            disabled={isLoading}
+            style={styles.LoginButton}
+            
+            
+          >
+            ZALOGUJ SIĘ
+          </Button>
+          </View>
+
+          
+        
+          <View style={styles.loginHereContainer}>
           <Text style={styles.questionText}>
             Nie masz konta? 
           </Text>
           <Button
-            title="Zarejestruj się"
-            titleStyle={styles.TransparentButtonText}
-            containerStyle={{ flex: -1 }}
-            buttonStyle={{ backgroundColor: 'transparent' }}
-            underlayColor="transparent"
+            mode="text"
+            labelStyle={styles.TransparentButtonText}
+            compact={true}
+            uppercase={false}
+            style={{color:"pink"}}
             onPress={this.handleRegisterButton}
-          />
+          >
+              Zarejestruj się
+          </Button>
           
         </View>
         <View style={styles.loginHereContainer}>
@@ -187,17 +191,20 @@ export default class LoginScreen extends Component {
             Nie pamiętasz hasła? 
           </Text>
           <Button
-            title="Zresetuj hasło"
-            titleStyle={styles.TransparentButtonText}
-            containerStyle={{ flex: -1 }}
-            buttonStyle={{ backgroundColor: 'transparent' }}
-            underlayColor="transparent"
+           mode="text"
+           labelStyle={styles.TransparentButtonText}
+           compact={true}
+           uppercase={false}
             onPress={this.handleResetButton}
-          />
+          >
+            Zresetuj hasło
+          </Button>
         </View>
 
         </View>
       </View>
+      </ScrollView>
+     
     );
   }
 }
@@ -211,27 +218,35 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingBottom: 50,
     paddingTop: 0,
-    backgroundColor: 'white',
-   
     alignItems: 'center',
     justifyContent: 'space-around',
+    backgroundColor:colors.light
   },
+  logo: {
+    width: 200,
+    height:200
+    },
   formContainer: {
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
   },
   LoginText: {
-    color: 'black',
-    fontSize: 28,
+    color: colors.black,
+    fontSize: 3,
     
+  },
+  background: {
+    flex: 1,
+    width: '100%',
   },
   LoginButton: {
     width: 250,
-    borderRadius: Math.round(45 / 2),
-    height: 45,
-    alignSelf:'center',
-    backgroundColor:'gray'
+    borderRadius: 0,
+   
+    flex:1,
+   
+    backgroundColor:colors.button,
   },
   userTypesContainer: {
     flexDirection: 'row',
@@ -261,30 +276,34 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     borderRadius: 40,
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: colors.grey,
     height: 45,
     marginVertical: 10,
   },
-  inputStyle: {
-    flex: 1,
-    marginLeft: 10,
-    color: 'white',
+  inputStyle: {height:50,
+     width:250,
+     alignSelf:"center",
+     margin:5,
+     backgroundColor:"transparent",
+     fontSize:16
     
-    fontSize: 16,
-  },
-  errorInputStyle: {
-    marginTop: 0,
-    textAlign: 'center',
-    color: '#F44336',
-  },
+    },
+
   LoginButtonText: {
-    
-    fontSize: 13,
+    alignSelf:"center",
+    color:colors.white,
+    fontSize: 16,
   },
 
   loginHereContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width:250,
+    marginBottom:25
   },
   questionText: {
     

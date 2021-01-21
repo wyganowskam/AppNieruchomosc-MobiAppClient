@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions, FlatList, ScrollView } from 'react-native';
+import { View, StyleSheet, Dimensions, FlatList, ScrollView ,Image} from 'react-native';
 import { TextInput } from 'react-native-paper';
 import TextField from '@material-ui/core/TextField';
 import * as ImagePicker from 'expo-image-picker';
-import {failureList} from './failureData';
-import {getUserInfo} from '../../services/authService';
 import colors from '../../config/colors';
-import { Button, Image,Text} from 'react-native-elements';
-import {addFailure} from '../../services/failureService';
+import { Button,Text,Dialog, Portal,List, Divider } from 'react-native-paper';
+import {addFailure,getTypes} from '../../services/failureService';
 import MenuItem from '@material-ui/core/MenuItem';
+import sharesService from '../../services/sharesService';
 export default class FailureAddScreen extends Component {
   constructor(props) {
     super(props);
@@ -16,10 +15,16 @@ export default class FailureAddScreen extends Component {
         isLoading:false,
         title:'',
         description:'',
-        apartmentId:'',
+        apartment:'',
+        apartmentName:'',
         apartments:[],
         message:'',
-        uriList:[]
+        uriList:[],
+        type:'',
+        types:[],
+        apartmentDialogVisible:false,
+        typeDialogVisible:false,
+        picture:undefined
     }
    this.pickImage=this.pickImage.bind(this);
    this.renderImage=this.renderImage.bind(this);
@@ -27,11 +32,31 @@ export default class FailureAddScreen extends Component {
    this.handleAddButton=this.handleAddButton.bind(this);
    this.getApartmentsList=this.getApartmentsList.bind(this);
    this.onChangeApartment=this.onChangeApartment.bind(this);
+   this.onChangeType=this.onChangeType.bind(this);
+   this.hideApartmentDialog=this.hideApartmentDialog.bind(this);
+   this.hideTypeDialog=this.hideTypeDialog.bind(this);
+   this.handleXPress=this.handleXPress.bind(this);
+   this.openApartmentDialog=this.openApartmentDialog.bind(this);
+   this.openTypeDialog=this.openTypeDialog.bind(this);
+   this.getAllTypes=this.getAllTypes.bind(this);
+
+   this.getAllTypes();
+    }
+
+    getAllTypes=()=> {
+     
+      getTypes().then((res) => {
+        // console.log(res.data)
+        this.setState({ types: res.data});
+      },(error) => {
+            
+      }
+    ).catch(e => { });
     }
 
     validate= () => {
-      const {title,description,apartmentId}=this.state;
-      if(!title || !description || !apartmentId){
+      const {title,description,apartment,type}=this.state;
+      if(!title || !description || !apartment ){
           
           this.setState({message:"Wszystkie pola muszą być wypełnione."});
           return false;
@@ -44,6 +69,7 @@ export default class FailureAddScreen extends Component {
           this.setState({message:"Opis musi mieć co najmniej 20 znaków"});
           return false;
       }
+      
       else{
           //poprawny formularz
           return true;
@@ -53,42 +79,70 @@ export default class FailureAddScreen extends Component {
 
     pickImage = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
       });
-   
+
+     
     if (!result.cancelled) {
-       this.setState({uriList:[...this.state.uriList,result]});
+      //const item=this.state.uriList.find(u=>u.uri===result.uri);
+      //if (!item)  this.setState({uriList:[...this.state.uriList,result],message:""});
+      this.setState({picture:[result],message:""});
+       
     }
-   // console.log(result);
+   
   };
+
+  
       
   renderImage = ({ item }) => {
-   
+ 
     return (
       <View>
-          <Image source={{uri: item.uri}} style={{height:100, width:100, resizeMode:"cover"}}/>
+          <Image source={{uri: item.uri}} style={{height:100, width:100, resizeMode:"cover"}}
+          />
+          <Button
+              mode="contained"
+              compact={true}
+              uppercase={false}
+              labelStyle={styles.xButtonText}
+              style={{position:"absolute",backgroundColor:colors.white,alignItems:"center"}}
+              onPress={()=>this.handleXPress(item)}
+             >X</Button>
       </View>
       
     );
   };
+  handleXPress=(item)=> {
+    //console.log(item)
+    //const newList=this.state.uriList.filter(u=>u.uri!=item.uri);
+    //this.setState({uriList:newList,message:""});
+    this.setState({picture:[]})
+  }
 
   handleAddButton = () => {
   this.setState({message:""});
     const isValid=this.validate();
-    const {title,description,apartmentId}=this.state;
+    const {title,description,apartment,type,picture}=this.state;
     if(isValid === true){
       this.setState({isLoading:true});
-      addFailure({
-          title: title,
-          description: description,
-          apartmentId: apartmentId
-      }).then(
+
+      const formData = new FormData();
+      formData.append('picture', picture);
+      formData.append('title', title);
+      formData.append('description', description);
+      formData.append('shareSubjectId', apartment.id);
+      formData.append('typeId', type.id);
+      addFailure(formData).then(
         () => {
 
-          this.props.navigation.goBack();
+          // this.props.navigation.goBack();
+          this.props.navigation.reset({
+            index: 1,
+            routes: [{ name: 'Main' }, {name:'Failure'}],
+          });
         },
         (error) => {
           const resMessage =
@@ -105,28 +159,73 @@ export default class FailureAddScreen extends Component {
     }
   };
 
-  onChangeApartment = e => {
-    const val = e.target.value;
-    this.setState({apartmentId:val});
+  onChangeApartment (apartment) {
+  
+    this.setState({apartment:apartment,apartmentName: `${apartment.type} nr ${apartment.number}, ${apartment.propertyAddress.address}`,apartmentDialogVisible:false });
+  };
+
+  onChangeType (type) {
+  
+    this.setState({type:type,typeDialogVisible:false,message:"" });
   };
 
 
   getApartmentsList = ()=> {
    
-    getUserInfo().then(
-      (res) => {
-        //console.log(res);
-        if(res.status === 200){
-          //udało się zdobyć informacje o użytkowniku
-         this.setState({apartments :res.data.apartments});
-       
-        }
-      }
-    );
+    sharesService.getUserShareSubjects().then((res) => {
+      this.setState({apartments:res.data})
+    },(error) => {
+          
+    }
+  ).catch(e => { });
+
   };
   componentDidMount() {
     this.getApartmentsList();
   }
+
+  hideApartmentDialog=()=> {
+    this.setState({apartmentDialogVisible:false,message:""});
+  };
+
+  openApartmentDialog=()=>{
+    this.setState({apartmentDialogVisible:true,message:""});
+  }
+  hideTypeDialog=()=> {
+    this.setState({typeDialogVisible:false,message:""});
+  };
+
+  openTypeDialog=()=>{
+    this.setState({typeDialogVisible:true,message:""});
+  }
+
+  
+  renderApartmentDialog = ({ item }) => {
+ 
+    return (
+     
+      <List.Item  onPress={()=>this.onChangeApartment(item)} 
+       bottomDivider
+       title=  {`${item.type} nr ${item.number}, ${item.propertyAddress.address}` }/>
+      
+    );
+  };
+
+  renderTypeDialog = ({ item }) => {
+ 
+    return (
+     <>
+      <List.Item  onPress={()=>this.onChangeType(item)} 
+       bottomDivider
+       title={item.title}
+       titleStyle={{flexWrap:"wrap"}}
+       titleNumberOfLines={3}
+       />
+       <Divider/>
+      </>
+    );
+  };
+  
 
   
   render() {
@@ -134,61 +233,110 @@ export default class FailureAddScreen extends Component {
     const {title,description}=this.state;
     
     return (
-      <ScrollView>   
+      <ScrollView style={{margin:10}}>   
+          
+         
+          <Button
+            mode="text"
+            labelStyle={styles.TransparentButtonText}
+            compact={true}
+            uppercase={false}
+            onPress={this.openApartmentDialog}
+            style={{margin:5}}
+            >{this.state.apartment==='' ? (" Wybierz mieszkanie ") : ( this.state.apartmentName + "  ") }
+              <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
+          </Button>
+         
+
+          <Button
+            mode="text"
+            labelStyle={styles.TransparentButtonText}
+            compact={true}
+            uppercase={false}
+            onPress={this.openTypeDialog}
+            style={{margin:5}}
+            >{this.state.type==='' ? (" Wybierz typ zgłoszenia ") : ( this.state.type.title + "  ") }
+              <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
+          </Button>
+
           <TextInput
             label="Tytuł zgłoszenia"
             value={title}
-           onChangeText={(title) => this.setState({ title})}/> 
-          <TextField
-              required
-              fullWidth
-              select
-              label="Mieszkanie"
-              onChange={this.onChangeApartment}
-            >
-              {this.state.apartments.map((apartment) => (
-                <MenuItem key={apartment.id} value={apartment.id}>
-                  {apartment.address}
-                </MenuItem>
-              ))}
-          </TextField>
+            style={{backgroundColor:colors.lightWhite}}
+           onChangeText={(title) => this.setState({ title,message:""})}/> 
             <TextInput
               label="Treść zgłoszenia"
               multiline
-              style={{height:450}}
+              style={{height:250,backgroundColor:colors.lightWhite}}
               value={description}
-              onChangeText={(description) => this.setState({description})}
+              onChangeText={(description) => this.setState({description,message:""})}
             /> 
  
             <View>
             <FlatList horizontal={true}
-                 data={this.state.uriList}
+                 data={this.state.picture}
                  keyExtractor={(a) => a.uri}
                 renderItem={this.renderImage}
+                
               />
+              
+         
             </View>
            
-             {/*<Button
-              title="Załaduj plik"
-              titleStyle={styles.TransparentButtonText}
-              containerStyle={{ flex: -1 }}
-              buttonStyle={{ backgroundColor: 'transparent' ,alignSelf:"flex-start"}}
-              underlayColor="transparent"
+             <Button
+              mode="text"
+              compact={true}
+              uppercase={false}
+              labelStyle={styles.TransparentButtonText}
               onPress={this.pickImage}
-             />
-             */}
-            <Text style={{color:'red'}}>{this.state.message}</Text>
+             >Załaduj plik</Button>
+            
+            <Text style={{color:colors.error,alignSelf:"center"}}>{this.state.message}</Text>
             <Button
             loading={this.state.isLoading}
-            title="WYŚLIJ ZGŁOSZENIE"
-            containerStyle={{ flex: -1 }}
-            titleStyle={{fontSize:13}}
+            compact={true}
+              uppercase={false}
+            labelStyle={{fontSize:13,color:colors.white}}
             onPress={this.handleAddButton}
             disabled={this.state.isLoading}
-            buttonStyle={{backgroundColor:'grey'}}
+            style={{backgroundColor:colors.button,margin:10}}>
+              WYŚLIJ ZGŁOSZENIE
+            </Button>
 
-            
-            />
+
+
+        <Portal>
+          <Dialog visible={this.state.apartmentDialogVisible} onDismiss={this.hideApartmentDialog} style={{maxHeight:600}}>
+            <Dialog.Title>Wybierz mieszkanie</Dialog.Title>
+            <Dialog.Content >
+              <Divider/>
+              <FlatList
+                data={this.state.apartments}
+                keyExtractor={(a) => a.id}
+                renderItem={this.renderApartmentDialog}
+                style={{maxHeight:500}}
+              />
+          </Dialog.Content>
+          </Dialog>
+        </Portal>
+
+        <Portal>
+          <Dialog visible={this.state.typeDialogVisible} onDismiss={this.hideTypeDialog} style={{maxHeight:600}}>
+            <Dialog.Title>Wybierz typ zgłoszenia</Dialog.Title>
+            <Dialog.Content>
+             
+              <Divider/>
+             
+              <FlatList
+                data={this.state.types}
+                keyExtractor={(a) => a.id}
+                renderItem={this.renderTypeDialog}
+                style={{maxHeight:500}}
+              />
+
+          </Dialog.Content>
+          </Dialog>
+        </Portal>  
       </ScrollView>
     );
   }
@@ -203,8 +351,14 @@ const styles = StyleSheet.create({
   },
   TransparentButtonText: {
     color: 'black',
+    fontSize: 15,
+    
+  },
+  xButtonText: {
+    color: colors.button,
+    alignSelf:"center",
+    fontSize:12
    
-    fontSize: 12,
   },
   list: {
     marginTop: 20,

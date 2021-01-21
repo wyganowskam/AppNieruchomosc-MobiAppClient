@@ -1,9 +1,10 @@
 import  AsyncStorage  from '@react-native-community/async-storage';
-import { setAuthHeader } from "../api/ApiClient";
+import authHeader from "./authHeader";
+import { getHoasRoles } from './hoaService';
 const deviceStorage = {
   async setItem(key, valueToSave) {
     try {
-      await AsyncStorage.setItem(key, valueToSave);
+      await AsyncStorage.setItem(key, JSON.stringify(valueToSave));
            
     } catch (error) {
       console.log('AsyncStorage Error: ' + error.message);
@@ -13,7 +14,7 @@ const deviceStorage = {
     try {
       const val= await AsyncStorage.getItem(key);
       
-      return val;
+      return JSON.parse(val);
      
     } catch (error) {
       console.log('AsyncStorage Error: ' + error.message);
@@ -41,29 +42,53 @@ const deviceStorage = {
   },
 
   newJWT(jwt){
-    this.setState({
-      jwt: jwt
-    });
-    setAuthHeader(jwt);
-    deviceStorage.setItem('id_token',jwt);
+    
+  
+    deviceStorage.setItem('id_token',jwt).then(
+      ()=>{
+        authHeader().then(()=>{
+          getHoasRoles().then(()=>{
+            this.setState({
+              jwt: jwt
+            });
+          })
+          
+        });
+       
+      }
+    );
   },
 
 
   async loadJWT() {
     try {
-      const value = await AsyncStorage.getItem('id_token');
-      if (value !== null) {
-        this.setState({
-          //użytkownik zalogowany
-          jwt: value,
-          loading: false
-        });
-      } else {
-        this.setState({
-          //użytkownik wylogowany
-          loading: false
-        });
-      }
+      deviceStorage.getItem('id_token').then(
+        (value)=>{
+
+          
+          if (value !== null) {
+        
+            getHoasRoles().then(()=>{
+              this.setState({
+                //użytkownik zalogowany
+                jwt: value,
+                loading: false
+              });
+            }).catch(()=>{
+
+              this.deleteJWT();
+            })
+            
+
+          } else {
+            this.setState({
+              //użytkownik wylogowany
+              loading: false
+            });
+          }
+        }
+      );
+     
     } catch (error) {
       console.log('AsyncStorage Error: ' + error.message);
     }
@@ -76,7 +101,8 @@ const deviceStorage = {
         () => {
           this.setState({
             jwt: ''
-          })
+          });
+          authHeader();
         }
       );
     } catch (error) {

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions,  } from 'react-native';
-import {Text} from 'react-native-elements';
+import { View, StyleSheet, Dimensions, ScrollView,Image  } from 'react-native';
+import {Text,Button, Divider } from 'react-native-paper';
 import {failureList} from './failureData';
 import colors from '../../config/colors';
-import {getAllFailures} from '../../services/failureService';
+import { Card, Title, Paragraph } from 'react-native-paper';
+import {getPicture} from "../../services/failureService"
 
 
 export default class FailureDetailsScreen extends React.Component {
@@ -12,30 +13,69 @@ export default class FailureDetailsScreen extends React.Component {
     this.state={
       failureElement:'',
       status:'',
+      dialogVisible:false,
+      picture:null
     };
    
     }
    
     componentDidMount() {
       const failure=this.props.route.params.item;
-      //console.log(failure);
+   
     
       this.setState({failureElement:failure, status:failure.status});
+      // getPicture(failure.id).then(
+      //   res => { 
+          
+      //     this.setState({picture:res});
+  
+      //   },
+      //   (error) => {
+         
+      //   }
+      // ).catch(e => { });
     
     }
-  
+
+    getStatusColor = (name) => {
+      if(name === "Nowa") return colors.happyGreen;
+      if(name === "Realizowana") return colors.calmBlue;
+      if(name === "Zamknięta") return colors.brown;
+  };
+
   
     render() {
       const {failureElement,status}=this.state;
+    //  console.log(failureElement)
+      const col=this.getStatusColor(this.state.status.name);
+      
         return (
-          <View >
-          
-            <Text h3>{failureElement.title}</Text>
-            <Text><Text style={{fontWeight: "bold"}}>{"Data: "}</Text>{ failureElement.date}</Text>
-            <Text><Text style={{fontWeight: "bold"}}>{"Adres: "} </Text> {failureElement.address}</Text>
-            <Text ><Text style={{fontWeight: "bold"}}>{"Status: "} </Text>{this.state.status.description}</Text>
-            <Text><Text style={{fontWeight: "bold"}}>{"Opis: \n" } </Text>{failureElement.description}</Text>
-          </View>
+          <ScrollView style={{backgroundColor:colors.delicateButton}} >
+            <Card style={{margin:10}}>
+              <Card.Title title={failureElement.title} subtitle={failureElement.date} titleStyle={{fontSize:20, color:colors.black}} />
+              <Card.Content>
+             
+                
+                <Divider style={{marginBottom:10}}/>
+                <Paragraph style={{}}>
+                <Text style={styles.text}>{"Status:\n"}</Text>
+                <Text style={styles.text2}><Text style={{color:col}}>{this.state.status.description+"\n"}</Text></Text>
+                <Text style={styles.text}>{"Adres:\n"}</Text>
+                <Text  style={styles.text2} >{failureElement.address+"\n"}</Text>
+                <Text style={styles.text}>{"Typ zgłoszenia:\n"}</Text>
+                <Text  style={styles.text2}>{failureElement.type?.title +"\n"}</Text>
+                <Text style={styles.text}>{"Opis: \n"}</Text>
+                <Text  style={styles.text2}>{failureElement.description+"\n"}</Text>
+                {failureElement.comment &&  <Text  style={styles.text} ><Text style={{fontWeight: "bold",color:colors.backgroundViolet}}>{"Komentarz: "} </Text>{failureElement.comment}</Text>}
+                </Paragraph>
+              </Card.Content> 
+            </Card>
+
+            {this.state.picture && <Image  source={{uri: `data:image/png;base64,${this.state.picture}`}} style={{width: 100, height: 50, resizeMode: Image.resizeMode.contain, borderWidth: 1, borderColor: 'red'}}
+          />}
+            
+        
+          </ScrollView>
         );
       }
 }
@@ -55,6 +95,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
   },
+  TransparentButtonText: {
+    color: colors.backgroundViolet,
+    fontSize: 15,
+    
+  },
   list: {
     marginTop: 20,
     borderTopWidth: 1,
@@ -73,4 +118,14 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     color: 'grey',
   },
+  text: {
+    marginBottom:2,
+    fontSize:16,
+    lineHeight:30,
+    fontWeight:"bold"
+  },
+  text2: {
+    marginBottom:2,
+    fontSize:16,
+  }
 });

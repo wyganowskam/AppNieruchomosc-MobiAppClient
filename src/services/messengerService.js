@@ -17,6 +17,6 @@ export const createNewChat=(data) => {
     
 
   export const getChatContent = (chatId) => {
-    return apiClient.get(path+ chatId );
+    return apiClient.get("chat/"+ chatId );
   };
   

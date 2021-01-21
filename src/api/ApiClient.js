@@ -1,12 +1,18 @@
 import axios from 'axios';
-import deviceStorage from "../services/deviceStorage"
-
-const baseURL='https://localhost:5001/api/';
-
+import deviceStorage from "../services/deviceStorage";
+import authHeader from "../services/authHeader";
+//const baseURL='https://localhost:5001/api/';
+const baseURL='https://appnieruchomoscapi.azurewebsites.net/api/'
 const apiClient = axios.create({
     baseURL: baseURL
 });
 
+deviceStorage.getJWT().then((jwt) => {
+  apiClient.defaults.headers.common.Authorization='Bearer ' +JSON.parse(jwt);
+  deviceStorage.getItem('hoaId').then((hoaId) => {
+    apiClient.defaults.headers.common.hoaId=hoaId; 
+  });
+});
 apiClient.defaults.withCredentials = true;
 
     apiClient.interceptors.response.use( (response) => {
@@ -37,11 +43,11 @@ apiClient.defaults.withCredentials = true;
         return apiClient.post("authentication/refreshtoken/")
           .then((res) => {
             if (res.data.token) {
-                deviceStorage.saveJWT( JSON.stringify(res.data.token));
+                deviceStorage.saveJWT( res.data.token);
               }
             // New request with new token
             const config = error.config;
-            config.headers   = {Authorization: 'Bearer ' + res.data.token };
+            config.headers = {Authorization: 'Bearer ' + res.data.token };
     
             return new Promise((resolve, reject) => {
               axios.request(config).then(response => {
@@ -59,13 +65,6 @@ apiClient.defaults.withCredentials = true;
     
 
 
-const setAuthHeader = (jwt) => {
-    if (jwt) {
-        apiClient.defaults.headers.common.Authorization=`Bearer ${jwt}`;
-    }
-    else {
-        delete apiClient.defaults.headers.common.Authorization;
-    }
-};
 
-export {apiClient,setAuthHeader};
+
+export {apiClient};

@@ -1,10 +1,12 @@
-import 'react-native-gesture-handler';
+
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
 import MainScreen from './screens/MainScreen/MainScreen';
+import { IconButton} from 'react-native-paper';
+import {Image} from 'react-native';
 import ChatScreen from "./screens/MainMessenger/ChatScreen/ChatScreen";
 import MessageScreen from "./screens/MainMessenger/MessageScreen/MessageScreen"
 import FailureScreen from './screens/FailureScreen/FailureScreen';
@@ -13,14 +15,31 @@ import FailureDetailsScreen from './screens/FailureScreen/FailureDetailsScreen';
 import FailureAddScreen from './screens/FailureScreen/FailureAddScreen';
 import InvitationScreen from "./screens/InvitationScreen/InvitationScreen"
 import ResetPasswordScreen from './screens/ResetPasswordScreen/ResetPasswordScreen';
-import { setAuthHeader } from './api/ApiClient';
+import Announcements from "./screens/AnnouncementScreen/AnnouncmentsScreen";
+import AnnouncementAdd from "./screens/AnnouncementScreen/AnnouncementAdd"
+import  AnnDet from "./screens/AnnouncementScreen/Announcement";
+import Survey from "./screens/SurveyScreen/SurveyScreen"
+import Surveys from "./screens/SurveyScreen/SurveyListScreen"
+import CreateSurvey from "./screens/SurveyScreen/CreateSurveyScreen"
 import deviceStorage from './services/deviceStorage';
 import {logout} from './services/authService';
-import {Button, Icon} from 'react-native-elements'
+import {Button, Icon} from 'react-native-paper'
 import {revokeToken} from './services/userService'
 import {getHoasRoles} from './services/hoaService';
-import { Provider as PaperProvider } from 'react-native-paper';
+import colors from "./config/colors"
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+
+import { AppRegistry } from 'react-native';
 const Stack = createStackNavigator();
+
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: 'black',
+    accent: colors.button,
+  },
+};
 
 export default class App extends React.Component {
   constructor() {
@@ -40,7 +59,7 @@ export default class App extends React.Component {
     this.logout=this.logout.bind(this);
    
     this.loadJWT();
-    console.log(this.state.jwt);
+    //console.log(this.state.jwt);
   }
   logout() {
     console.log("wylogowanie");
@@ -69,35 +88,32 @@ export default class App extends React.Component {
  
   render() {
     return (
-      <PaperProvider>
+      <PaperProvider theme={theme}>
       <NavigationContainer >
         <Stack.Navigator 
          
           screenOptions={{
-            headerTitleStyle: {color:'white', },
+            headerTitleStyle: {color:'black', fontSize:16 },
             headerStyle: {
-              backgroundColor: 'gray',
-              borderBottomColor:'white',
+              
+              borderBottomColor:'transparent',
             
             },
             headerRight: () => (
-              this.state.jwt && (<Button
+              this.state.jwt && 
+              (<IconButton
                 onPress={this.logout}
-                buttonStyle={{ backgroundColor: 'transparent' }}
+                buttonStyle={{ backgroundColor: 'white' }}
                 underlayColor="transparent"
-                icon={
-                  <Icon
-                    name='logout'
-                    type='antdesign'
-                    
-                    color="black"
-                  />
-                }
+                icon={props=><Image style={{width:25,height:25,alignSelf:"center"}} source={require('./assets/icons/logout.png')} />} 
               />)
             ), 
 
         }}>
-          {this.state.jwt=='' ? (
+
+        
+          {this.state.jwt==='' ? (
+
           <>
           <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'LOGOWANIE' }} initialParams={{newJWT:this.newJWT}}/>
           <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'REJESTRACJA', }}/>
@@ -105,14 +121,21 @@ export default class App extends React.Component {
           </>
           ) : (
           <>
-          <Stack.Screen name="Main" component={MainScreen} options={{ title: 'MENU', }}  />
-          <Stack.Screen name="Messages" component={MessageScreen} options={{ title: 'KOMUNIKATOR', }}  />
+         
+          <Stack.Screen name="Main" component={MainScreen} options={{ title: 'Dzień dobry', }}  />
           <Stack.Screen name="MyInvitations" component={InvitationScreen} options={{ title: 'ZAPROSZENIA', }}  />
-          <Stack.Screen name="Failure" component={FailureScreen} options={{ title: 'AWARIE' }} />
-          <Stack.Screen name="FailureDetails" component={FailureDetailsScreen} options={{ title: 'AWARIA' }}  />
-          <Stack.Screen name="FailureAdd" component={FailureAddScreen} options={{ title: 'NOWA AWARIA' }}  />
+          <Stack.Screen name="Failure" component={FailureScreen} options={{ title: 'ZGŁOSZENIA' }} />
+          <Stack.Screen name="FailureDetails" component={FailureDetailsScreen} options={{ title: 'ZGŁOSZENIE' }}  />
+          <Stack.Screen name="FailureAdd" component={FailureAddScreen} options={{ title: 'NOWE ZGŁOSZENIE' }}  />
+          <Stack.Screen name="Messages" component={MessageScreen} options={{ title: 'KOMUNIKATOR', }}  />
+          <Stack.Screen  name="NewMessage" component={NewMessageScreen} options={{ title: 'NOWY WĄTEK', }}  /> 
           <Stack.Screen  name="Chat" component={ChatScreen} options={{ title: '', }}  />
-          <Stack.Screen  name="NewMessage" component={NewMessageScreen} options={{ title: 'NOWY WĄTEK', }}  />
+          <Stack.Screen name="Annoucments" component={Announcements} options={{ title: 'TABLICA OGŁOSZEŃ', }}  />
+          <Stack.Screen name="AnnoucmentDet" component={ AnnDet} options={{ title: 'OGŁOSZENIE', }}  />
+          <Stack.Screen name="AnnoucmentAdd" component={ AnnouncementAdd} options={{ title: 'NOWE OGŁOSZENIE', }}  />
+          <Stack.Screen name="SurveyDet" component={Survey} options={{ title: 'SZCZEGÓŁY', }}  />
+          <Stack.Screen name="Surveys" component={ Surveys} options={{ title: 'GŁOSOWANIA I ANKIETY', }}  />
+          <Stack.Screen name="NewSurvey" component={ CreateSurvey} options={{ title: 'NOWY FORMULARZ', }}  />
           </>)}
         </Stack.Navigator>
       </NavigationContainer>
@@ -121,3 +144,4 @@ export default class App extends React.Component {
   }
 }
 
+AppRegistry.registerComponent('albums', () => App);

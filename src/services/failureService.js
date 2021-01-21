@@ -16,6 +16,18 @@ export const getAllStatuses = () => {
   export const addFailure = (data) => {
       return apiClient.post("malfunctions/add/", data);
     };
+
+  export const getPicture = (id) => {
+      return apiClient.get("malfunctions/picture/" + id, {
+        responseType: 'arraybuffer'
+      })
+      .then(response => {console.log(response.data);Buffer.from(response.data, 'binary').toString('base64')});
+    };
+
+export const getTypes = () => {
+   
+      return apiClient.get("malfunctions/types");
+    };
   
   export const updateFailureStatus = (data) => {
       return apiClient.post("malfunctions/status", data);

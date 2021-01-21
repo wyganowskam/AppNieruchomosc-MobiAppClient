@@ -2,26 +2,22 @@ import React, { Component } from 'react';
 import {
   LayoutAnimation,
   Dimensions,
-  UIManager,
   KeyboardAvoidingView,
   StyleSheet,
-  ScrollView,
-  Text,
   View,
+  Image,
+  ScrollView
 } from 'react-native';
-import { Input, Button, Icon } from 'react-native-elements';
-import FormInput from '../../components/common/FormInput';
+import {  Text, Button,TextInput } from 'react-native-paper';
+import colors from "../../config/colors"
 import {forgotPassword} from '../../services/authService';
-// Enable LayoutAnimation on Android
-UIManager.setLayoutAnimationEnabledExperimental &&
-  UIManager.setLayoutAnimationEnabledExperimental(true);
 
 
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-export default class LoginScreen extends Component {
+export default class ResetPasswordScreen extends Component {
   constructor(props) {
     super(props);
 
@@ -57,6 +53,9 @@ export default class LoginScreen extends Component {
         }
       );
     }
+    else {
+      this.setState({message:"Niepoprawny email", isLoading:false});
+    }
   }
 
   validateEmail() {
@@ -65,7 +64,6 @@ export default class LoginScreen extends Component {
     const emailValid = re.test(email);
     LayoutAnimation.easeInEaseOut();
     this.setState({ emailValid });
-    emailValid || this.emailInput.shake();
     return emailValid;
   }
 
@@ -85,6 +83,7 @@ export default class LoginScreen extends Component {
     } = this.state;
 
     return (
+      <ScrollView style={{flex:1}} contentContainerStyle={{flexGrow:1}}>
       <View
         style={styles.container}       
       >
@@ -94,38 +93,38 @@ export default class LoginScreen extends Component {
         >
         
           <View style={{ width: SCREEN_WIDTH*0.8, alignItems: 'center' }}>
-         
-            <FormInput
-              refInput={(input) => (this.emailInput = input)}
-              icon="mail"
+          <Image
+            style={styles.logo}
+            source={require('../../assets/cover.png')}
+          />
+            <TextInput
+            
               value={email}
-              onChangeText={(email) => this.setState({ email })}
+              onChangeText={(email) => {this.setState({ email }); if(this.state.message!=='') this.setState({message:''})}}
               placeholder="Email"
-              keyboardType="email-address"
-              returnKeyType="next"
-              errorMessage={
-                emailValid ? null : 'Nieprawidłowy adres email'
-              }
-              onSubmitEditing={() => {
-                this.validateEmail();
-                this.reset();
-              }}
+              editable={true}
+              style={styles.inputStyle}
+             
             />
-            <Text style={{color:'red'}}>{this.state.message}</Text>
-            <Button
-              loading={isLoading}
-              title="Zresetuj hasło"
-              containerStyle={{ flex: -1 }}
-              
-              titleStyle={styles.LoginButtonText}
-              onPress={this.reset}
-              disabled={isLoading}
-              buttonStyle={styles.LoginButton}            
-            />    
+            <Text style={{color:colors.error}}>{this.state.message}</Text>
+           
           </View>
          
         </KeyboardAvoidingView>
+        <View style={styles.buttonContainer}>
+            <Button
+              loading={isLoading}
+              labelStyle={styles.ResetButtonText}
+              onPress={this.reset}
+              mode="contained"
+              disabled={isLoading}
+              style={styles.ResetButton}            
+            >
+              ZRESETUJ HASŁO
+              </Button> 
+              </View>
       </View>
+      </ScrollView>
     );
   }
 }
@@ -135,74 +134,54 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingBottom: 50,
     paddingTop: 0,
-    backgroundColor: 'white',
-   
     alignItems: 'center',
     justifyContent: 'space-around',
+    backgroundColor:colors.light
   },
+  logo: {
+    width: 200,
+    height:200
+    },
   formContainer: {
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
   },
-  LoginText: {
-    color: 'white',
-    fontSize: 28,
-    
-  },
-  whoAreYouText: {
-    color: '#7384B4',
-    
-    fontSize: 14,
-  },
-  userTypesContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: SCREEN_WIDTH,
-    alignItems: 'center',
-  },
-  userTypeItemContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    opacity: 0.5,
-  },
-  userTypeItemContainerSelected: {
-    opacity: 1,
-  },
-  userTypeMugshot: {
-    margin: 4,
-    height: 70,
-    width: 70,
-  },
-  userTypeMugshotSelected: {
-    height: 100,
-    width: 100,
-  },
-  
- 
-  LoginButtonText: {
-    
-    fontSize: 13,
-  },
-  LoginButton: {
-    width: 250,
-    borderRadius: Math.round(45 / 2),
-    height: 45,
-    alignSelf:'center',
-    backgroundColor:'gray'
-  },
-  loginHereContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  alreadyAccountText: {
-    
-    fontSize: 12,
-    color: 'white',
-  },
-  loginHereText: {
-    color: '#FF9800',
    
-    fontSize: 12,
+  inputContainer: {
+    paddingLeft: 8,
+    borderRadius: 40,
+    borderWidth: 1,
+    borderColor: colors.grey,
+    height: 45,
+    marginVertical: 10,
+  },
+  inputStyle: {
+    height:50,
+     width:250,
+     alignSelf:"center",
+     margin:5,
+     backgroundColor:"transparent",
+     fontSize:16
+    
+    },
+    buttonContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      width:250,
+      marginBottom:25
+    },
+  ResetButtonText: {
+    alignSelf:"center",
+    color:colors.white,
+    fontSize: 16,
+  },
+  ResetButton: {
+    width: 250,
+    borderRadius: 0,
+   
+    flex:1,
+   
+    backgroundColor:colors.button,
   },
 });

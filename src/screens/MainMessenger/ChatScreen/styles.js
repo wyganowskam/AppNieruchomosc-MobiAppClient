@@ -42,7 +42,23 @@ const styles = StyleSheet.create({
         height: SCREEN_HEIGHT/8,
         borderRadius: 10,
         borderColor: colors.white,
-        margin: 8
+        margin: 8,
+       
+    },
+    card:{
+        //width:2* SCREEN_WIDTH / 4,
+        alignSelf:"flex-start",
+        margin: 5
+    },
+    mycard:{
+       // width:2* SCREEN_WIDTH / 4,
+        alignSelf:"flex-end",
+        alignContent:"flex-end",
+        margin: 5
+    },
+    mess:{
+        height:5.5*SCREEN_HEIGHT/8 +30 ,
+        margin:20
     }
 });
 export default styles;

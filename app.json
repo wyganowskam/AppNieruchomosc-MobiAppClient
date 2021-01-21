@@ -4,12 +4,8 @@
     "slug": "AppNieruchomosc-MobiAppClient",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
+    "icon": "./src/assets/roof.png",
+   
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -20,7 +16,11 @@
       "supportsTablet": true
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      
+    },
+    
+  "android": {
+    "package": "com.magwyg.appnieruchomoscmobiappclient"
+  }
   }
 }

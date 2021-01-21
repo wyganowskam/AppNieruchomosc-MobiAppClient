@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
-import { Avatar, Card, Icon, Button } from 'react-native-elements';
+import { //Icon, 
+  Button, Divider } from 'react-native-paper';
 import {
   StyleSheet,
   Text,
   View,
   Dimensions, 
-  FlatList
+  FlatList,
+  Image,
+  ScrollView,
+  ImageBackground
 } from 'react-native';
 import colors from '../../config/colors';
-import { Dialog, Portal } from 'react-native-paper';
-import { ScrollView } from 'react-native-gesture-handler';
-import { ListItem} from 'react-native-elements';
+import { Dialog, Portal,List } from 'react-native-paper';
 import {getUserInfo} from '../../services/authService';
 import deviceStorage from '../../services/deviceStorage';
 import {refreshRoles } from "../../services/hoaService";
 import {menu} from "./Menu";
  import {getHoasRoles} from '../../services/hoaService';
-
-const avatar={uri: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"};
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
@@ -45,21 +45,20 @@ export default class Profile extends Component {
     this.loadHoa=this.loadHoa.bind(this);
     this.renderRow=this.renderRow.bind(this);
     this.onChangeHoa=this.onChangeHoa.bind(this);
-    
-    
+   
+   
+   
   }
 
   getInfo() {
-   
-   
     getUserInfo().then(
       (res) => {
       
         if(res.status === 200){
         //udało się zdobyć informacje o użytkowniku
-         this.setState({usersurname:res.data.surname, username:res.data.name});
-         this.loadHoa();
-          
+       // this.setState({usersurname:res.data.surname, username:res.data.name});
+        this.loadHoa(res.data.surname,res.data.name);
+         
         }
       }
     );
@@ -69,57 +68,44 @@ export default class Profile extends Component {
     this.getInfo();
   }
 
-  loadHoa(){
+  loadHoa(surname,name){
    
-    getHoasRoles().then(
-      () => {
+    deviceStorage.getItem("hoaId")
+    .then((res1)=>{
+    {deviceStorage.getItem("hoas")
+    .then((res2)=> {
+     
+      deviceStorage.getItem("isAppAdmin")
+      .then((val1)=>{ 
         
-      deviceStorage.getItem("hoaId")
-      .then((res1)=>{
+    deviceStorage.getItem("isBuildingAdmin")
+      .then((val2)=>{ 
+     
+    deviceStorage.getItem("isBoard")
+      .then((val3)=>{ 
+        
+    deviceStorage.getItem("isResident")
+      .then((val4)=>{
+       
+       
+        this.setState({
+          isAppAdmin:val1===true,
+          isBuildingAdmin:val2===true,
+          isBoard:val3===true,
+          isResident:val4===true,
+          hoas:JSON.parse(res2),
+          currentHoaId:res1,
+          currentHoaName:JSON.parse(res2).find(item=>item.hoaId===res1).hoaName,
+          username:name,
+          usersurname:surname
+        });
       
-      if (res1!=undefined) {deviceStorage.getItem("hoas")
-      .then((res2)=> {
-  
-        deviceStorage.getItem("isAppAdmin")
-        .then((val1)=>{ 
-          
-      deviceStorage.getItem("isBuildingAdmin")
-        .then((val2)=>{ 
-          
-      deviceStorage.getItem("isBoard")
-        .then((val3)=>{ 
-          
-      deviceStorage.getItem("isResident")
-        .then((val4)=>{
-         
-         
-          this.setState({
-            isAppAdmin:val1==='true',
-            isBuildingAdmin:val2==='true',
-            isBoard:val3==='true',
-            isResident:val4==='true',
-            hoas:JSON.parse(res2),
-            currentHoaId:res1,
-            currentHoaName:JSON.parse(res2).find(item=>item.hoaId===res1).hoaName
-          });
-          console.log({
-            isAppAdmin:val1==='true',
-            isBuildingAdmin:val2==='true',
-            isBoard:val3==='true',
-            isResident:val4==='true',
-            hoas:JSON.parse(res2),
-            currentHoaId:res1,
-            currentHoaName:JSON.parse(res2).find(item=>item.hoaId===res1).hoaName
-          });
-      
-        });
-        });
-        });
-        });
-  
-    });}
-    });
-  
+      });
+      });
+      });
+      });
+
+  });}
   });
     
   }
@@ -127,11 +113,11 @@ export default class Profile extends Component {
   
 
  onChangeHoa(value) {
-
+    // console.log(value.hoaId);
     deviceStorage.setItem("hoaId",value.hoaId)
     .then(()=>{
-      refreshRoles().then(()=>{this.loadHoa();  this.setState({hoaDialogVisible:false});});
-      
+      refreshRoles().then(()=>{this.loadHoa(this.state.usersurname,this.state.username);  this.setState({hoaDialogVisible:false});});
+     
      
     });
   
@@ -157,14 +143,14 @@ export default class Profile extends Component {
         || (isResident && item.forResident)
         || item.forAll
         ) && <> 
-      <ListItem  onPress={() => 
-        this.props.navigation.navigate(item.page)} bottomDivider>
-        <Icon name={item.icon } type='antdesign'/>
-        <ListItem.Content>
-          <ListItem.Title>{item.title}</ListItem.Title>
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem>
+      <List.Item  onPress={() => this.props.navigation.navigate(item.page)} 
+      title={item.title}
+      style={styles.list} 
+      titleStyle={{color:colors.textViolet, fontSize:16,}}  
+      right={()=><Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/right-arrow.png')} />} 
+      left={()=><Image style={{width:25,height:25,alignSelf:"center"}} source={item.icon} />} 
+     /><Divider style={{height:2}} />
+    
       </>
     );
   };
@@ -174,13 +160,10 @@ export default class Profile extends Component {
     
     return (
      
-      <ListItem  onPress={()=>this.onChangeHoa(item)} 
-       bottomDivider>
-        <ListItem.Content>
-          <ListItem.Title>{item.hoaName}</ListItem.Title>
-        </ListItem.Content>
-      </ListItem>
-     
+      <List.Item  onPress={()=>this.onChangeHoa(item)} 
+       bottomDivider
+       title={item.hoaName}/>
+      
     );
   };
   
@@ -190,39 +173,47 @@ export default class Profile extends Component {
       usersurname,
     } = this.state;
    
-   if(this.state.currentHoaId===''&& this.state.noHoaUser===false) {this.loadHoa();
-    this.setState({noHoaUser:true})
-   }
     return (
-      <View>
-      <View style={styles.headerContainer}>
-     
+      <View  style={{backgroundColor:colors.white, flex:1,alignContent:"space-between"}}>
+      <ImageBackground 
+      source={require('../../assets/grad.png')}
+    resizeMode="cover"
+    style={styles.headerContainer}>
+     <View style={{flexDirection:"row"}}>
       <Button
-            title={this.state.currentHoaName}
-            titleStyle={styles.TransparentButtonText}
-            containerStyle={{ flex:-1 }}
-            buttonStyle={{ backgroundColor: 'transparent' }}
-            underlayColor="transparent"
+           mode="text"
+           labelStyle={styles.TransparentButtonText}
+           compact={true}
+           uppercase={false}
             onPress={this.openDialog}
-          />
-      <Text style={styles.userNameText}>{username + ' ' + usersurname}</Text>
-      <Portal>
-      <Dialog visible={this.state.hoaDialogVisible} onDismiss={this.hideDialog}>
-        <Dialog.Title>Wybierz wspólnotę</Dialog.Title>
-       <Dialog.Content>
-     
-         <FlatList
-            data={this.state.hoas}
-            keyExtractor={(a) => a.hoaId}
-            renderItem={this.renderHoas}
-          />
-       </Dialog.Content>
-      </Dialog>
-    </Portal>  
-
-
-        </View>
+            style={{paddingBottom:30,}}
+          >{this.state.currentHoaName+ "  "}
+            <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
+          </Button>
         
+          </View>
+      <Text  style={styles.userNameText}>{username + ' ' + usersurname}</Text>
+
+
+
+
+        </ImageBackground>
+
+        <Portal>
+          <Dialog visible={this.state.hoaDialogVisible} onDismiss={this.hideDialog}>
+            <Dialog.Title>Wybierz wspólnotę</Dialog.Title>
+          <Dialog.Content>
+              <Divider/>
+              <FlatList
+                data={this.state.hoas}
+                keyExtractor={(a) => a.hoaId}
+                renderItem={this.renderHoas}
+              />
+          </Dialog.Content>
+          </Dialog>
+        </Portal>  
+       
+        <Divider/>
           <FlatList
             key={this.state.hoas}
             data={menu}
@@ -230,6 +221,10 @@ export default class Profile extends Component {
             renderItem={this.renderRow}
           />
        
+          
+         
+       
+    
     </View>
 
     )
@@ -239,23 +234,16 @@ export default class Profile extends Component {
 const styles = StyleSheet.create({
  
   headerContainer: {
-    flexGrow: 1,
+    //flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'space-around',
     paddingBottom: 20,
     paddingTop: 20,
-  },
- 
-  userImage: {
-    borderColor: '#FFF',
-    borderRadius: 85,
-    borderWidth: 3,
-    height: 170,
-    marginBottom: 15,
-    width: 170,
+    height:150
+    // backgroundColor:colors.button
   },
   userNameText: {
-    color: 'black',
+    color: colors.black,
     fontSize: 15,
     textAlign: 'center',
   },
@@ -263,29 +251,26 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingBottom: 50,
     paddingTop: 0,
-    backgroundColor: '#293046',
+    backgroundColor: colors.light,
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT,
     alignItems: 'center',
     justifyContent: 'space-around',
   },
   list: {
-    marginTop: 20,
-    borderTopWidth: 1,
-    borderColor: colors.greyOutline,
+    borderRadius:5,
+    backgroundColor:colors.white,
+    margin:10
   },
   subtitleView: {
     flexDirection: 'row',
     paddingLeft: 10,
     paddingTop: 5,
   },
-  ratingImage: {
-    height: 19.21,
-    width: 100,
-  },
-  ratingText: {
-    paddingLeft: 10,
-    color: 'grey',
+  TransparentButtonText: {
+    color: colors.black,
+    flexWrap:"wrap",flexDirection:"row",
+    fontSize: 18,
   },
   TransparentButtonText: {
     color: 'black',
