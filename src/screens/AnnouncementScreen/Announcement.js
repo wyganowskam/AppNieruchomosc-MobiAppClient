@@ -34,11 +34,7 @@ export default function AnnDet(props) {
   return (
     <ScrollView style={{backgroundColor: colors.light}}>
  
-      {/* <SwipeableViews
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={value}
-        onChangeIndex={handleChangeIndex}
-      ></SwipeableViews> */}
+     
        
         <AnnouncementDetails announcement={announcement} />
         

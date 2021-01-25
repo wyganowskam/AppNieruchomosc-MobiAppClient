@@ -22,7 +22,7 @@ export default {
     happyGreen:"#B4D3A2",
     calmBlue:"#7BA1D8",
     brown:"#6D4D50",
-    beige:"#EAE1E2",
+    beige:"#F1EBEB",
     delicateButton:"#C1AFC6"
 
 }

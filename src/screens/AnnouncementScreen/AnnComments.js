@@ -9,8 +9,8 @@ const Comments = (props) => {
 
    
     const announcementId = props.announcementId;
-    const announcment=props.announcement;
-    const [allowComments, setAllowComments] = useState(true);
+    const announcement=props.announcement;
+    const [allowComments, setAllowComments] = useState(announcement.allowComments);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [comments, setComments] = useState([]);
@@ -20,18 +20,23 @@ const Comments = (props) => {
     const [loading, setLoading] = useState(false);
     const [goToLastPage, setGoToLastPage] = useState(false);
     const [forceReload, setForceReload] = useState(false);
-
-
+    
+    
+    
+   
     useEffect(() => {
       announcementService.getCommentPagesCount(announcementId).then(
           res => {
               setTotalPages(res.data);
+              
               if(goToLastPage){
                 if(page === res.data){
                   setForceReload(old => !old);
                 }
                 setPage(res.data);
                 setGoToLastPage(false);
+                
+
               }
           },
           (error) => {
@@ -40,8 +45,12 @@ const Comments = (props) => {
         ).catch(e => { });
   }, [page, announcementId, goToLastPage]);
 
-
+  useEffect(()=>{
+    if (allowComments===undefined && announcement.allowComments!==undefined) setAllowComments(announcement.allowComments)
+    
+  })
     useEffect(() => {
+    
         announcementService.getComments(announcementId, page).then(
             res => {     
               setComments(res.data);     
@@ -109,6 +118,7 @@ const Comments = (props) => {
 
   const switchChange = () => {
     setAllowComments(!allowComments);
+   
     announcementService.setAllowComments({
       allow: allowComments,
       announcementId: announcementId
@@ -163,7 +173,7 @@ const nextPage = () => {
         { announcement.isAuthor && <View style={{flexDirection:"row"}}>
         
         <RadioButton
-        status={allowComments??props.announcement.allowComments  ? 'checked' : 'unchecked'}
+        status={allowComments  ? 'checked' : 'unchecked'}
         onPress={switchChange}
         theme={{colors:{
             primary:colors.white,

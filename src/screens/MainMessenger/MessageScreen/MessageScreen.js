@@ -77,11 +77,12 @@ export default class MessagesScreen extends Component {
          // title={item.chatName}
           title={item.username}
           description={ item.modfifiedOn+ "\n" + item.lastMessage.substring(1,30) + '...'}
-          
+          style={{marginLeft:7,marginRight:7,borderRadius:20,backgroundColor:colors.white }}
           titleStyle={{color:colors.textViolet, fontSize:16,}}  
           right={()=><Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../../assets/icons/right-arrow.png')} />} 
-          left={()=><Avatar.Text size={30} style={{backgroundColor:colors.button,alignSelf:"center"}} label={item.username.charAt(0)}/>}
-          /><Divider style={{ backgroundColor:colors.violet}} />
+         // left={()=><Avatar.Text size={30} style={{backgroundColor:colors.button,alignSelf:"center"}} label={item.username.charAt(0)}/>}
+          left={()=><Image style={{width:28,height:28,alignSelf:"center",margin:2}} source={require('../../../assets/icons/chatting.png')} />} 
+          /><Divider style={{marginLeft:27,marginRight:27}}/>
           </>
         );
       };
@@ -90,9 +91,8 @@ export default class MessagesScreen extends Component {
      
         return (
             <View style={styles.container}>
-                {/* <StatusList //lista użytkowników
-                />  */}
-                <View>
+              
+                {/* <View>
                   <Searchbar
                     placeholder="Wyszukaj"
                     onChangeText={this.onChangeSearch}
@@ -102,23 +102,64 @@ export default class MessagesScreen extends Component {
                     
                   />
                   <Text style={{color:'red',alignSelf:"center"}}>{this.state.errorMessage}</Text>
-                </View>
+                </View> */}
+                 <View style={{height:50,backgroundColor:colors.white,flexDirection:"row",padding:10,flex:1}}>
+                  <Button
+                      mode="text"
+                      labelStyle={styles.TransparentButtonText}
+                      compact={true}
+                      uppercase={false}
+                     // onPress={previousPage}
+                      style={{alignSelf:"center"}}
+                    > <Image style={{width:20,height:20,alignSelf:"center"}} source={require('../../../assets/icons/left-arrow-bold.png')} />
+                        
+                      </Button>
+                  <Text style={{fontSize:20,alignSelf:"center",marginLeft:6,paddingBottom:2}}>
+                  {/* {page}  */}
+                  08788
+                  </Text>
+                    <Button
+                      mode="text"
+                      labelStyle={styles.TransparentButtonText}
+                      compact={true}
+                      uppercase={false}
+                     // onPress={nextPage}
+                      style={{alignSelf:"center"}}
+                    > <Image style={{width:20,height:20,alignSelf:"center"}} source={require('../../../assets/icons/right-arrow-bold.png')} />
+                        
+                      </Button>
+                      <Searchbar
+                    placeholder="Wyszukaj"
+                    onChangeText={this.onChangeSearch}
+                    value={this.state.searchQuery}
+                    onIconPress={this.onPressSearch}
+                    style={styles.search}
+                    icon={()=><Image style={{width:28,height:28,alignSelf:"center",margin:2}} source={require('../../../assets/icons/loupe.png')} />} 
+                    
+                  />
+                    <FAB
+                  style={styles.fab}
+                  small
+                  icon={props=><Image style={{width:20,height:20,alignSelf:"center",marginTop:2}} source={require('../../../assets/icons/plus.png')} />}
+                  onPress={() =>{this.props.navigation.navigate('NewMessage')}}  
+                  />
+                  </View>
                 
                
-                     <Divider style={{ backgroundColor:colors.violet}} />
+                     <Divider/>
                     <FlatList
                     data={this.state.chatsList}
                     keyExtractor={(a) => a.chatId}
                     renderItem={this.renderRow}
                     />
                
-
+{/* 
                 <FAB
                 style={styles.fab}
                 small
                 icon={props=><Image style={{width:20,height:20,alignSelf:"center",marginTop:2}} source={require('../../../assets/icons/plus.png')} />}
                 onPress={() =>{this.props.navigation.navigate('NewMessage')}}  
-                />
+                /> */}
             </View>
         );
     };

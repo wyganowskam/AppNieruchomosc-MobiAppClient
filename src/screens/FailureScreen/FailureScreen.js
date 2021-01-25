@@ -143,7 +143,7 @@ export default class FailureScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.delicateButton,
+    backgroundColor: colors.beige,
     margin:0
   },
   list: {

@@ -1,38 +1,39 @@
-import { apiClient as api } from '../api/ApiClient';
+import {apiClient} from "../api/ApiClient";
 
 const path = 'announcement/';
 
 const getAnnouncements = (page) => {
-  return api.get(path + 'all/' + page);
+  return apiClient.get(path + 'all/' + page);
 };
 
 const getAnnouncementDetails = (id) => {
-  return api.get(path + id);
+  return apiClient.get(path + id);
 };
 
-const getComments = (id, page) => {
-  return api.get(path + id + '/comments?page=' + page);
+ const getComments = (id, page) => {
+  return apiClient.get(path + id + '/comments?page=' + page);
 };
 
 const getAnnouncementsPagesCount = () => {
-  return api.get(path + 'pages');
+  return apiClient.get(path + 'pages');
 };
 
 const getCommentPagesCount = (id) => {
   
-  return api.get(path + id + '/pages');
+  return apiClient.get(path + id + '/pages');
 };
 
 const createAnnouncement = (data) => {
-  return api.post(path, data);
+  return apiClient.post(path, data);
 };
 
 const createComment = (data) => {
-  return api.post(path + 'comment', data);
+  return apiClient.post(path + 'comment', data);
 };
 
 const setAllowComments = (data) => {
-  return api.post(path + 'AllowComments', data);
+  
+  return apiClient.post(path + 'AllowComments', data);
 };
   
 export default {

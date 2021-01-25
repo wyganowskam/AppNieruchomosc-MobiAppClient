@@ -7,19 +7,20 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.lightWhite,
+        backgroundColor: colors.beige,
     },
     fab: {
         position: 'absolute',
         margin: 15,
         right: 0,
         top: 0,
-        backgroundColor: colors.button
+        backgroundColor: colors.delicateButton,
+        marginTop:10
       },
       search: {
-          width: SCREEN_WIDTH-100,
-          margin:15,
-         
+            flex:1,
+            marginRight:80,
+            marginLeft:40        
       }
 });
 
