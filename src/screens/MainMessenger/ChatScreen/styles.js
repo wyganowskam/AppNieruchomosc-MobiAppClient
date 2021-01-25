@@ -43,22 +43,43 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: colors.white,
         margin: 8,
+        backgroundColor:colors.white
        
     },
     card:{
         //width:2* SCREEN_WIDTH / 4,
         alignSelf:"flex-start",
-        margin: 5
+        maxWidth:3* SCREEN_WIDTH / 4,
+        flex:1,
+        margin:4,
+        marginLeft:10,
     },
     mycard:{
        // width:2* SCREEN_WIDTH / 4,
         alignSelf:"flex-end",
         alignContent:"flex-end",
-        margin: 5
+        margin:4,
+        marginRight:10,
+        flex:1,
+        maxWidth:3* SCREEN_WIDTH / 4,
     },
     mess:{
         height:5.5*SCREEN_HEIGHT/8 +30 ,
-        margin:20
+        marginLeft:5,
+        marginRight:5,
+    },
+    text: {
+        flex:1,
+        textAlign:"left",
+        margin:4,
+        marginLeft:10,
+    },
+    mytext:{
+        flex:1,
+        textAlign:"right",
+        margin:4,
+        marginRight:10,
+        flex:1,
     }
 });
 export default styles;

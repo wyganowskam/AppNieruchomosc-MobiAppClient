@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import {FlatList, View,Image,  TouchableWithoutFeedback,Keyboard,ScrollView } from 'react-native';
+import {FlatList, View,Image,  TouchableWithoutFeedback,Keyboard,ScrollView,KeyboardAvoidingView } from 'react-native';
 import styles from "./styles";
 import { TextInput,Button,RadioButton } from 'react-native-paper';
 import { Card, Text } from 'react-native-paper';
 import {getUserInfo} from '../../../services/authService';
 import {getAllUsers} from "../../../services/userService";
 import {sendMessage,createNewChat,getAllChats,getChatContent} from "../../../services/messengerService"
+import colors from "../../../config/colors"
 export default class ChatScreen extends Component {
     constructor(props) {
         super(props);
@@ -37,7 +38,7 @@ export default class ChatScreen extends Component {
     componentDidMount() {
       
        
-        // this.getChatInfo();
+         this.getChatInfo();
         // this.getMyInfo();
 
 
@@ -88,11 +89,20 @@ export default class ChatScreen extends Component {
 
     getChatInfo(){
 
+        // if (props.id>'-1'){
+        //     ChatService.getChatByChatId(props.id).then((res) => {
+        //       setCurrentChatContent(res.data.chatLines);
+        //       document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
+        //     },(error) => {
+                  
+        //     }
+        //     ).catch(e => { });
+        //   }
         getChatContent(this.state.chatId).then(
             res => {
                 if(res!=undefined){
                     if(res.status === 200){
-                        this.setState({chatLines:res.data.chatLines})
+                        this.setState({chatLines:res.data.chatLines.reverse()})
 
                     }}
             });
@@ -130,56 +140,58 @@ export default class ChatScreen extends Component {
 
     renderRow = ({ item }) => {
         var itemStyle=styles.card;
-        var username="";
-        if (this.state.myUserId===item.userId ) itemStyle=styles.mycard;
-        else{
-            //trzeba znalezc dane uzytkownika
-            const user=this.state.otherUsers.find(u=>u.guid===item.userId);
-            if (user)  username=user.name+" "+user.surname+ "";     }
+        var fontStyle=styles.text;
+        if (item.isOwnMessage === true ) {itemStyle=styles.mycard; fontStyle=styles.mytext}
         return (
+            <>
+           
             <Card 
             style={itemStyle}
             >
-            <Card.Title  subtitle={username} title={item.createdOn.substring(0,10)} titleStyle={{fontSize:10}}/>
             <Card.Content >
-              <Text>
+              <Text style={{fontSize:16}}>
                   {item.lineText}
               </Text>
             </Card.Content>
          </Card>
+         <Text style={fontStyle}>{item.createdOn.substring(0,10) + " " + item.createdOn.substring(11,16) +"\n"}<Text >{item.userName + " " + item.userSurname}</Text></Text>
+         </>
         );
         
       };
 
     render() {
         return (
-
-            <View style={{ flex: 1 }}>
-                 <TouchableWithoutFeedback onPress={this.dismissKeyboard}>
-                <View style={styles.mess} >
-                    {/* <ScrollView 
-                     ref={ref => {this.scrollView = ref}}
-                     onContentSizeChange={() => this.scrollView.scrollToEnd({animated: true})}
-                     > */}
-                    
+<View style={{flex:1,backgroundColor:colors.beige}} contentContainerStyle={{flexGrow:1}}>
+         
+             
+                <View style={{flex:1}} >
+                   
                         <FlatList
                         data={this.state.chatLines}
                         ref={ref => {this.scrollView = ref}}
-                        keyExtractor={(a) => a.id}
-                        onContentSizeChange={() => this.scrollView.scrollToEnd({animated: true})}
+                        keyExtractor={(a) => a.id+ a.userName}
+                        inverted={true}
+                       // onContentSizeChange={() => this.scrollView.scrollToEnd({animated: true})}
                         renderItem={this.renderRow}
                         />
-                    {/* </ScrollView>  */}
+                  
                 </View>
-                </TouchableWithoutFeedback>
+               
                 <Text style={{color:'red',alignSelf:"center"}}>{this.state.errorMessage}</Text>
-                <View style={styles.container} >
+              
+                <KeyboardAvoidingView
+                 behavior={Platform.OS === "ios" ? "padding" : "height"}
+                style={styles.container}
+                 >
+             
 
                 <TextInput
                     label="Nowa wiadomość"
                     value={this.state.text}
                     style={styles.input}
-                    onChangeText={text => {this.setState({ text }) }}
+                    onFocus={() => this.scrollView.scrollToEnd({animated: true})}
+                    onChangeText={text => {this.setState({ text }); }}
                     multiline
                 />
                   <Button
@@ -191,13 +203,10 @@ export default class ChatScreen extends Component {
                 > <Image style={{width:20,height:20,alignSelf:"center"}} source={require('../../../assets/icons/send.png')} />
                     
                     </Button>
-                {/* <IconButton
-                    icon="send"
-                    size={20}
-                    onPress={this.handleSendButton}
-                /> */}
-                </View>
-                
+                   
+             
+                </KeyboardAvoidingView>
+          
             </View>
         );
     }
