@@ -110,11 +110,11 @@ export default class ChatScreen extends Component {
 
     handleSendButton=()=>{
         const isValid=this.validate();
+        const formData = new FormData();
+        formData.append('chatId', this.state.chatId);
+        formData.append('message', this.state.text);
         if (isValid){
-            sendMessage({
-                chatId: this.state.chatId,
-                message:this.state.text
-            }).then((res2)=>{
+            sendMessage(formData).then((res2)=>{
                  if (res2.status===200){
                     this.getChatInfo();
                     this.setState({text:''})
@@ -190,7 +190,7 @@ export default class ChatScreen extends Component {
                     label="Nowa wiadomość"
                     value={this.state.text}
                     style={styles.input}
-                    onFocus={() => this.scrollView.scrollToEnd({animated: true})}
+                    // onFocus={() => this.scrollView.scrollToEnd({animated: true})}
                     onChangeText={text => {this.setState({ text }); }}
                     multiline
                 />

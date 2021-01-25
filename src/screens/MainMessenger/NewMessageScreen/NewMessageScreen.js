@@ -283,7 +283,7 @@ export default class NewMessageScreen extends Component {
                         this.setState({residentsChecked: !this.state.residentsChecked});
                       }}
                     />
-                    <Text style={{marginTop: 5,fontSize:16}}>Mieszkańcy wspólnoty</Text>
+                    <Text style={{marginTop: 5,fontSize:16}}>Właścicele lokali</Text>
                   </View>
                 </View>
 
