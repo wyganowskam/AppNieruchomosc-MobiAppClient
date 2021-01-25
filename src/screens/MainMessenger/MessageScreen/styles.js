@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
       },
       search: {
             flex:1,
-            marginRight:80,
-            marginLeft:40        
+         marginRight:70,
+         height:50
       }
 });
 

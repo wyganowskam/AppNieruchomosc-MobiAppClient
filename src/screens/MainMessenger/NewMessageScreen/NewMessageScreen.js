@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { FlatList,View,  TouchableWithoutFeedback,Keyboard,Text } from 'react-native';
+import { FlatList,View,  TouchableWithoutFeedback,Keyboard,Text ,Image} from 'react-native';
 import styles from "./styles";
-import { TextInput,IconButton } from 'react-native-paper';
+import { TextInput,Button,RadioButton } from 'react-native-paper';
 import { Chip } from 'react-native-paper';
 import {getAllUsers,getUserByEmail} from "../../../services/userService";
 import {getUserInfo} from '../../../services/authService';
@@ -9,6 +9,8 @@ import {sendMessage,createNewChat,getAllChats} from "../../../services/messenger
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import { Checkbox } from 'react-native-paper';
+import colors from '../../../config/colors';
+import { ScrollView } from 'react-native-gesture-handler';
 
 //import {getAllUsers} from "../../../services/userService";
 export default class NewMessageScreen extends Component {
@@ -237,18 +239,18 @@ export default class NewMessageScreen extends Component {
     render() {
         return (
 
-            <View style={{ flex: 1 }}
+            <ScrollView style={{ flex: 1 }}
             >
-                 
+               
                <TextInput
-                    label="Nazwa wątku"
+                    label="Nazwa"
                     value={this.state.groupName}
                     style={styles.group}
                     onChangeText={(name) => this.setState({ groupName:name})}/> 
-                <View style={{alignSelf:"center"}}> 
+                <View style={{marginLeft:25,alignContent:"flex-start"}}> 
                   <Text style={{marginTop: 5,fontSize:16}}>Odbiorcy</Text>
                   <View style={{flexDirection:"row"}}>
-                      <Checkbox
+                      <RadioButton
                       status={this.state.boardChecked ? 'checked' : 'unchecked'}
                       onPress={() => {
                         this.setState({boardChecked: !this.state.boardChecked});
@@ -257,7 +259,7 @@ export default class NewMessageScreen extends Component {
                     <Text style={{marginTop: 5,fontSize:16}}>Zarząd wspólnoty</Text>
                   </View>
                   <View style={{flexDirection:"row"}}>
-                      <Checkbox
+                      <RadioButton
                       status={this.state.buildingAdminChecked ? 'checked' : 'unchecked'}
                       onPress={() => {
                         this.setState({buildingAdminChecked: !this.state.buildingAdminChecked});
@@ -266,7 +268,7 @@ export default class NewMessageScreen extends Component {
                     <Text style={{marginTop: 5,fontSize:16}}>Administartor bydynku</Text>
                   </View>
                   <View style={{flexDirection:"row"}}>
-                      <Checkbox
+                      <RadioButton
                       status={this.state.appAdminChecked ? 'checked' : 'unchecked'}
                       onPress={() => {
                         this.setState({appAdminChecked: !this.state.appAdminChecked});
@@ -275,7 +277,7 @@ export default class NewMessageScreen extends Component {
                     <Text style={{marginTop: 5,fontSize:16}}>Administartor aplikacji</Text>
                   </View>
                   <View style={{flexDirection:"row"}}>
-                      <Checkbox
+                      <RadioButton
                       status={this.state.residentsChecked ? 'checked' : 'unchecked'}
                       onPress={() => {
                         this.setState({residentsChecked: !this.state.residentsChecked});
@@ -286,30 +288,27 @@ export default class NewMessageScreen extends Component {
                 </View>
 
                
-
-                 <Text style={{color:'red',alignSelf:"center"}}>{this.state.errorMessage}</Text>
-               
-                 <TouchableWithoutFeedback onPress={this.dismissKeyboard}>
-                <View style={{ flex: 1 }} >
-                           
-                </View>
-                </TouchableWithoutFeedback>
-                <View style={styles.container} >
                 <TextInput
-                    label="Nowa wiadomość"
+                    label="Treść wiadomości"
                     value={this.state.text}
                     style={styles.input}
                     onChangeText={text => {this.setState({ text }) }}
                     multiline
                 />
-                <IconButton
-                    icon="send"
-                    size={20}
-                   // onPress={this.handleSendButton}
-                />
-                </View>
+               
+              
+                {this.state.errorMessage!=='' &&<Text style={{color:colors.error,alignSelf:"center",marginTop:10}}>{this.state.errorMessage}</Text>}
+                <Button
+                    mode="contained"
+                   // disabled={loading}
+                    uppercase={true}
+                    style={{backgroundColor:colors.button,margin:10,marginTop:50}}
+                    onPress={this.handleSendButton}
+                >
+                Stwórz konwersację
+                </Button>
                 
-            </View>
+            </ScrollView>
         );
     }
 }

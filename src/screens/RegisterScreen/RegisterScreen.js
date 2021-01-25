@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     alignItems: 'center',
     justifyContent: 'space-around',
-    backgroundColor:colors.light
+    backgroundColor:colors.beige
   },
   logo: {
     width: 200,

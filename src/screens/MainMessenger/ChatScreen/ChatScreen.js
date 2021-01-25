@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import {FlatList, View,  TouchableWithoutFeedback,Keyboard,ScrollView } from 'react-native';
+import {FlatList, View,Image,  TouchableWithoutFeedback,Keyboard,ScrollView } from 'react-native';
 import styles from "./styles";
-import { TextInput,IconButton } from 'react-native-paper';
+import { TextInput,Button,RadioButton } from 'react-native-paper';
 import { Card, Text } from 'react-native-paper';
 import {getUserInfo} from '../../../services/authService';
 import {getAllUsers} from "../../../services/userService";
@@ -182,11 +182,20 @@ export default class ChatScreen extends Component {
                     onChangeText={text => {this.setState({ text }) }}
                     multiline
                 />
-                <IconButton
+                  <Button
+                    mode="text"
+                    compact={true}
+                    uppercase={false}
+                    onPress={this.handleSendButton}
+                    style={{alignSelf:"center"}}
+                > <Image style={{width:20,height:20,alignSelf:"center"}} source={require('../../../assets/icons/send.png')} />
+                    
+                    </Button>
+                {/* <IconButton
                     icon="send"
                     size={20}
                     onPress={this.handleSendButton}
-                />
+                /> */}
                 </View>
                 
             </View>

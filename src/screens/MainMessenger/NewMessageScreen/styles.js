@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         alignContent: "center",
-      
+        marginBottom:40,
         borderColor: colors.white,
         paddingBottom:  0
     },
@@ -49,10 +49,12 @@ const styles = StyleSheet.create({
         height: SCREEN_HEIGHT/8,
         borderRadius: 10,
         borderColor: colors.white,
-        margin: 8
+        margin: 15,
+        height:150,
+        backgroundColor:colors.white
     },
     group:{
-        
+        backgroundColor:colors.white,
         margin:15,
     }
 });

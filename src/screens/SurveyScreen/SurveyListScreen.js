@@ -131,7 +131,7 @@ export default function Surveys(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.light,
+        backgroundColor: colors.beige,
     },
     fab: {
         position: 'absolute',

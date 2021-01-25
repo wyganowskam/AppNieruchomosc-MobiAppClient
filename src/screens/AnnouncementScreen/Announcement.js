@@ -32,7 +32,7 @@ export default function AnnDet(props) {
 
 
   return (
-    <ScrollView style={{backgroundColor: colors.light}}>
+    <ScrollView style={{backgroundColor: colors.beige}}>
  
      
        
