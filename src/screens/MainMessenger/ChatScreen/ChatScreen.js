@@ -26,7 +26,7 @@ export default class ChatScreen extends Component {
        
         this.validate=this.validate.bind(this);
         this.handleSendButton=this.handleSendButton.bind(this);
-        this.connect=this.connect.bind(this);
+        //this.connect=this.connect.bind(this);
     }
 
     onBackPress = () => {
@@ -51,25 +51,25 @@ export default class ChatScreen extends Component {
         
       }
 
-      connect() {
-        const {connection}=this.state;
-        connection.start()
-        .then(result => {
-            console.log(connection);
+    //   connect() {
+    //     const {connection}=this.state;
+    //     connection.start()
+    //     .then(result => {
+    //         console.log(connection);
 
-            connection.on(ChatHubService.MethodName, res => {
-              if(res.chatId === latestChatId.current && res.chatLineDto.id !== latestChatLine.current.id) {
-                    // const updatedChat = [...latestChat.current];
-                    // updatedChat.push(res.chatLineDto);
-                    console.log('receiveMessage!');
-                    // setCurrentChatContent(updatedChat);
-                    // setCurrentChatLine(res.chatLineDto);
-                    // document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
-                }
-            });
-        })
-        .catch(e =>{ console.log('Connection failed: ', e); });
-      }
+    //         connection.on(ChatHubService.MethodName, res => {
+    //           if(res.chatId === latestChatId.current && res.chatLineDto.id !== latestChatLine.current.id) {
+    //                 // const updatedChat = [...latestChat.current];
+    //                 // updatedChat.push(res.chatLineDto);
+    //                 console.log('receiveMessage!');
+    //                 // setCurrentChatContent(updatedChat);
+    //                 // setCurrentChatLine(res.chatLineDto);
+    //                 // document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
+    //             }
+    //         });
+    //     })
+    //     .catch(e =>{ console.log('Connection failed: ', e); });
+    //   }
    
     getChatInfo(){
 
