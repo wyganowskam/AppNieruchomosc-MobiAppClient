@@ -24,16 +24,16 @@ export default class FailureDetailsScreen extends React.Component {
    
     
       this.setState({failureElement:failure, status:failure.status});
-      // getPicture(failure.id).then(
-      //   res => { 
-          
-      //     this.setState({picture:res});
+      getPicture(failure.id).then(
+        res => { 
+          console.log(res);
+          this.setState({picture:res});
   
-      //   },
-      //   (error) => {
+        },
+        (error) => {
          
-      //   }
-      // ).catch(e => { });
+        }
+      ).catch(e => { });
     
     }
 

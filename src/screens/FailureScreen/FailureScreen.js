@@ -96,7 +96,7 @@ export default class FailureScreen extends Component {
       <View style={styles.container}>   
 
 <View style={{height:50,backgroundColor:colors.white,flexDirection:"row",}}>
-        <Button
+        {/* <Button
             mode="text"
             labelStyle={styles.TransparentButtonText}
             compact={true}
@@ -107,7 +107,7 @@ export default class FailureScreen extends Component {
               
             </Button>
         <Text style={{fontSize:20,alignSelf:"center",marginLeft:6,paddingBottom:2}}>
-        {/* {page} */}
+      
         312878
          </Text>
           <Button
@@ -119,7 +119,7 @@ export default class FailureScreen extends Component {
             style={{alignSelf:"center"}}
           > <Image style={{width:20,height:20,alignSelf:"center"}} source={require('../../assets/icons/right-arrow-bold.png')} />
               
-            </Button>
+            </Button> */}
             <FAB
                 style={styles.fab}
                 small

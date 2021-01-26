@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions, FlatList, ScrollView ,Image} from 'react-native';
+import { View, StyleSheet, Dimensions, FlatList, ScrollView ,Image, Platform} from 'react-native';
 import { TextInput } from 'react-native-paper';
 import TextField from '@material-ui/core/TextField';
 import * as ImagePicker from 'expo-image-picker';
@@ -89,7 +89,7 @@ export default class FailureAddScreen extends Component {
     if (!result.cancelled) {
       //const item=this.state.uriList.find(u=>u.uri===result.uri);
       //if (!item)  this.setState({uriList:[...this.state.uriList,result],message:""});
-      this.setState({picture:[result],message:""});
+      this.setState({picture: [result],message:""});
        
     }
    
@@ -125,16 +125,22 @@ export default class FailureAddScreen extends Component {
   handleAddButton = () => {
   this.setState({message:""});
     const isValid=this.validate();
-    const {title,description,apartment,type,picture}=this.state;
+    const {title,description,apartment,type}=this.state;
+    const picture=this.state.picture[0];
     if(isValid === true){
       this.setState({isLoading:true});
-
+      const name=picture.uri.split('/').pop();
       const formData = new FormData();
-      formData.append('picture', picture);
+
       formData.append('title', title);
       formData.append('description', description);
       formData.append('shareSubjectId', apartment.id);
       formData.append('typeId', type.id);
+      formData.append('picture', {
+        uri: Platform.OS==="android"? picture.uri : picture.uri.replace("file://",""),
+        name: name,
+        type:'image/jpg',
+      })
       addFailure(formData).then(
         () => {
 

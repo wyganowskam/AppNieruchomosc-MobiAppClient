@@ -14,14 +14,14 @@ export const getAllStatuses = () => {
     };
   
   export const addFailure = (data) => {
-      return apiClient.post("malfunctions/add/", data);
+      return apiClient.post("malfunctions/add/", data, {headers:{"Content-Type":"multipart/form-data"}});
     };
 
   export const getPicture = (id) => {
       return apiClient.get("malfunctions/picture/" + id, {
         responseType: 'arraybuffer'
       })
-      .then(response => {console.log(response.data);Buffer.from(response.data, 'binary').toString('base64')});
+      .then(response => {Buffer.from(response.data, 'binary').toString('base64')});
     };
 
 export const getTypes = () => {

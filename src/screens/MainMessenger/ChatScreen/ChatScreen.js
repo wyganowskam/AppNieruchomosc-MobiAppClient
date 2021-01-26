@@ -170,7 +170,7 @@ export default class ChatScreen extends Component {
                         <FlatList
                         data={this.state.chatLines}
                         ref={ref => {this.scrollView = ref}}
-                        keyExtractor={(a) => a.id+ a.userName}
+                        keyExtractor={(a) => a.id}
                         inverted={true}
                        // onContentSizeChange={() => this.scrollView.scrollToEnd({animated: true})}
                         renderItem={this.renderRow}
