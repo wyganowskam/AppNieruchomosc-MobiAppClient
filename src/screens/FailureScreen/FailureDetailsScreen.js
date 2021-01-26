@@ -4,7 +4,8 @@ import {Text,Button, Divider } from 'react-native-paper';
 import {failureList} from './failureData';
 import colors from '../../config/colors';
 import { Card, Title, Paragraph } from 'react-native-paper';
-import {getPicture} from "../../services/failureService"
+import {getPicture} from "../../services/failureService";
+import base64 from 'react-native-base64'
 
 
 export default class FailureDetailsScreen extends React.Component {
@@ -26,9 +27,9 @@ export default class FailureDetailsScreen extends React.Component {
       this.setState({failureElement:failure, status:failure.status});
       getPicture(failure.id).then(
         res => { 
-          console.log(res);
-          this.setState({picture:res});
-  
+          const arr=new Uint8Array(res.data)
+          const pic= base64.encodeFromByteArray(arr);
+          this.setState({picture:pic});
         },
         (error) => {
          
@@ -46,12 +47,11 @@ export default class FailureDetailsScreen extends React.Component {
   
     render() {
       const {failureElement,status}=this.state;
-    //  console.log(failureElement)
       const col=this.getStatusColor(this.state.status.name);
       
         return (
           <ScrollView style={{backgroundColor:colors.delicateButton}} >
-            <Card style={{margin:10}}>
+            <Card style={{margin:10,marginBottom:0}}>
             
               <Card.Content>
              
@@ -75,7 +75,7 @@ export default class FailureDetailsScreen extends React.Component {
               </Card.Content> 
             </Card>
 
-            {this.state.picture && <Image  source={{uri: `data:image/png;base64,${this.state.picture}`}} style={{width: 100, height: 50, resizeMode: Image.resizeMode.contain, borderWidth: 1, borderColor: 'red'}}
+            {this.state.picture && <Image  source={{uri: `data:image;base64,${this.state.picture}`}} style={{margin:10, minHeight:300,flex:1, resizeMode: "contain", }}
           />}
             
         
