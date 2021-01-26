@@ -173,7 +173,7 @@ export default class FailureAddScreen extends Component {
 
   onChangeApartment (apartment) {
   
-    this.setState({apartment:apartment,apartmentName: `${apartment.type} nr ${apartment.number}, ${apartment.propertyAddress.address}`,apartmentDialogVisible:false });
+    this.setState({apartment:apartment,apartmentName: `${apartment.typeDescription} nr ${apartment.number}, ${apartment.propertyAddress.address}`,apartmentDialogVisible:false });
   };
 
   onChangeType (type) {
@@ -213,12 +213,13 @@ export default class FailureAddScreen extends Component {
 
   
   renderApartmentDialog = ({ item }) => {
- 
+    console.log(item);
     return (
      
       <List.Item  onPress={()=>this.onChangeApartment(item)} 
        bottomDivider
-       title=  {`${item.type} nr ${item.number}, ${item.propertyAddress.address}` }/>
+       titleNumberOfLines={3}
+       title=  {`${item.typeDescription} nr ${item.number}, ${item.propertyAddress.address}` }/>
       
     );
   };

@@ -81,9 +81,10 @@ export default class FailureDetailsScreen extends React.Component {
                 
               </Card.Content> 
             </Card>
-          {this.state.loading && <View style={{margin:20,color:colors.button}}><Text style={{fontSize:20,alignSelf:"center"}}>Zdjęcie</Text><ActivityIndicator size="large" style={{margin:5}} color={colors.button}/></View>}
+          
             {this.state.picture && <Image  onLoadStart={()=>this.setState({loading:false})}    source={{uri: `data:image;base64,${this.state.picture}`}} style={{margin:10, minHeight:300,flex:1, resizeMode: "contain", }}
           />}
+          {this.state.loading && <View style={{margin:20,color:colors.button}}><Text style={{fontSize:16,alignSelf:"center"}}>Zdjęcie</Text><ActivityIndicator size="large" style={{margin:5}} color={colors.button}/></View>}
             
         
           </ScrollView>
