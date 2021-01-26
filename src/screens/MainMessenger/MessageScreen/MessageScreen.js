@@ -135,7 +135,7 @@ export default class MessagesScreen extends Component {
                         <List.Item key={item.chatId} onPress={() =>{this.props.navigation.navigate('Chat',{item: item,})}} 
                      
                         title={item.chatName}
-                        description={ item.modifiedOn.substring(0,10)+ "\n" + item.lastMessage.substring(0,30) + '...'}
+                        description={ item.modifiedOn.substring(0,10)+ "\n" + item.lastMessage?.substring(0,30) + '...'}
                         style={{marginLeft:7,marginRight:7,borderRadius:20,backgroundColor:colors.white,marginBottom:2 }}
                         titleStyle={{color:colors.textViolet, fontSize:16,}}  
                         right={()=><Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../../assets/icons/right-arrow.png')} />} 

@@ -213,7 +213,7 @@ export default class FailureAddScreen extends Component {
 
   
   renderApartmentDialog = ({ item }) => {
-    console.log(item);
+  
     return (
      
       <List.Item  onPress={()=>this.onChangeApartment(item)} 

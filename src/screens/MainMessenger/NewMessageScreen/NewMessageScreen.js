@@ -112,8 +112,13 @@ export default class NewMessageScreen extends Component {
 
 
     validate= () => {
-        
-        if(this.state.usersList.length<1 ){
+        const {boardChecked,buildingAdminChecked,appAdminChecked,residentsChecked}=this.state;
+        if(
+          !boardChecked &&
+            !buildingAdminChecked &&
+            !appAdminChecked &&
+            !residentsChecked
+        ){
             
             this.setState({errorMessage:"Wybierz odbiorcę"});
             return false;
@@ -162,46 +167,23 @@ export default class NewMessageScreen extends Component {
          
           if(isValid === true){
             //tworze nowy czat
-            const recivers= this.state.usersList.map(x=>x.userId);
-          
-            createNewChat({
-                chatName: this.state.groupName,
-                receiverIds: recivers,
-            }).then(
+            
+            const formData = new FormData();
+          formData.append('chatName', this.state.groupName);
+          formData.append('sendToBoardMembers', this.state.boardChecked);
+          formData.append('sendToAdministrators', this.state.buildingAdminChecked);
+          formData.append('sendToAppAdmins',this.state.appAdminChecked);
+          formData.append('sendToHomeOwners', this.state.residentsChecked);
+          formData.append('message', this.state.text);
+            createNewChat(formData).then(
                 (res)=>{
                     if(res.status === 200){
                       //udało się utworzyć konwersację
+                      this.props.navigation.reset({
+                        index: 1,
+                        routes: [{ name: 'Main' }, {name:'Messages'}],
+                      });
                      
-                      getAllChats().then(
-                        (res) => {
-                          
-                          if(res.status === 200){
-                            //udało się zdobyć informacje
-                            const thisChat=res.data.find(e=>e.chatName===this.state.groupName)
-                           if (thisChat.length>1) thisChat=thisChat[0];
-                           //wysyłamy wiadomość
-                           sendMessage({
-                               chatId: thisChat.chatId,
-                               message:this.state.text
-                           }).then((res2)=>{
-                                if (res2.status===200){
-                                   
-                                    this.props.navigation.reset({
-                                        index: 1,
-                                        routes: [{ name: 'Main' }, {name:'Messages'}],
-                                      });
-                                  
-
-                                }
-                                else {
-                                    this.setState({errorMessage: res.message})
-                                }
-                           })
-                         
-                          }
-                        }
-                      );
-
                      
                       }
                 },

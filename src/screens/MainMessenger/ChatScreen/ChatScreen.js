@@ -7,6 +7,9 @@ import {getUserInfo} from '../../../services/authService';
 import {getAllUsers} from "../../../services/userService";
 import {sendMessage,createNewChat,getAllChats,getChatContent} from "../../../services/messengerService"
 import colors from "../../../config/colors"
+import ChatHubService from '../../../services/hubService';
+import deviceStorage from "../../../services/deviceStorage"
+
 export default class ChatScreen extends Component {
     constructor(props) {
         super(props);
@@ -17,14 +20,14 @@ export default class ChatScreen extends Component {
             errorMessage:'',
             myUserId:'',
             otherUsers:[],
+            connection:null,
         };
         this.getChatInfo=this.getChatInfo.bind(this);
         this.getMyInfo = this.getMyInfo.bind(this);
         this.getOthersInfo = this.getOthersInfo.bind(this);
         this.validate=this.validate.bind(this);
         this.handleSendButton=this.handleSendButton.bind(this);
-        this.getMyInfo();
-        this.getOthersInfo();
+        this.connect=this.connect.bind(this);
     }
 
     onBackPress = () => {
@@ -39,9 +42,34 @@ export default class ChatScreen extends Component {
       
        
          this.getChatInfo();
-        // this.getMyInfo();
+         
+         return deviceStorage.getItem('id_token')
+        .then((userTokenVal)=>{ 
+            const newConnection = ChatHubService.getConnection(userTokenVal);
+            console.log(newConnection);
+            this.setState({connection:newConnection})
+            this.connect()})
+        
+      }
 
+      connect() {
+        const {connection}=this.state;
+        connection.start()
+        .then(result => {
+            console.log('Connected2!');
 
+            connection.on(ChatHubService.MethodName, res => {
+              if(res.chatId === latestChatId.current && res.chatLineDto.id !== latestChatLine.current.id) {
+                    // const updatedChat = [...latestChat.current];
+                    // updatedChat.push(res.chatLineDto);
+                    console.log('receiveMessage!');
+                    // setCurrentChatContent(updatedChat);
+                    // setCurrentChatLine(res.chatLineDto);
+                    // document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
+                }
+            });
+        })
+        .catch(e => console.log('Connection failed: ', e));
       }
     getMyInfo(){
         getUserInfo().then(
@@ -181,7 +209,7 @@ export default class ChatScreen extends Component {
                 <Text style={{color:'red',alignSelf:"center"}}>{this.state.errorMessage}</Text>
               
                 <KeyboardAvoidingView
-                 behavior={Platform.OS === "ios" ? "padding" : "height"}
+                // behavior={Platform.OS === "ios" ? "padding" : "height"}
                 style={styles.container}
                  >
              
