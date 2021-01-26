@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions, ScrollView,Image  } from 'react-native';
+import { View, StyleSheet, Dimensions, ScrollView,Image ,ActivityIndicator } from 'react-native';
 import {Text,Button, Divider } from 'react-native-paper';
 import {failureList} from './failureData';
 import colors from '../../config/colors';
@@ -15,7 +15,8 @@ export default class FailureDetailsScreen extends React.Component {
       failureElement:'',
       status:'',
       dialogVisible:false,
-      picture:null
+      picture:null,
+      loadig:false
     };
    
     }
@@ -25,16 +26,19 @@ export default class FailureDetailsScreen extends React.Component {
    
     
       this.setState({failureElement:failure, status:failure.status});
-      getPicture(failure.id).then(
-        res => { 
-          const arr=new Uint8Array(res.data)
-          const pic= base64.encodeFromByteArray(arr);
-          this.setState({picture:pic});
-        },
-        (error) => {
-         
-        }
-      ).catch(e => { });
+      if (failure.picture)  {
+        this.setState({loading:true})
+        getPicture(failure.id).then(
+          res => { 
+           
+            const arr=new Uint8Array(res.data)
+            const pic= base64.encodeFromByteArray(arr);
+            this.setState({picture:pic});
+          },
+          (error) => {
+          
+          }
+        ).catch(e => { });}
     
     }
 
@@ -45,12 +49,14 @@ export default class FailureDetailsScreen extends React.Component {
   };
 
   
+
+  
     render() {
       const {failureElement,status}=this.state;
       const col=this.getStatusColor(this.state.status.name);
       
         return (
-          <ScrollView style={{backgroundColor:colors.delicateButton}} >
+          <ScrollView style={{backgroundColor:colors.greyViolet}} >
             <Card style={{margin:10,marginBottom:0}}>
             
               <Card.Content>
@@ -72,10 +78,11 @@ export default class FailureDetailsScreen extends React.Component {
                 <Text  style={styles.text2}>{failureElement.description+"\n"}</Text>
                 {failureElement.comment &&  <Text  style={styles.text} ><Text style={{fontWeight: "bold",color:colors.backgroundViolet}}>{"\nKomentarz: "} </Text>{failureElement.comment}</Text>}
                 </Paragraph>
+                
               </Card.Content> 
             </Card>
-
-            {this.state.picture && <Image  source={{uri: `data:image;base64,${this.state.picture}`}} style={{margin:10, minHeight:300,flex:1, resizeMode: "contain", }}
+          {this.state.loading && <View style={{margin:20,color:colors.button}}><Text style={{fontSize:20,alignSelf:"center"}}>Zdjęcie</Text><ActivityIndicator size="large" style={{margin:5}} color={colors.button}/></View>}
+            {this.state.picture && <Image  onLoadStart={()=>this.setState({loading:false})}    source={{uri: `data:image;base64,${this.state.picture}`}} style={{margin:10, minHeight:300,flex:1, resizeMode: "contain", }}
           />}
             
         

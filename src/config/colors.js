@@ -23,6 +23,7 @@ export default {
     calmBlue:"#7BA1D8",
     brown:"#6D4D50",
     beige:"#F1EBEB",
-    delicateButton:"#C1AFC6"
+    delicateButton:"#C1AFC6",
+    greyViolet:"#d9d4d9"
 
 }
