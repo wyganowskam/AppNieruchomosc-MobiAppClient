@@ -23,8 +23,7 @@ export default class ChatScreen extends Component {
             connection:null,
         };
         this.getChatInfo=this.getChatInfo.bind(this);
-        this.getMyInfo = this.getMyInfo.bind(this);
-        this.getOthersInfo = this.getOthersInfo.bind(this);
+       
         this.validate=this.validate.bind(this);
         this.handleSendButton=this.handleSendButton.bind(this);
         this.connect=this.connect.bind(this);
@@ -43,12 +42,12 @@ export default class ChatScreen extends Component {
        
          this.getChatInfo();
          
-         return deviceStorage.getItem('id_token')
-        .then((userTokenVal)=>{ 
-            const newConnection = ChatHubService.getConnection(userTokenVal);
-            console.log(newConnection);
-            this.setState({connection:newConnection})
-            this.connect()})
+        //  deviceStorage.getItem('id_token')
+        // .then((userTokenVal)=>{ 
+        //     const newConnection = ChatHubService.getConnection(userTokenVal);
+        //     console.log(newConnection);
+        //     this.setState({connection:newConnection})
+        //     this.connect()})
         
       }
 
@@ -56,7 +55,7 @@ export default class ChatScreen extends Component {
         const {connection}=this.state;
         connection.start()
         .then(result => {
-            console.log('Connected2!');
+            console.log(connection);
 
             connection.on(ChatHubService.MethodName, res => {
               if(res.chatId === latestChatId.current && res.chatLineDto.id !== latestChatLine.current.id) {
@@ -69,52 +68,9 @@ export default class ChatScreen extends Component {
                 }
             });
         })
-        .catch(e => console.log('Connection failed: ', e));
+        .catch(e =>{ console.log('Connection failed: ', e); });
       }
-    getMyInfo(){
-        getUserInfo().then(
-            (res) => {
-            
-              if(res.status === 200){
-              //udało się zdobyć informacje o użytkowniku
-               this.setState({myUserId:res.data.guid});
-             
-                
-              }
-            }
-          );
-    }
-
-    getOthersInfo(){
-        getAllUsers().then(
-            (res) => {
-            if (res!=undefined){
-                if(res.status === 200){
-                    //udało się zdobyć informacje o użytkownikach
-                    this.setState({otherUsers:res.data});
-                   
-                      
-                    }
-            }
-          
-            }
-          );
-    }
-
-    getMyInfo(){
-        getUserInfo().then(
-            (res) => {
-            
-              if(res.status === 200){
-              //udało się zdobyć informacje o użytkowniku
-               this.setState({myUserId:res.data.guid});
-             
-                
-              }
-            }
-          );
-    }
-
+   
     getChatInfo(){
 
         // if (props.id>'-1'){
