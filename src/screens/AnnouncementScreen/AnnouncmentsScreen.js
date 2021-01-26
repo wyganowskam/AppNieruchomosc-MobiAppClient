@@ -15,8 +15,9 @@ export default function Announcements(props){
 
     const [page, setPage] = useState(1);
     const [announcements, setAnouncements] = useState([]);
-   // const [isNewPage, setIsNewPage] = useState(true);
     const [totalPages, setTotalPages] = useState(1);
+    const [loading, setLoading] = useState(true);
+   
 
     useEffect(() => {
         announcementService.getAnnouncementsPagesCount().then(
@@ -33,9 +34,10 @@ export default function Announcements(props){
     useEffect(() => {
         announcementService.getAnnouncements(page).then(
             res => {
-                    //setIsNewPage(false);
+              
                     setAnouncements(res.data);
-                    //setIsNewPage(true);       
+                    setLoading(false);
+                         
             },
             (error) => {
               
@@ -117,6 +119,12 @@ export default function Announcements(props){
         
        
              <Divider style={{ backgroundColor:colors.violet,marginBottom:3}} />
+             {announcements.length<1 &&  !loading &&
+            <Card style={{margin:10, marginTop:60, height:50, backgroundColor:colors.happyGreen,alignSelf:"center"}}>
+              <Card.Content>
+              <Text >Brak ogłoszeń</Text>
+              </Card.Content>
+            </Card>}
             <FlatList
             data={announcements}
             keyExtractor={(a) => a.id}

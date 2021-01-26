@@ -52,21 +52,25 @@ export default class FailureDetailsScreen extends React.Component {
         return (
           <ScrollView style={{backgroundColor:colors.delicateButton}} >
             <Card style={{margin:10}}>
-              <Card.Title title={failureElement.title} subtitle={failureElement.date} titleStyle={{fontSize:20, color:colors.black}} />
+            
               <Card.Content>
              
-                
+                <Text style={{fontSize:20, color:colors.black}}>{failureElement.title}</Text>
+               
                 <Divider style={{marginBottom:10}}/>
                 <Paragraph style={{}}>
                 <Text style={styles.text}>{"Status:\n"}</Text>
-                <Text style={styles.text2}><Text style={{color:col}}>{this.state.status.description+"\n"}</Text></Text>
-                <Text style={styles.text}>{"Adres:\n"}</Text>
-                <Text  style={styles.text2} >{failureElement.address+"\n"}</Text>
+                <Text style={styles.text2}><Text style={{color:col}}>{this.state.status.description+"\n\n"}</Text></Text>
+                <Text style={styles.text}>{"Data zgłoszenia:\n"}</Text>
+                <Text style={styles.text2}>{failureElement.date+"\n\n"}</Text>
                 <Text style={styles.text}>{"Typ zgłoszenia:\n"}</Text>
-                <Text  style={styles.text2}>{failureElement.type?.title +"\n"}</Text>
+                <Text  style={styles.text2}>{failureElement.type?.title +"\n\n"}</Text>
+                {failureElement.address ? <><Text style={styles.text}>{"Adres:\n"}</Text>
+                <Text  style={styles.text2} >{failureElement.address+"\n\n"}</Text></> : <><Text style={styles.text}>{"Adres:\n"}</Text><Text   style={styles.text2}>{"Nie dotyczy\n\n"}</Text></>}
+               
                 <Text style={styles.text}>{"Opis: \n"}</Text>
                 <Text  style={styles.text2}>{failureElement.description+"\n"}</Text>
-                {failureElement.comment &&  <Text  style={styles.text} ><Text style={{fontWeight: "bold",color:colors.backgroundViolet}}>{"Komentarz: "} </Text>{failureElement.comment}</Text>}
+                {failureElement.comment &&  <Text  style={styles.text} ><Text style={{fontWeight: "bold",color:colors.backgroundViolet}}>{"\nKomentarz: "} </Text>{failureElement.comment}</Text>}
                 </Paragraph>
               </Card.Content> 
             </Card>

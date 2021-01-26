@@ -10,17 +10,15 @@ export default function Surveys(props) {
 
     const [page, setPage] = useState(1);
     const [surveys, setSurveys] = useState([]);
-    //const [isNewPage, setIsNewPage] = useState(true);
     const [totalPages, setTotalPages] = useState(1);
-    //const {isAppAdmin, isBuildingAdmin, isBoard} = props.permissions;
-    //const {setLinearLoading} = props;
-    //const canCreateSurvey = isAppAdmin || isBuildingAdmin || isBoard;
+    const [loading, setLoading] = useState(true);
+   
 
     useEffect(() => {
         surveyService.getTotalPages().then(
             res => {
                 setTotalPages(res.data);
-                    
+               
             },
             (error) => {
               
@@ -31,9 +29,10 @@ export default function Surveys(props) {
     useEffect(() => {
         surveyService.getSurveys(page).then(
             res => {
-                    //setIsNewPage(false);
+                   
                     setSurveys(res.data);
-                   // setIsNewPage(true);       
+                    setLoading(false);
+                       
             },
             (error) => {
             }
@@ -114,6 +113,12 @@ export default function Surveys(props) {
         
        
              <Divider style={{ backgroundColor:colors.violet,marginBottom:3}} />
+             {surveys.length<1 &&  !loading &&
+            <Card style={{margin:10, marginTop:60, height:50, backgroundColor:colors.happyGreen,alignSelf:"center"}}>
+              <Card.Content>
+              <Text >Brak głosowań/ankiet</Text>
+              </Card.Content>
+            </Card>}
             <FlatList
             data={surveys}
             keyExtractor={(a) => a.id}

@@ -11,6 +11,7 @@ export default class FailureScreen extends Component {
     this.state= {
       failureList:'',
       message:'',
+      loading:true,
     };
 
     this.renderRow=this.renderRow.bind(this);
@@ -68,7 +69,8 @@ export default class FailureScreen extends Component {
    
       getAllFailuresByUserId().then(
         res => {
-          this.setState({failureList:res.data});
+          this.setState({failureList:res.data,loading:false});
+          
           
         },
         (error) => {
@@ -96,30 +98,7 @@ export default class FailureScreen extends Component {
       <View style={styles.container}>   
 
 <View style={{height:50,backgroundColor:colors.white,flexDirection:"row",}}>
-        {/* <Button
-            mode="text"
-            labelStyle={styles.TransparentButtonText}
-            compact={true}
-            uppercase={false}
-           // onPress={previousPage}
-            style={{alignSelf:"center"}}
-          > <Image style={{width:20,height:20,alignSelf:"center"}} source={require('../../assets/icons/left-arrow-bold.png')} />
-              
-            </Button>
-        <Text style={{fontSize:20,alignSelf:"center",marginLeft:6,paddingBottom:2}}>
-      
-        312878
-         </Text>
-          <Button
-            mode="text"
-            labelStyle={styles.TransparentButtonText}
-            compact={true}
-            uppercase={false}
-           // onPress={nextPage}
-            style={{alignSelf:"center"}}
-          > <Image style={{width:20,height:20,alignSelf:"center"}} source={require('../../assets/icons/right-arrow-bold.png')} />
-              
-            </Button> */}
+       
             <FAB
                 style={styles.fab}
                 small
@@ -128,6 +107,12 @@ export default class FailureScreen extends Component {
                 />
         </View>
         {this.state.message!=='' && <Text style={{color:colors.error}}>{this.state.message}</Text>}
+        {this.state.failureList.length<1 &&  !this.state.loading &&
+        <Card style={{margin:10, marginTop:60, height:50, backgroundColor:colors.happyGreen,alignSelf:"center"}}>
+          <Card.Content>
+          <Text >Brak zgłoszeń</Text>
+          </Card.Content>
+        </Card>}
         <FlatList
               data={this.state.failureList}
               keyExtractor={(a) => a.id}

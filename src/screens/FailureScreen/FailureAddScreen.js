@@ -56,7 +56,7 @@ export default class FailureAddScreen extends Component {
 
     validate= () => {
       const {title,description,apartment,type}=this.state;
-      if(!title || !description || !apartment ){
+      if(!title || !description || !type ){
           
           this.setState({message:"Wszystkie pola muszą być wypełnione."});
           return false;
@@ -126,21 +126,27 @@ export default class FailureAddScreen extends Component {
   this.setState({message:""});
     const isValid=this.validate();
     const {title,description,apartment,type}=this.state;
-    const picture=this.state.picture[0];
+   
     if(isValid === true){
       this.setState({isLoading:true});
-      const name=picture.uri.split('/').pop();
+     
       const formData = new FormData();
 
       formData.append('title', title);
       formData.append('description', description);
-      formData.append('shareSubjectId', apartment.id);
+      if (apartment) formData.append('shareSubjectId', apartment.id);
       formData.append('typeId', type.id);
-      formData.append('picture', {
-        uri: Platform.OS==="android"? picture.uri : picture.uri.replace("file://",""),
-        name: name,
-        type:'image/jpg',
-      })
+      if (this.state.picture && this.state.picture.length > 0){
+        //DODANIE ZDJĘCIA
+        const name=picture.uri.split('/').pop();
+        const picture=this.state.picture[0];
+        formData.append('picture', {
+          uri: Platform.OS==="android"? picture.uri : picture.uri.replace("file://",""),
+          name: name,
+          type:'image/jpg',
+        })
+      }
+     
       addFailure(formData).then(
         () => {
 
@@ -242,16 +248,7 @@ export default class FailureAddScreen extends Component {
       <ScrollView style={{margin:10}}>   
           
          
-          <Button
-            mode="text"
-            labelStyle={styles.TransparentButtonText}
-            compact={true}
-            uppercase={false}
-            onPress={this.openApartmentDialog}
-            style={{margin:5}}
-            >{this.state.apartment==='' ? (" Wybierz mieszkanie ") : ( this.state.apartmentName + "  ") }
-              <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
-          </Button>
+         
          
 
           <Button
@@ -262,6 +259,17 @@ export default class FailureAddScreen extends Component {
             onPress={this.openTypeDialog}
             style={{margin:5}}
             >{this.state.type==='' ? (" Wybierz typ zgłoszenia ") : ( this.state.type.title + "  ") }
+              <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
+          </Button>
+
+          <Button
+            mode="text"
+            labelStyle={styles.TransparentButtonText}
+            compact={true}
+            uppercase={false}
+            onPress={this.openApartmentDialog}
+            style={{margin:5}}
+            >{this.state.apartment==='' ? (" Wybierz lokal (jeśli dotyczy) ") : ( this.state.apartmentName + "  ") }
               <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
           </Button>
 

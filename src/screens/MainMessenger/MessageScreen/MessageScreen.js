@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, FlatList, ScrollView,Image  } from 'react-native';
 import { Button } from 'react-native-paper';
 import PropTypes from 'prop-types';
-import { List,Text,Divider,Avatar } from 'react-native-paper';
+import { List,Text,Divider,Avatar,Card } from 'react-native-paper';
 import styles from './styles';
 import { FAB } from 'react-native-paper';
 import { Searchbar } from 'react-native-paper';
@@ -19,6 +19,7 @@ export default class MessagesScreen extends Component {
           message:'',
           errorMessage:'',
           searchQuery:'',
+          loading:true
         };
         this.renderRow=this.renderRow.bind(this);
         this.onChangeSearch=this.onChangeSearch.bind(this);
@@ -55,8 +56,8 @@ export default class MessagesScreen extends Component {
           if(res!=undefined){
             if(res.status === 200){
               //udało się zdobyć informacje
-             this.setState({chats :res.data});
-             console.log(this.state.chats)
+             this.setState({chats :res.data,loading:false});
+            
               
             }
           }
@@ -111,7 +112,14 @@ export default class MessagesScreen extends Component {
                 
                
                      <Divider/>
+                     
                      {this.state.errorMessage!=='' &&  <Text style={{color:'red',alignSelf:"center"}}>{this.state.errorMessage}</Text>}
+                    {this.state.chats.length<1 && !this.state.loading &&
+                     <Card style={{margin:10, marginTop:60, height:50, backgroundColor:colors.happyGreen,alignSelf:"center"}}>
+                     <Card.Content>
+                     <Text >Brak wiadomości</Text>
+                     </Card.Content>
+                   </Card>}
                     {
                       this.state.chats.filter(
                         (chat) => (
