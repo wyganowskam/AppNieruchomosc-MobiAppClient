@@ -31,7 +31,7 @@ const getSurveyResults = (id) => {
   };
 
   const downloadAttachment = (id, name) => {
-    return api.get(`${path}attachment?i=${id}&v=${name}`,  {responseType: 'blob'});
+    return apiClient.get(`${path}attachment?i=${id}&v=${name}`,  {responseType: 'blob'});
   };
 
 export default {

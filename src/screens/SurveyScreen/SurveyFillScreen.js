@@ -90,17 +90,18 @@ export default function CreateSurvey(props) {
   }
 
   const onFileDownload = (id, name) => {
-    setLoadingFile(true);
-    setLoadingFileId(id);
+    //setLoadingFile(true);
+    //setLoadingFileId(id);
     surveyService.downloadAttachment(id, name).then(res => {
-      setLoadingFile(false);
+    //  setLoadingFile(false);
       let url = window.URL.createObjectURL(res.data);
       var fileLink = document.createElement('a');
       fileLink.href = url
       fileLink.download = name;
       fileLink.click();
 
-    }, (error) => {setLoadingFile(false)});
+    }, (error) => {//setLoadingFile(false)
+    });
   }
 
   const handleAdd = () => {

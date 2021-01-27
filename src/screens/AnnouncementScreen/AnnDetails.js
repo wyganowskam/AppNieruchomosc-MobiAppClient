@@ -20,7 +20,7 @@ const AnnouncementDetails = (props) => {
     }, (error) => {});
   }
     const ann = props.announcement;
-    console.log(ann);
+   // console.log(ann);
     return (
       
             <Card style={{margin:10,marginBottom:50,backgroundColor:colors.delicateButton}}>
