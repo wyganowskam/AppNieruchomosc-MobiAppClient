@@ -4,6 +4,8 @@ import { Text,
   Button, Divider,Card,  } from 'react-native-paper';
 import colors from '../../config/colors';
 export const primaryCyanLight = '#00bcd4';
+import authHeader from "../../services/authHeader";
+import { getHoasRoles } from '../../services/hoaService';
 
 
 export default function Row(props) {
@@ -16,8 +18,12 @@ export default function Row(props) {
       invitationId: row.id
     }).then(
       (res) => {
-        if(res.status === 200) setReload(reloadOld => !reloadOld);
-        this.props.navigation.goBack();
+        setLoading(false);
+        props.getInvitationList();
+        props.navigation.reset({
+          index: 1,
+          routes: [{ name: 'Main' }, {name:'MyInvitations'}],
+        });
       },
       (error) => {
        
@@ -33,13 +39,12 @@ export default function Row(props) {
     ).catch(e => { setLoading(false); });
     setLoading(false);
   };
-
   return (
 
-      <Card style={{margin:10,}}>
+      <Card style={{margin:10, height:100}}>
       
         <Card.Content>
-          <Text>{row.hoaName}</Text>
+          <Text style={{fontSize:18}}>{row.hoaName}</Text>
         </Card.Content>
        
         <Card.Actions >

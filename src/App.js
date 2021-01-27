@@ -74,9 +74,14 @@ export default class App extends React.Component {
     
        
       });
+      this.deleteJWT();
       deviceStorage.removeItem("id_token");
       deviceStorage.removeItem("hoaId");
       deviceStorage.removeItem("hoas");
+      deviceStorage.removeItem("isAppAdmin");
+      deviceStorage.removeItem("isBuildingAdmin");
+      deviceStorage.removeItem("isBoard");
+      deviceStorage.removeItem("isResident");
       deviceStorage.removeItem("isAppAdmin");
       deviceStorage.removeItem("isBuildingAdmin");
       deviceStorage.removeItem("isBoard");

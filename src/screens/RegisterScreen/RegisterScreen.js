@@ -15,6 +15,7 @@ import {  Text, Button ,TextInput} from 'react-native-paper';
 import {register} from '../../services/authService';
 //import {RegisterSuccess} from './RegisterSuccess';
 import colors from "../../config/colors"
+import { isEmail } from "validator";
 
 // Enable LayoutAnimation on Android
 UIManager.setLayoutAnimationEnabledExperimental &&
@@ -59,12 +60,13 @@ export default class RegisterScreen extends Component {
 
   signup() {
     LayoutAnimation.easeInEaseOut();
+    const {email,usersurname,username,password,confirmationPassword}=this.state;
     const usernameValid = this.validateUsername();
     const usersurnameValid=this.validateUsersurname();
     const emailValid = this.validateEmail();
     const passwordValid = this.validatePassword();
     const confirmationPasswordValid = this.validateConfirmationPassword();
-    const {email,usersurname,username,password}=this.state;
+    console.log(emailValid)
     if (
       emailValid &&
       passwordValid &&
@@ -77,12 +79,14 @@ export default class RegisterScreen extends Component {
         userId: email,
         name: username,
         surname: usersurname,
-        password: password
+        password: password,
+        confirmPassword: confirmationPassword
     }).then(
       (res) => {
 
         if(res.status === 200){
-         this.setState({success:true, message:res.message});
+         this.setState({success:true, message:"Rejestracja zakończona pomyślnie."});
+       
         }
         else{
           
@@ -133,7 +137,7 @@ export default class RegisterScreen extends Component {
 
   validateEmail() {
     const { email } = this.state;
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
     const emailValid = re.test(email);
     LayoutAnimation.easeInEaseOut();
     this.setState({ emailValid });
@@ -323,13 +327,13 @@ const styles = StyleSheet.create({
   },
   alreadyAccountText: {
     
-    fontSize: 12,
+    fontSize: 14,
     color: colors.grey,
   },
   TransparentButtonText: {
     color: 'black',
    
-    fontSize: 12,
+    fontSize: 14,
   },
   inputStyle: {
     height:50,

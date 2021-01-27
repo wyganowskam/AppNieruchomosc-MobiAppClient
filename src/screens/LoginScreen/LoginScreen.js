@@ -307,12 +307,12 @@ const styles = StyleSheet.create({
   },
   questionText: {
     
-    fontSize: 12,
+    fontSize: 14,
     color: 'gray',
   },
   TransparentButtonText: {
     color: 'black',
    
-    fontSize: 12,
+    fontSize: 14,
   },
 });

@@ -95,7 +95,7 @@ export default class Profile extends Component {
           isResident:val4===true,
           hoas:JSON.parse(res2),
           currentHoaId:res1,
-          currentHoaName:JSON.parse(res2).find(item=>item.hoaId===res1).hoaName,
+          currentHoaName:JSON.parse(res2).find(item=>item.hoaId===res1) ? JSON.parse(res2).find(item=>item.hoaId===res1).hoaName : "Brak wspólnoty",
           username:name,
           usersurname:surname
         });
@@ -113,11 +113,17 @@ export default class Profile extends Component {
   
 
  onChangeHoa(value) {
-    // console.log(value.hoaId);
+   // console.log(value.hoaId);
     deviceStorage.setItem("hoaId",value.hoaId)
     .then(()=>{
       refreshRoles().then(()=>{this.loadHoa(this.state.usersurname,this.state.username);  this.setState({hoaDialogVisible:false});});
-     
+      this.props.navigation.replace(
+        'Main', // same screen
+        null, // no params
+        null, // no "sub-action"
+       
+        this.state.currentHoaId
+      );
      
     });
   
@@ -134,19 +140,17 @@ export default class Profile extends Component {
 
   renderRow = ({ item }) => {
  
-    const {isAppAdmin,isBuildingAdmin,isResident,isBoard}=this.state;
-    
     return (
-      ( (isAppAdmin && item.forAppAdmin)
-        || (isBuildingAdmin && item.forBuildingAdmin)
-        || (isBoard && item.forBoard)
-        || (isResident && item.forResident)
+      ( (this.state.isAppAdmin && item.forAppAdmin)
+        || (this.state.isBuildingAdmin && item.forBuildingAdmin)
+        || (this.state.isBoard && item.forBoard)
+        || (this.state.isResident && item.forResident)
         || item.forAll
         ) && <> 
       <List.Item  onPress={() => this.props.navigation.navigate(item.page)} 
       title={item.title}
       style={styles.list} 
-      titleStyle={{color:colors.textViolet, fontSize:16,}}  
+      titleStyle={{color:colors.textViolet, fontSize:17,}}  
       right={()=><Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/right-arrow.png')} />} 
       left={()=><Image style={{width:25,height:25,alignSelf:"center"}} source={item.icon} />} 
      /><Divider style={{height:2}} />
@@ -239,12 +243,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     paddingBottom: 20,
     paddingTop: 20,
-    height:150
+    height:200
     // backgroundColor:colors.button
   },
-  userNameText: {
+userNameText: {
     color: colors.black,
-    fontSize: 15,
+    fontSize: 16,
     textAlign: 'center',
   },
   container: {
@@ -260,7 +264,8 @@ const styles = StyleSheet.create({
   list: {
     borderRadius:5,
     backgroundColor:colors.white,
-    margin:10
+    margin:15,
+    
   },
   subtitleView: {
     flexDirection: 'row',
@@ -272,11 +277,7 @@ const styles = StyleSheet.create({
     flexWrap:"wrap",flexDirection:"row",
     fontSize: 18,
   },
-  TransparentButtonText: {
-    color: 'black',
-   
-    fontSize: 18,
-  },
+ 
 })
 
 

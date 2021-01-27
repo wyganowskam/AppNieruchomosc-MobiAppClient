@@ -26,7 +26,7 @@ export default class ChatScreen extends Component {
        
         this.validate=this.validate.bind(this);
         this.handleSendButton=this.handleSendButton.bind(this);
-        //this.connect=this.connect.bind(this);
+      
     }
 
     onBackPress = () => {

@@ -20,7 +20,7 @@ export default class FailureScreen extends Component {
    
 
     getInvitationList = ()=> {
-   
+      
         getMyInvitations().then(
         res => {
           this.setState({invitationList:res.data,loading:false});
@@ -40,20 +40,22 @@ export default class FailureScreen extends Component {
     };
 
     componentDidMount() {
+     
       this.getInvitationList();
     }
   
     
   
   render() {
-    
+    console.log("ładuje");
+    console.log(this.state)
     return (
       <View style={styles.container}>   
         
         {this.state.invitationList.length > 0 && !this.state.loading ?
             <>
             {this.state.invitationList.map((row) => (
-            <Row key={row.id} navigation={this.props.navigation} row={row}/>
+            <Row key={row.id} navigation={this.props.navigation} row={row} getInvitationList={this.getInvitationList}/>
              ))}
             </>
         :
