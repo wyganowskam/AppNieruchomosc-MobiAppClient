@@ -35,6 +35,10 @@ const setAllowComments = (data) => {
   
   return apiClient.post(path + 'AllowComments', data);
 };
+
+const downloadAttachment = (id, name) => {
+  return apiClient.get(`${path}attachment?i=${id}&v=${name}`,  {responseType: 'blob'});
+};
   
 export default {
   getAnnouncements,
@@ -44,7 +48,8 @@ export default {
   setAllowComments,
   getComments,
   getAnnouncementsPagesCount,
-  getCommentPagesCount
+  getCommentPagesCount,
+  downloadAttachment
   };
   
   
