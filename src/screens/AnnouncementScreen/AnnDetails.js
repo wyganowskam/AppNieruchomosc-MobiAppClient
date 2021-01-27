@@ -30,7 +30,7 @@ const AnnouncementDetails = (props) => {
               <Text style={{fontSize:16}}>{ann.longText+"\n"}</Text>
               {ann.attachments?.length > 0 &&
              <Text style={{fontSize:15,fontWeight:"bold"}} >
-            Załączniki:
+            Załączniki :
 
             </Text>}
 

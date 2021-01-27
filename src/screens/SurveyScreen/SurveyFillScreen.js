@@ -89,6 +89,20 @@ export default function CreateSurvey(props) {
     })
   }
 
+  const onFileDownload = (id, name) => {
+    setLoadingFile(true);
+    setLoadingFileId(id);
+    surveyService.downloadAttachment(id, name).then(res => {
+      setLoadingFile(false);
+      let url = window.URL.createObjectURL(res.data);
+      var fileLink = document.createElement('a');
+      fileLink.href = url
+      fileLink.download = name;
+      fileLink.click();
+
+    }, (error) => {setLoadingFile(false)});
+  }
+
   const handleAdd = () => {
     setMessage("");
 
@@ -161,6 +175,30 @@ export default function CreateSurvey(props) {
             <Text style={{fontSize:16}}>{survey.description}</Text>
             <Divider style={{marginTop:10,marginBottom:10}}/>
             <Text >Przyjmuje odpowiedzi do <Text style={{fontWeight:"bold"}}>{survey.acceptAnswersDeadlineFormatted}</Text>.</Text>
+           
+            {survey.attachments?.length > 0 &&
+             <Text style={{fontSize:15,fontWeight:"bold"}} >
+            {"\nZałączniki :"}
+
+            </Text>}
+
+            {survey.attachments?.map(att => (
+
+              <Button
+              mode="text"
+              labelStyle={{ color: 'black',fontSize: 14,}}
+              compact={true}
+              uppercase={false}
+              style={{alignSelf:"flex-start"}}
+              key={att.id}
+              onPress={e => onFileDownload(att.id, att.fileName)}
+              >
+               {att.fileName}
+              </Button>
+             
+            )
+            )}
+           
            </Card.Content>
         </Card>
 

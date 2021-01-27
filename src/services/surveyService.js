@@ -30,6 +30,10 @@ const getSurveyResults = (id) => {
     return apiClient.get(path + 'results/' + id);
   };
 
+  const downloadAttachment = (id, name) => {
+    return api.get(`${path}attachment?i=${id}&v=${name}`,  {responseType: 'blob'});
+  };
+
 export default {
     getSurveys,
     getSurveyDetails,
@@ -37,7 +41,8 @@ export default {
     createSurvey,
     answerSurvey,
     getQuestionTypes,
-    getSurveyResults
+    getSurveyResults,
+    downloadAttachment
   };
   
   
