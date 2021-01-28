@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, FlatList, ScrollView,StyleSheet ,Image } from 'react-native';
+import { View, FlatList, ScrollView,StyleSheet ,Image, Platform } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Text,Divider,Card, } from 'react-native-paper';
 import { Dialog, Portal,List ,IconButton} from 'react-native-paper';
@@ -44,7 +44,7 @@ function CreateSurvey(props) {
   const [date, setDate] = useState(new Date());
   const [dateString, setDateString]=useState('');
   const [showDate, setShowDate] = useState(false);
-  const [time, setTime] = useState(new Date());
+  const [time, setTime] = useState(new Date("2016-02-29T07:00:00.000Z"));
   const [timeString, setTimeString]=useState('');
   const [showTime, setShowTime] = useState(false);
 
@@ -262,8 +262,7 @@ function CreateSurvey(props) {
   }
 
   const onChangeDate=(newdate)=>{
-   //setDate({date:date.nativeEvent.timestamp}); 
-   setShowDate(false);
+   if (Platform.OS==='android') setShowDate(false);
    if(newdate.type!="dismissed"){
     const d= new Date(newdate.nativeEvent.timestamp);
     const year=d.getFullYear();
@@ -279,14 +278,17 @@ function CreateSurvey(props) {
   }
 
   const onChangeTime=(newtime)=>{
-    setShowTime(false);
+     if (Platform.OS==="android")setShowTime(false);
     if(newtime.type!="dismissed"){
         const d= new Date(newtime.nativeEvent.timestamp);
         const h=d.getHours();
         const m=d.getMinutes();
         const n= m<10 ? "0": "";
         const j=h<10? "0": "";
-        const t=new Date().setHours(h,m);
+        const x=h-1;
+        const z= x<0? h+23 : x;
+        const y=z<10? "0": "";
+        const t=new Date("2016-02-29T" + y+z+":"+n+m+ ":01.001");
         setTimeString(j+h+":"+n+m)
         setTime(t)
         
@@ -370,7 +372,30 @@ function CreateSurvey(props) {
               {"Data: " + dateString+ " "}
               <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
             </Button>
+            {Platform.OS==='ios' && showDate &&
+            <Button
+            mode="text"
+            labelStyle={{}}
+            compact={true}
+            uppercase={false}
+              onPress={()=>setShowDate(false)}
+              
+            >
+              Schowaj
+            
+            </Button>
+}
           </View>
+          
+        {showDate && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode="date"
+          is24Hour={true}
+          display="spinner"
+          onChange={(d)=>onChangeDate(d)}
+        />)}
           <View style={{flexDirection:"row"}}>
           <Button
             mode="text"
@@ -383,7 +408,31 @@ function CreateSurvey(props) {
               {"Godzina: " + timeString+ " "}
               <Image style={{width:10,height:10,alignSelf:"center"}} source={require('../../assets/icons/down-arrow.png')} />
             </Button>
+          
           </View>
+
+          {Platform.OS==='ios' && showTime &&
+            <Button
+            mode="text"
+            labelStyle={{}}
+            compact={true}
+            uppercase={false}
+              onPress={()=>setShowTime(false)}
+              
+            >
+              Schowaj
+            
+            </Button>
+}
+          {showTime && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={time}
+              mode="time"
+              is24Hour={true}
+              display="spinner"
+              onChange={(d)=>onChangeTime(d)}
+            />)}
 
           <TextInput
             label="Tytuł"
@@ -532,25 +581,8 @@ function CreateSurvey(props) {
             </Dialog>
         </Portal>  
 
-        {showDate && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode="date"
-          is24Hour={true}
-          display="spinner"
-          onChange={(d)=>onChangeDate(d)}
-        />)}
 
-        {showTime && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={time}
-          mode="time"
-          is24Hour={true}
-          display="spinner"
-          onChange={(d)=>onChangeTime(d)}
-        />)}
+       
     </ScrollView>  
   );
 }

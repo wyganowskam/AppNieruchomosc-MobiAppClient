@@ -5,7 +5,6 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/roof.png",
-   
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -13,14 +12,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.magwyg.mieszkamy"
     },
-    "web": {
-      
-    },
-    
-  "android": {
-    "package": "com.magwyg.appnieruchomoscmobiappclient"
-  }
+    "web": {},
+    "android": {
+      "package": "com.magwyg.appnieruchomoscmobiappclient"
+    }
   }
 }

@@ -138,7 +138,7 @@ export default class ChatScreen extends Component {
               </Text>
             </Card.Content>
          </Card>
-         <Text style={fontStyle}>{item.createdOn.substring(0,10) + " " + item.createdOn.substring(11,16) +"\n"}<Text >{item.userName + " " + item.userSurname}</Text></Text>
+         <Text style={fontStyle}>{item.createdOn.substring(0,10) + " " + item.createdOn.substring(11,16) +"\n"}<Text style={fontStyle} >{item.userName + " " + item.userSurname}</Text></Text>
          </>
         );
         
